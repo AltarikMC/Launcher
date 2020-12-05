@@ -1,0 +1,16 @@
+{
+  "name": "launcher",
+  "version": "1.0.0",
+  "description": "Launcher Projet Secret",
+  "main": "main.js",
+  "scripts": {
+  	"start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Topeka_",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^11.0.3"
+  }
+}
