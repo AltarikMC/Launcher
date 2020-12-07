@@ -1,22 +1,24 @@
 const { app, BrowserWindow, Menu } = require('electron')
+const path = require('path');
+const iconPath = path.join(__dirname, "icon.png");
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 800,
+    width: 1000,
     height: 600,
+    icon: iconPath,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true
     },
     frame: false
   })
-  Menu.setApplicationMenu(null)
+  //Menu.setApplicationMenu(null)
   win.loadFile('index.html')
 }
 
 app.whenReady().then(() => {
   createWindow()
-  // setMainMenu()
 })
 
 app.on('window-all-closed', () => {
@@ -30,22 +32,4 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-// function setMainMenu() {
-//   const template = [
-//     {
-//       label: 'Filter',
-//       submenu: [
-//         {
-//           label: 'Hello',
-//           accelerator: 'Shift+CmdOrCtrl+H',
-//           click() {
-//               console.log('Oh, hi there!')
-//           }
-//         }
-//       ]
-//     }
-//   ];
-//   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-// }
 

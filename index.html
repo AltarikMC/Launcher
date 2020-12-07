@@ -7,18 +7,33 @@
     <link href="style.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body style="background: white;">
+<body>
 	<div id="menubar">
+        <ul class="left">
+        </ul>
         <ul class="right">
-            <li id="minimize-btn"><i class="material-icons">minimize</i></li>
-            <li id="max-unmax-btn"><i class="material-icons">crop_square</i></li>
-            <li id="close-btn"><i class="material-icons">close</i></li>
+            <!-- Mettre ce code en ligne pour éviter que chrome ne met un espace automatiquement entre les éléments -->
+            <li id="minimize-btn"><i class="material-icons">minimize</i></li><li id="max-unmax-btn"><i class="material-icons">crop_square</i></li><li id="close-btn"><i class="material-icons">close</i></li>
         </ul>
     </div>
     <div id="content">
-        <h1>Projet secret</h1>
-    <p>
-        <button>Lancez le jeu</button>
+        <div id="sidebar">
+            <h3>Connexion</h3>
+            <hr>
+            <form style="display:flex;align-items: center;flex-direction: column;">
+                <div><label for="nickname">Pseudonyme:</label><br />
+                <input type="text" name="nickname" id="nickname"><br /></div>
+                <div><label for="password">Mot de passe:</label><br />
+                <input type="password" name="password" id="password"><br /></div>
+                <input type="submit" value="Se connecter">
+            </form>
+        </div>
+        <div id="main">
+            <img id="main-img" src="./maxresdefault.jpg">
+            <div id="launch">
+                <button id="launch-btn">Lancer le jeu</button>
+            </div>
+        </div>
     </p>
     </div>
     <script src="script.js"></script>
