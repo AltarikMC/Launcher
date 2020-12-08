@@ -27,5 +27,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run make --if-present
+    - run: npx @electron-forge/cli import && npm run make --if-present
 
