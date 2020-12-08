@@ -5,6 +5,7 @@ let launchBtn = document.querySelector('#launch-btn');
 let fullProgressBar = document.querySelector('#fullprogressbar')
 let progressBar = document.querySelector('#progressbar')
 let loadingMessage = document.querySelector('#loading-message')
+let disconnectBtn = document.querySelector('#disconnect-btn')
 
 ipcRenderer.on("nick", (event, args) => {
     console.log(args)
@@ -34,4 +35,8 @@ ipcRenderer.on("close", (e, args) => {
     loadingMessage.innerHTML = "Téléchargement de Minecraft en cours..."
     progressBar.style.width = "0"
     launchBtn.disabled = false
+})
+
+disconnectBtn.addEventListener('click', e => {
+    ipcRenderer.send('disconnect')
 })
