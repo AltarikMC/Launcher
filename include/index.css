@@ -67,3 +67,29 @@ h3 {
 	border: 1px solid black;
 	border-radius: 3px;
 }
+
+.hidden{
+	display:none;
+}
+
+#fullprogressbar{
+	position:relative;
+	margin: 0 auto;
+	width:80%;
+	height:25px;
+	background-color:gray;
+}
+
+#progressbar{
+	background-color: green;
+	height:100%;
+	width:0;
+}
+
+#loading-message{
+	width:80%;
+	position:relative;
+	margin: 0 auto;
+	height:28px;
+	color:white;
+}
