@@ -1,0 +1,55 @@
+#menubar{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:28px;
+	background-color:rgb(37, 37, 37);
+	color:white;
+	cursor: move;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+}
+
+
+#menubar ul{
+	margin:0;
+	padding:0;
+}
+
+#menubar .left{
+	float:left;
+}
+
+
+#menubar .right{
+	float: right;
+	-webkit-app-region: no-drag;
+}
+
+#menubar .right li,
+#menubar .left li {
+	display: inline-block;
+	height:28px;
+}
+
+#menubar .right li:hover,
+#menubar .left li:hover {
+	cursor: pointer;
+}
+
+#minimize-btn:hover,
+#max-unmax-btn:hover{
+	background-color: rgb(55, 55, 55);
+	transition: 0.3s background-color ease;
+}
+
+#close-btn:hover{
+	background-color:red;
+	transition: 0.3s background-color ease;
+}
+
+.material-icons{
+	position: relative;
+    top: 2px;
+}

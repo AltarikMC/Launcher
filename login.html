@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>Launcher Projet Secret</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <link href="index.css" rel="stylesheet" />
+    <link href="login.css" rel="stylesheet" />
     <link href="menubar.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-	<div id="menubar">
+    <div id="menubar">
         <ul class="left">
         </ul>
         <ul class="right">
@@ -18,23 +18,20 @@
         </ul>
     </div>
     <div id="content">
-        <div id="sidebar">
-            <h3>Compte</h3>
+        <div id="login">
+            <h3>Connexion</h3>
             <hr>
-                <span id="nick-span"></span>
-            <h3>Modifier la configuration</h3>
-            <hr>
-            Contenu
+            <form id="login-form">
+                <label for="nickname">Email:</label><br />
+                <input type="text" name="nickname" id="nickname"><br />
+                <label for="password">Mot de passe:</label><br />
+                <input type="password" name="password" id="password"><br />
+                <input type="submit" value="Se connecter">
+            </form>
         </div>
-        <div id="main">
-            <img id="main-img" src="./maxresdefault.jpg">
-            <div id="launch">
-                <button id="launch-btn">Lancer le jeu</button>
-            </div>
-        </div>
-    </p>
     </div>
+    
     <script src="script.js"></script>
-    <script src="include/index.js"></script>
+    <script src="include/login.js"></script>
 </body>
 </html>

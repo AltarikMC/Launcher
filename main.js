@@ -1,9 +1,18 @@
-const { app, BrowserWindow, Menu } = require('electron')
-const path = require('path');
+const { app, BrowserWindow, Menu, ipcMain, Notification } = require('electron')
+const path = require('path')
+const { Client, Authenticator } = require('minecraft-launcher-core')
+
+const launcher = new Client();
 const iconPath = path.join(__dirname, "icon.png");
+let win = null
+let auth = null
+
+let Minecraftpath = "projet-secret"
+let clientPackage = "https://www.dropbox.com/s/ww6a052nzzgojdm/modpack.zip?dl=1"
+let version = "fabric-loader-0.10.8-1.16.4"
 
 function createWindow () {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1000,
     height: 600,
     icon: iconPath,
@@ -13,8 +22,8 @@ function createWindow () {
     },
     frame: false
   })
-  //Menu.setApplicationMenu(null)
-  win.loadFile('index.html')
+  Menu.setApplicationMenu(null)
+  win.loadFile('login.html')
 }
 
 app.whenReady().then(() => {
@@ -33,3 +42,54 @@ app.on('activate', () => {
   }
 })
 
+ipcMain.on("login", (event, args) => {
+  auth = Authenticator.getAuth(args.user, args.pass)
+  auth.then(v => {
+    win.loadFile('index.html')
+    setTimeout(() => {
+      event.sender.send("nick", {
+        name: v.name
+      })
+    }, 1000)
+    
+  }).catch((err) => {
+    console.warn(err)
+    showNotification("Erreur de connexion")
+  })
+})
+
+function showNotification(title="", body="") {
+  const notification = {
+    title: title,
+    body: body
+  }
+  new Notification(notification).show()
+}
+
+ipcMain.on("notification", (event, args) => {
+  showNotification(args.title, args.body)
+})
+
+ipcMain.on("launch", (event, args) => {
+  let opts = {
+    clientPackage: clientPackage,
+    authorization: auth,
+    root: Minecraftpath,
+    //forge: fabricmc,
+    version: {
+        number: "1.16.4",
+        type: "release",
+        custom: version
+    },
+    memory: {
+        max: args.maxMem,
+        min: args.minMem
+    }
+  }
+  launcher.launch(opts)
+  launcher.on('debug', (e) => console.log(e));
+  launcher.on('data', (e) => console.log(e));
+  launcher.on('progress', (e) => console.log(e));
+  launcher.on('close', (e) => console.log(e));
+  
+})
