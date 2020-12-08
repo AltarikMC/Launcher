@@ -95,3 +95,7 @@ ipcMain.on("launch", (event, args) => {
   launcher.on('close', (e) => event.sender.send("close", e));
   
 })
+
+ipcMain.on("disconnect", (e) => {
+  win.loadFile('login.html')
+})
