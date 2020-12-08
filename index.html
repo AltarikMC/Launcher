@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Launcher Projet Secret</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <link href="index.css" rel="stylesheet" />
-    <link href="menubar.css" rel="stylesheet" />
+    <link href="include/index.css" rel="stylesheet" />
+    <link href="include/menubar.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -27,14 +27,16 @@
             Contenu
         </div>
         <div id="main">
-            <img id="main-img" src="./maxresdefault.jpg">
+            <img id="main-img" src="include/maxresdefault.jpg">
             <div id="launch">
                 <button id="launch-btn">Lancer le jeu</button>
+                <div id="loading-message" class="hidden">Téléchargement de Minecraft en cours...</div>
+                <div id="fullprogressbar" class="hidden"><div id="progressbar"></div></div>
             </div>
         </div>
     </p>
     </div>
-    <script src="script.js"></script>
+    <script src="include/script.js"></script>
     <script src="include/index.js"></script>
 </body>
 </html>

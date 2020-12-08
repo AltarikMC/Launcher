@@ -7,14 +7,17 @@ const iconPath = path.join(__dirname, "icon.png");
 let win = null
 let auth = null
 
-let Minecraftpath = "projet-secret"
+let Minecraftpath = "game"
 let clientPackage = "https://www.dropbox.com/s/ww6a052nzzgojdm/modpack.zip?dl=1"
-let version = "fabric-loader-0.10.8-1.16.4"
+let version = "1.16.4"
+let versionFolder = "fabric-loader-0.10.8-1.16.4"
 
 function createWindow () {
   win = new BrowserWindow({
     width: 1000,
+    minWidth: 900,
     height: 600,
+    minHeight: 600,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: true,
@@ -75,11 +78,10 @@ ipcMain.on("launch", (event, args) => {
     clientPackage: clientPackage,
     authorization: auth,
     root: Minecraftpath,
-    //forge: fabricmc,
     version: {
-        number: "1.16.4",
+        number: version,
         type: "release",
-        custom: version
+        custom: versionFolder
     },
     memory: {
         max: args.maxMem,
@@ -87,9 +89,9 @@ ipcMain.on("launch", (event, args) => {
     }
   }
   launcher.launch(opts)
-  launcher.on('debug', (e) => console.log(e));
-  launcher.on('data', (e) => console.log(e));
-  launcher.on('progress', (e) => console.log(e));
-  launcher.on('close', (e) => console.log(e));
+  launcher.on('debug', (e) => console.log("debug", e));
+  launcher.on('data', (e) => console.log("data", e));
+  launcher.on('progress', (e) => event.sender.send("progress", e));
+  launcher.on('close', (e) => event.sender.send("close", e));
   
 })
