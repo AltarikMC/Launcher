@@ -89,10 +89,15 @@ ipcMain.on("launch", (event, args) => {
     }
   }
   launcher.launch(opts)
-  launcher.on('debug', (e) => console.log("debug", e));
+  // launcher.on('debug', (e) => console.log("debug", e));
   launcher.on('data', (e) => console.log("data", e));
   launcher.on('progress', (e) => event.sender.send("progress", e));
-  launcher.on('close', (e) => event.sender.send("close", e));
+  launcher.on('close', (e) => {
+    event.sender.send("close", e)
+    if(e !== 0){
+      showNotification("Une erreur est suvenue", "Minecraft ne s'est pas fermé correctement")
+    }
+  });
   
 })
 
