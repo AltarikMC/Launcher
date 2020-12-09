@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link href="include/index.css" rel="stylesheet" />
     <link href="include/menubar.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="include/material-icons.css" rel="stylesheet">
 </head>
 <body>
 	<div id="menubar">
@@ -25,7 +25,11 @@
                 <button id="disconnect-btn">Se déconnecter</button>
             <h3>Modifier la configuration</h3>
             <hr>
-            Contenu
+            <h4>Allocation mémoire</h4>
+            <label for="minMem">mémoire minimale</label>
+            <input type="text" id="minMem" value="2G">
+            <label for="minMem">mémoire maximale</label>
+            <input type="text" id="maxMem" value="4G">
         </div>
         <div id="main">
             <img id="main-img" src="include/maxresdefault.jpg">
