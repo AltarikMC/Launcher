@@ -25,3 +25,8 @@ jobs:
     - name: Intall dependencies
       run: npm ci
     - run: npm run make --if-present
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Artifact
+        path: out\make\squirrel.windows\x64
+        if-no-files-found: error
