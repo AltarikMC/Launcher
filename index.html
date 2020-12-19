@@ -26,10 +26,10 @@
             <h3>Modifier la configuration</h3>
             <hr>
             <h4>Allocation mémoire</h4>
-            <label for="minMem">mémoire minimale</label>
-            <input type="text" id="minMem" value="2G">
-            <label for="minMem">mémoire maximale</label>
-            <input type="text" id="maxMem" value="4G">
+            <label for="minMem">mémoire minimale : <div id="outputMinMem"></div></label>
+            <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="minMem">
+            <label for="minMem">mémoire maximale : <div id="outputMaxMem"></div></label>
+            <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="maxMem">
         </div>
         <div id="main">
             <img id="main-img" src="include/maxresdefault.jpg">
