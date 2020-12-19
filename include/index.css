@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "Roboto";
+    src: url("./Roboto-Regular.ttf") format("truetype");
+}
+
 html{
 	height: 100%;
 }
@@ -10,7 +15,7 @@ body{
 	background: white;
 	margin:0;
 	height:100%;
-	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-family: "Roboto";
 }
 
 #content{
