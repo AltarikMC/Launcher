@@ -3,8 +3,8 @@ module.exports = {
     packagerConfig: {
         packageName: "Launcher",
         name: "Launcher",
-        productName: "Launcher"//,
-        //icon: path.resolve(__dirname, 'app.ico')
+        productName: "Launcher",
+        icon: path.resolve(__dirname, 'app.ico')
     },
     makers: [
         {
