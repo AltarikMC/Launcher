@@ -1,14 +1,23 @@
-var os = require('os');
-let launchBtn = document.querySelector('#launch-btn');
-let fullProgressBar = document.querySelector('#fullprogressbar')
-let progressBar = document.querySelector('#progressbar')
-let loadingMessage = document.querySelector('#loading-message')
-let disconnectBtn = document.querySelector('#disconnect-btn')
-let minMem = document.querySelector('#minMem')
-let maxMem = document.querySelector('#maxMem')
-let outputMinMem = document.querySelector('#outputMinMem')
-let outputMaxMem = document.querySelector('#outputMaxMem')
-let totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
+const os = require('os');
+const launchBtn = document.querySelector('#launch-btn');
+const fullProgressBar = document.querySelector('#fullprogressbar')
+const progressBar = document.querySelector('#progressbar')
+const loadingMessage = document.querySelector('#loading-message')
+const disconnectBtn = document.querySelector('#disconnect-btn')
+const minMem = document.querySelector('#minMem')
+const maxMem = document.querySelector('#maxMem')
+const outputMinMem = document.querySelector('#outputMinMem')
+const outputMaxMem = document.querySelector('#outputMaxMem')
+const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
+
+document.body.onload = (e) => {
+    minMem.max = totalMem
+    maxMem.max = totalMem
+    minMem.value = localStorage.getItem("minMem")
+    outputMinMem.innerHTML = minMem.value
+    maxMem.value = localStorage.getItem("maxMem")
+    outputMaxMem.innerHTML = maxMem.value
+}
 
 ipcRenderer.on("nick", (event, args) => {
     console.log(args)
@@ -25,10 +34,8 @@ launchBtn.addEventListener("click", e => {
             maxMem: maxMem.value + "M"
         })
         launchBtn.disabled = true
-        if(minMem.value && maxMem.value){
-            localStorage.setItem("minMem", minMem.value)
-            localStorage.setItem("maxMem", maxMem.value)
-        }
+        localStorage.setItem("minMem", minMem.value)
+        localStorage.setItem("maxMem", maxMem.value)
     } else{
         ipcRenderer.send('notification', {
             title: "Erreur de lancement",
@@ -47,23 +54,18 @@ ipcRenderer.on("close", (e, args) => {
     launchBtn.classList.remove('hidden');
     fullProgressBar.classList.add('hidden');
     loadingMessage.classList.add('hidden');
-    loadingMessage.innerHTML = "Téléchargement de Minecraft en cours..."
+    loadingMessage.innerHTML = "Chargement de Minecraft en cours..."
     progressBar.style.width = "0"
     launchBtn.disabled = false
 })
 
-disconnectBtn.addEventListener('click', e => {
-    ipcRenderer.send('disconnect')
+ipcRenderer.on('launch', (e, args) => {
+    fullProgressBar.classList.add('hidden');
+    loadingMessage.classList.add('hidden');
 })
 
-window.addEventListener("DOMContentLoaded", () => {
-    minMem.value = localStorage.getItem("minMem") != null ? Number(localStorage.getItem("minMem")) : 1024
-    minMem.max = totalMem
-    outputMinMem.innerHTML = minMem.value
-    maxMem.value = localStorage.getItem("maxMem") != null ? Number(localStorage.getItem("maxMem")) : 2048
-    maxMem.max = totalMem
-    outputMaxMem.innerHTML = maxMem.value
-    
+disconnectBtn.addEventListener('click', e => {
+    ipcRenderer.send('disconnect')
 })
 
 minMem.addEventListener("input", (e) => {
