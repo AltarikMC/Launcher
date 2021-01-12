@@ -1,10 +1,9 @@
 const { app, BrowserWindow, Menu, ipcMain, Notification } = require('electron')
 const path = require('path')
+if (handleSquirrelEvent()) return;
 const { Client, Authenticator } = require('minecraft-launcher-core')
+const appdata = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
 
-if (handleSquirrelEvent()) {
-  return;
-}
 
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
@@ -52,14 +51,14 @@ function handleSquirrelEvent() {
       app.quit();
       return true;
   }
-};
+}
 
 const launcher = new Client();
 const iconPath = path.join(__dirname, "icon.ico");
 let win = null
 let auth = null
 
-let Minecraftpath = "game"
+let Minecraftpath = path.join(appdata, ".ps")
 let clientPackage = "https://www.dropbox.com/s/ww6a052nzzgojdm/modpack.zip?dl=1"
 let version = "1.16.4"
 let versionFolder = "fabric-loader-0.10.8-1.16.4"
@@ -113,7 +112,7 @@ ipcMain.on("login", (event, args) => {
   })
 })
 
-function showNotification(title="", body="") {
+function showNotification(title, body="") {
   const notification = {
     title: title,
     body: body
@@ -142,14 +141,15 @@ ipcMain.on("launch", (event, args) => {
   }
   launcher.launch(opts)
   // launcher.on('debug', (e) => console.log("debug", e));
-  launcher.on('data', (e) => console.log("data", e));
-  launcher.on('progress', (e) => event.sender.send("progress", e));
+  // launcher.on('data', (e) => console.log("data", e));
+  launcher.on('progress', (e) => event.sender.send("progress", e))
+  launcher.on('arguments', (e) => event.sender.send("launch", e))
   launcher.on('close', (e) => {
     event.sender.send("close", e)
     if(e !== 0){
       showNotification("Une erreur est suvenue", "Minecraft ne s'est pas fermé correctement")
     }
-  });
+  })
   
 })
 

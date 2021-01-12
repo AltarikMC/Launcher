@@ -20,26 +20,9 @@ window.addEventListener("DOMContentLoaded", () => {
     const maxUnmaxButton = document.getElementById("max-unmax-btn")
     const closeButton = document.getElementById("close-btn")
 
-    minimizeButton.addEventListener("click", e => {
-        window.minimizeWindow()
-    })
+    minimizeButton.addEventListener("click", e => window.minimizeWindow())
 
-    maxUnmaxButton.addEventListener("click", e => {
-        const icon = maxUnmaxButton.querySelector("#icon-maxUnmax")
-    
-        window.maxUnmaxWindow()
-    
-        // Change the middle maximize-unmaximize icons.
-        if (window.isWindowMaximized()) {
-          icon.classList.remove("icon-square")
-          icon.classList.add("icon-clone")
-        } else {
-          icon.classList.add("icon-square")
-          icon.classList.remove("icon-clone")
-        }
-      })
+    maxUnmaxButton.addEventListener("click", e => window.maxUnmaxWindow())
 
-      closeButton.addEventListener("click", e => {
-        window.closeWindow()
-      })
+    closeButton.addEventListener("click", e => window.closeWindow())
 })
