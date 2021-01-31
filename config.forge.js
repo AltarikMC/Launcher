@@ -4,7 +4,7 @@ module.exports = {
         packageName: "Launcher",
         name: "Launcher",
         productName: "Launcher",
-        icon: path.resolve(__dirname, 'app.ico')
+        icon: path.resolve(__dirname, 'icon.png')
     },
     makers: [
         {

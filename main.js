@@ -1,6 +1,9 @@
 const { app, BrowserWindow, Menu, ipcMain, Notification } = require('electron')
 const path = require('path')
-if (handleSquirrelEvent()) return;
+if (require('electron-squirrel-startup')) {
+  handleSquirrelEvent()
+  app.quit()
+}
 const { Client, Authenticator } = require('minecraft-launcher-core')
 const appdata = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
 
