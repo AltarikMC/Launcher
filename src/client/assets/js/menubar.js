@@ -1,4 +1,4 @@
-const {remote} = require('electron')
+const { remote } = require('electron')
 const {Menu, BrowserWindow, MenuItem, shell} = remote
   
 function getCurrentWindow() {
@@ -31,7 +31,7 @@ function closeWindow(browserWindow = getCurrentWindow()) {
 function isWindowMaximized(browserWindow = getCurrentWindow()) {
     return browserWindow.isMaximized()
 }
-  
+
 module.exports = {
     getCurrentWindow,
     minimizeWindow,

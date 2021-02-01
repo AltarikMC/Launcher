@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Launcher Projet Secret</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <link href="include/index.css" rel="stylesheet" />
-    <link href="include/menubar.css" rel="stylesheet" />
-    <link href="include/material-icons.css" rel="stylesheet" />
-    <link rel="shortcut icon" type="image/png" href="icon.png"/>
+    <link href="assets/css/index.css" rel="stylesheet" />
+    <link href="assets/css/menubar.css" rel="stylesheet" />
+    <link href="assets/css/material-icons.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon.png"/>
 </head>
 <body>
 	<div id="menubar">
@@ -15,7 +15,7 @@
         </ul>
         <ul class="right">
             <!-- Mettre ce code en ligne pour éviter que chrome ne met un espace automatiquement entre les éléments -->
-            <li id="minimize-btn"><i class="material-icons">minimize</i></li><li id="max-unmax-btn"><i class="material-icons">crop_square</i></li><li id="close-btn"><i class="material-icons">close</i></li>
+            <li id="minimize-btn"><i class="material-icons">minimize</i></li><!--<li id="max-unmax-btn"><i class="material-icons">crop_square</i></li>--><li id="close-btn"><i class="material-icons">close</i></li>
         </ul>
     </div>
     <div id="content">
@@ -33,7 +33,7 @@
             <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="maxMem">
         </div>
         <div id="main">
-            <img id="main-img" src="include/maxresdefault.jpg">
+            <img id="main-img" src="assets/images/maxresdefault.jpg">
             <div id="launch">
                 <button id="launch-btn">Lancer le jeu</button>
                 <div id="loading-message" class="hidden">Téléchargement de Minecraft en cours...</div>
@@ -42,7 +42,7 @@
         </div>
     </p>
     </div>
-    <script src="include/script.js"></script>
-    <script src="include/index.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/index.js"></script>
 </body>
 </html>

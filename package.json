@@ -1,8 +1,8 @@
 {
-  "name": "launcher",
+  "name": "altarik-launcher",
   "version": "1.0.0",
-  "description": "Launcher Projet Secret",
-  "main": "main.js",
+  "description": "Altarik Launcher",
+  "main": "src/server/main.js",
   "scripts": {
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
