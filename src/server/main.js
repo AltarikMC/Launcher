@@ -1,67 +1,18 @@
 const { app, BrowserWindow, Menu, ipcMain, Notification } = require('electron')
-const path = require('path')
+const { join } = require('path')
 if (require('electron-squirrel-startup')) {
-  handleSquirrelEvent()
+  require("./install.js").handleSquirrelEvent(app)
   app.quit()
 }
 const { Client, Authenticator } = require('minecraft-launcher-core')
 const appdata = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
 
-
-function handleSquirrelEvent() {
-  if (process.argv.length === 1) {
-    return false;
-  }
-
-  const ChildProcess = require('child_process');
-  const path = require('path');
-
-  const appFolder = path.resolve(process.execPath, '..');
-  const rootAtomFolder = path.resolve(appFolder, '..');
-  const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
-  const exeName = path.basename(process.execPath);
-
-  const spawn = function(command, args) {
-    let spawnedProcess, error;
-
-    try {
-      spawnedProcess = ChildProcess.spawn(command, args, {detached: true});
-    } catch (error) {}
-
-    return spawnedProcess;
-  };
-
-  const spawnUpdate = function(args) {
-    return spawn(updateDotExe, args);
-  };
-
-  const squirrelEvent = process.argv[1];
-  switch (squirrelEvent) {
-    case '--squirrel-install':
-    case '--squirrel-updated':
-      spawnUpdate(['--createShortcut', exeName]);
-
-      setTimeout(app.quit, 1000);
-      return true;
-
-    case '--squirrel-uninstall':
-      spawnUpdate(['--removeShortcut', exeName]);
-
-      setTimeout(app.quit, 1000);
-      return true;
-
-    case '--squirrel-obsolete':
-      app.quit();
-      return true;
-  }
-}
-
 const launcher = new Client();
-const iconPath = path.join(__dirname, "icon.ico");
+const iconPath = join(__dirname, "icon.ico");
 let win = null
 let auth = null
 
-let Minecraftpath = path.join(appdata, ".ps")
+let Minecraftpath = join(appdata, ".altarik")
 let clientPackage = "https://www.dropbox.com/s/ww6a052nzzgojdm/modpack.zip?dl=1"
 let version = "1.16.4"
 let versionFolder = "fabric-loader-0.10.8-1.16.4"
@@ -69,18 +20,20 @@ let versionFolder = "fabric-loader-0.10.8-1.16.4"
 function createWindow () {
   win = new BrowserWindow({
     width: 1000,
-    minWidth: 900,
+    minWidth: 1000,
+    maxWidth: 1000,
     height: 600,
     minHeight: 600,
+    maxHeight: 600,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true
     },
-    frame: false
+    frame: false,
   })
   Menu.setApplicationMenu(null)
-  win.loadFile('login.html')
+  win.loadFile('src/client/login.html')
 }
 
 app.whenReady().then(() => {
@@ -102,7 +55,7 @@ app.on('activate', () => {
 ipcMain.on("login", (event, args) => {
   auth = Authenticator.getAuth(args.user, args.pass)
   auth.then(v => {
-    win.loadFile('index.html')
+    win.loadFile('src/client/index.html')
     setTimeout(() => {
       event.sender.send("nick", {
         name: v.name
@@ -150,12 +103,12 @@ ipcMain.on("launch", (event, args) => {
   launcher.on('close', (e) => {
     event.sender.send("close", e)
     if(e !== 0){
-      showNotification("Une erreur est suvenue", "Minecraft ne s'est pas fermé correctement")
+      showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement")
     }
   })
   
 })
 
 ipcMain.on("disconnect", (e) => {
-  win.loadFile('login.html')
+  win.loadFile('src/client/login.html')
 })

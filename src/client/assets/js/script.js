@@ -7,7 +7,7 @@ const {
     maxUnmaxWindow,
     isWindowMaximized,
     closeWindow,
-  } = require("./include/menubar.js");
+  } = require("./assets/js/menubar.js");
 
 window.addEventListener("DOMContentLoaded", () => {
     window.getCurrentWindow = getCurrentWindow
@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     minimizeButton.addEventListener("click", e => window.minimizeWindow())
 
-    maxUnmaxButton.addEventListener("click", e => window.maxUnmaxWindow())
+    // maxUnmaxButton.addEventListener("click", e => window.maxUnmaxWindow())
 
     closeButton.addEventListener("click", e => window.closeWindow())
 })

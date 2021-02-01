@@ -13,9 +13,9 @@ const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
 document.body.onload = (e) => {
     minMem.max = totalMem
     maxMem.max = totalMem
-    minMem.value = localStorage.getItem("minMem")
+    minMem.value = localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 
     outputMinMem.innerHTML = minMem.value
-    maxMem.value = localStorage.getItem("maxMem")
+    maxMem.value = localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048
     outputMaxMem.innerHTML = maxMem.value
 }
 
