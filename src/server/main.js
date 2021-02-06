@@ -1,9 +1,42 @@
-const { app, BrowserWindow, Menu, ipcMain, Notification } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, Notification, autoUpdater, dialog } = require('electron')
 const { join } = require('path')
 if (require('electron-squirrel-startup')) {
   require("./install.js").handleSquirrelEvent(app)
   app.quit()
 }
+const server = 'https://update.electronjs.org'
+const feed = `${server}/OWNER/REPO/${process.platform}-${process.arch}/${app.getVersion()}`
+autoUpdater.setFeedURL(feed)
+setInterval(() => {
+  autoUpdater.checkForUpdates()
+}, 10 * 60 * 1000) // 10 minutes
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Rédémarrer', 'Plus tard'],
+    title: 'Une mise à jour du launcher est disponible',
+    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    detail: 'Une nouvelle version du launcher a été téléchargé. Redémarrez l\'application pour appliquer les mises à jour.'
+  }
+
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall()
+  })
+})
+
+autoUpdater.on('error', message => {
+  console.error('There was a problem updating the application')
+  console.error(message)
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Fermer'],
+    title: 'Erreur lors de la tentetive de mise à jour de l\'application',
+    message: "Une Erreur est survenur de lros de la mise à jour du launcher"
+  }
+  dialog.showMessageBox(dialogOpts)
+})
+
 const { Client, Authenticator } = require('minecraft-launcher-core')
 const appdata = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
 

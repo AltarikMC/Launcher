@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "minecraft-launcher-core": "^3.16.1"
+    "minecraft-launcher-core": "^3.16.1",
+    "update-electron-app": "^2.0.1"
   },
   "config": {
     "forge": "./config.forge.js"
