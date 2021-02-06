@@ -13,7 +13,8 @@ module.exports = {
                 name: "altarik-launcher",
                 iconUrl: path.resolve(__dirname, 'app.ico'),
                 //loadingGif: path.resolve(__dirname, 'src/assets/loading.gif'),
-                setupIcon: path.resolve(__dirname, 'app.ico')
+                setupIcon: path.resolve(__dirname, 'app.ico'),
+                setupExe: "altarik-launcher-win32-x64.exe"
             }
         }
     ]
