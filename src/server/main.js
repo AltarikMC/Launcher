@@ -39,6 +39,14 @@ function createWindow () {
   win.loadFile('src/client/login.html')
 }
 
+const {
+    setWindow,
+    minimizeWindow,
+    closeWindow
+  } = require("./menubar.js");
+
+  setWindow(win)
+
 app.whenReady().then(() => {
   createWindow()
 })
@@ -47,6 +55,14 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+ipcMain.on('minimizeWindow', () => {
+  minimizeWindow(win)
+})
+
+ipcMain.on('closeWindow', () => {
+  closeWindow(win)
 })
 
 app.on('activate', () => {
