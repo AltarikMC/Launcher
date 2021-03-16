@@ -31,7 +31,7 @@ function createWindow () {
     icon: iconPath,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      contextIsolation: false
     },
     frame: false,
   })
