@@ -1,9 +1,12 @@
-const os = require('os');
-const launchBtn = document.querySelector('#launch-btn');
+const { shell } = require('electron')
+const os = require('os')
+const launchBtn = document.querySelector('#launch-btn')
+const launchText = document.querySelector("#launch-text")
 const fullProgressBar = document.querySelector('#fullprogressbar')
 const progressBar = document.querySelector('#progressbar')
 const loadingMessage = document.querySelector('#loading-message')
 const disconnectBtn = document.querySelector('#disconnect-btn')
+const fullscreen = document.querySelector('#fullscreen')
 const minMem = document.querySelector('#minMem')
 const maxMem = document.querySelector('#maxMem')
 const outputMinMem = document.querySelector('#outputMinMem')
@@ -21,13 +24,13 @@ document.body.onload = (e) => {
 
 ipcRenderer.on("nick", (event, args) => {
     console.log(args)
-    document.querySelector("#nick-span").innerHTML = args.name
+    document.querySelector("#nick").innerHTML = args.name
 })
 
 launchBtn.addEventListener("click", e => {
-    launchBtn.classList.add('hidden');
-    fullProgressBar.classList.remove('hidden');
-    loadingMessage.classList.remove('hidden');
+    launchText.classList.add('hidden')
+    fullProgressBar.classList.remove('hidden')
+    loadingMessage.classList.remove('hidden')
     if(Number(minMem.value) <= Number(maxMem.value)){
         ipcRenderer.send('launch', {
             minMem: minMem.value + "M",
@@ -45,23 +48,39 @@ launchBtn.addEventListener("click", e => {
     
 })
 
+document.querySelector("#web").addEventListener("click", e => {
+    shell.openExternal("https://altarik.fr")
+})
+
+document.querySelector("#options").addEventListener("click", e => {
+    fullscreen.style.display = "block"
+})
+
+document.querySelector("#discord").addEventListener("click", e => {
+    shell.openExternal("https://discord.gg/b923tMhmRE")
+})
+
+document.querySelector("#close").addEventListener("click", e => {
+    fullscreen.style.display = "none"
+});
+
 ipcRenderer.on("progress", (e, args) => {
-    progressBar.style.width = (args.task / args.total) * 100 + "%"
-    loadingMessage.innerHTML = "Téléchargement de " + args.type + ": " + args.task + " sur " + args.total;
+    progressBar.style.width = (args.task / Math.max(args.total, args.task)) * 100 + "%"
+    loadingMessage.innerHTML = "Téléchargement de " + args.type + ": " + args.task + " sur " + Math.max(args.total, args.task)
 })
 
 ipcRenderer.on("close", (e, args) => {
-    launchBtn.classList.remove('hidden');
-    fullProgressBar.classList.add('hidden');
-    loadingMessage.classList.add('hidden');
+    launchText.classList.remove('hidden')
+    fullProgressBar.classList.add('hidden')
+    loadingMessage.classList.add('hidden')
     loadingMessage.innerHTML = "Chargement de Minecraft en cours..."
     progressBar.style.width = "0"
     launchBtn.disabled = false
 })
 
 ipcRenderer.on('launch', (e, args) => {
-    fullProgressBar.classList.add('hidden');
-    loadingMessage.classList.add('hidden');
+    fullProgressBar.classList.add('hidden')
+    loadingMessage.classList.add('hidden')
 })
 
 disconnectBtn.addEventListener('click', e => {

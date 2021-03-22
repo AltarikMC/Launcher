@@ -35,7 +35,7 @@ function createWindow () {
     },
     frame: false,
   })
-  Menu.setApplicationMenu(null)
+  // Menu.setApplicationMenu(null)
   win.loadFile('src/client/login.html')
 }
 

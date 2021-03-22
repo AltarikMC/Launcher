@@ -18,27 +18,44 @@
             <li id="minimize-btn"><i class="material-icons">minimize</i></li><!--<li id="max-unmax-btn"><i class="material-icons">crop_square</i></li>--><li id="close-btn"><i class="material-icons">close</i></li>
         </ul>
     </div>
+    <div id="fullscreen">
+        <div id="close"><i class="material-icons">close</i></div>
+        <div id="settings">
+                <h3>Modifier la configuration</h3>
+                <button id="disconnect-btn">Se déconnecter</button>
+                <h4>Allocation mémoire</h4>
+                <label for="minMem">mémoire minimale : <div id="outputMinMem"></div></label>
+                <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="minMem">
+                <label for="maxMem">mémoire maximale : <div id="outputMaxMem"></div></label>
+                <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="maxMem">
+        </div>
+    </div>
     <div id="content">
         <div id="sidebar">
-            <h3>Compte</h3>
-            <hr>
-                <span id="nick-span"></span>
-                <button id="disconnect-btn">Se déconnecter</button>
-            <h3>Modifier la configuration</h3>
-            <hr>
-            <h4>Allocation mémoire</h4>
-            <label for="minMem">mémoire minimale : <div id="outputMinMem"></div></label>
-            <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="minMem">
-            <label for="maxMem">mémoire maximale : <div id="outputMaxMem"></div></label>
-            <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="maxMem">
+            
+        </div>
+        <div id="media">
+            <div id="options">
+                <img src="assets/images/svg/settings.svg">
+            </div>
+            <div>
+                <img src="assets/images/svg/discord.svg">
+            </div>
+            <div id="web">
+                <img src="assets/images/svg/web.svg">
+            </div>
+            
         </div>
         <div id="main">
             <img id="main-img" src="assets/images/maxresdefault.jpg">
-            <div id="launch">
-                <button id="launch-btn">Lancer le jeu</button>
+            <div id="account">
+                <div id="nick"></div><!-- <img src=""> Head du joueur -->
+            </div>
+            <button id="launch-btn">
+                <div id="launch-text">JOUER</div>
                 <div id="loading-message" class="hidden">Téléchargement de Minecraft en cours...</div>
                 <div id="fullprogressbar" class="hidden"><div id="progressbar"></div></div>
-            </div>
+            </button>
         </div>
     </p>
     </div>

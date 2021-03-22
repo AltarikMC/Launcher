@@ -7,34 +7,59 @@
     src: url("../Roboto-Regular.ttf") format("truetype");
 }
 
+@font-face {
+	font-family: "French-Press";
+	src: url("../fonts/Frenchpress.otf") format("OpenType");
+}
+
 html{
 	height: 100%;
 }
 
 body{
-	background: white;
+	background: black;
 	margin:0;
 	height:100%;
 	font-family: "Roboto";
+	color: black;
 }
 
 #content{
-	display: flex;
 	height:100%;
 	padding-top:28px;
 }
 
 #sidebar{
-	flex:20%;
-	background-color: rgb(43, 43, 43);
-	color: white;
-	padding:5px;
+	position:absolute;
+	top: 50px;
+	left: 20px;
+	background-image: url("../images/svg/chapters_scroll.svg");
+	background-repeat: no-repeat;
+	background-size: 100%;
+	width: 322px;
+	height: 398px;
+}
+
+#media {
+	position: absolute;
+	top: 475px;
+	left:20px;
+	width: 322px;
+	display: flex;
+}
+
+#media > div {
+	background-image: url("../images/svg/buttons.svg");
+	background-size: 100%;
+	background-repeat: no-repeat;
+	padding: 9px;
+	flex: 33%;
+	cursor: pointer;
 }
 
 #main{
-	flex: 80%;
-	background-color: rgb(216, 216, 216);
-	padding: 0px;
+	width: 100%;
+	height:100%;
 }
 
 #main-img {
@@ -46,31 +71,25 @@ h3 {
 	margin-block-end: 0.5em;
 }
 
-#launch{
-	position: absolute;
-	bottom:0;
-	right:0;
-	width:80%;
-	height:70px;
-	background-color:rgb(49, 49, 49);
+#launch-text {
+	font-family: "French-Press";
+	font-size: 52px;
+	font-weight: bold;
 }
 
 #launch-btn {
-	position: relative;
-	top: 50%;
-	left:50%;
-	transform: translate(-50%, -50%);
-	width: 20%;
-	max-width:200px;
-	height:50px;
+	background-color: transparent;
+	position: absolute;
+	bottom: 20px;
+	right: 25px;
+	background-image: url("../images/svg/play_button.svg");
+	background-repeat: no-repeat;
+	background-size: 100%;
+	width:312px;
+	height:122px;
 	padding:10px;
 	text-align: center;
-	color:white;
-	font-weight: bold;
-	font-size:1.2rem;
-	background-color: green;
-	border: 1px solid black;
-	border-radius: 3px;
+	border-width: 0px;
 }
 
 .hidden{
@@ -92,9 +111,63 @@ h3 {
 }
 
 #loading-message{
-	width:80%;
+	width:100%;
 	position:relative;
 	margin: 0 auto;
 	height:28px;
+	font-family: "French-Press";
+	font-size: 24px;
 	color:white;
+}
+
+#account {
+	width:312px;
+	height: 105px;
+	background-image: url('../images/svg/nickname_scroll.svg');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	position: absolute;
+	right: 25px;
+	top: 50px;
+	padding: 0px 30px;
+}
+
+#nick {
+	font-family: "French-Press";
+	font-size: 28px;
+	position: relative;
+	top:45%;
+	transform: translateY(-45%);
+}
+
+#fullscreen {
+	position:absolute;
+	top: 28px;
+	left: 0;
+	width: 100%;
+	height: calc(100% - 28px);
+	background-color: rgba(0, 0, 0, 0.6);
+	display: none;
+	z-index: 10;
+}
+
+#close {
+	position: absolute;
+	top: 28px;
+	left: 5px;
+	color: white;
+	cursor: pointer;
+}
+
+#settings {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	min-height: 470px;
+	background-image: url("../images/svg/chapters_scroll.svg");
+	background-repeat: no-repeat;
+	background-size: 100%;
+	padding: 10px 50px;
 }
