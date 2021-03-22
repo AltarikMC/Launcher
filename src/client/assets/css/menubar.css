@@ -1,4 +1,4 @@
-#menubar{
+#menubar {
 	position:fixed;
 	top:0;
 	left:0;
@@ -9,8 +9,8 @@
 	cursor: move;
 	-webkit-app-region: drag;
 	-webkit-user-select: none;
+	z-index: 100;
 }
-
 
 #menubar ul{
 	margin:0;
@@ -20,7 +20,6 @@
 #menubar .left{
 	float:left;
 }
-
 
 #menubar .right{
 	float: right;
