@@ -1,6 +1,6 @@
 {
   "name": "altarik-launcher",
-  "version": "0.1.1-SNAPSHOT",
+  "version": "0.2.0-SNAPSHOT",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "repository": "AltarikMC/Launcher",
@@ -11,8 +11,8 @@
     "make": "electron-forge make"
   },
   "keywords": [],
-  "author": "Topeka_",
-  "license": "ISC",
+  "authors": ["Topeka_", "Altarik"],
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
