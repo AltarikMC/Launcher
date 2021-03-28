@@ -1,4 +1,3 @@
-const { shell } = require('electron')
 const os = require('os')
 const launchBtn = document.querySelector('#launch-btn')
 const launchText = document.querySelector("#launch-text")
