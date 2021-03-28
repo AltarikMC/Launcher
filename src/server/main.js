@@ -3,9 +3,11 @@ const { join } = require('path')
 if (require('electron-squirrel-startup')) {
   require("./install.js").handleSquirrelEvent(app)
   app.quit()
+  return;
 }
 // don't work
-//require('./updater.js').configUpdater(app, autoUpdater, dialog) 
+require('./updater.js').configUpdater(app, autoUpdater, dialog) 
+
 
 const { Client, Authenticator } = require('minecraft-launcher-core')
 const appdata = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")

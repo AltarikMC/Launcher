@@ -38,6 +38,7 @@ function configUpdater(app, autoUpdater, dialog) {
     autoUpdater.on('error', message => {
         console.error('There was a problem updating the application')
         console.error(message)
+        /*
         showNotification(feed)
         const dialogOpts = {
             type: 'info',
@@ -47,11 +48,12 @@ function configUpdater(app, autoUpdater, dialog) {
             detail: message
         }
 
-        dialog.showMessageBox(dialogOpts)
+        dialog.showMessageBox(dialogOpts) */
     })
 
     autoUpdater.on('update-available', () => {
         showNotification("Altarik launcher", "downloading update")
+        autoUpdater.down
     })
 }
 

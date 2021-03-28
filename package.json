@@ -1,9 +1,12 @@
 {
   "name": "altarik-launcher",
-  "version": "0.2.0-SNAPSHOT",
+  "version": "0.2.0",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
-  "repository": "AltarikMC/Launcher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AltarikMC/Launcher.git"
+  },
   "scripts": {
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +14,10 @@
     "make": "electron-forge make"
   },
   "keywords": [],
-  "authors": ["Topeka_", "Altarik"],
+  "authors": [
+    "Topeka_",
+    "Altarik"
+  ],
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
