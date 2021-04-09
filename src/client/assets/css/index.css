@@ -2,16 +2,6 @@
     box-sizing: border-box;
 }
 
-@font-face {
-    font-family: "Roboto";
-    src: url("../fonts/Roboto-Regular.ttf") format("truetype");
-}
-
-@font-face {
-	font-family: "French-Press";
-	src: url("../fonts/Frenchpress.otf") format("OpenType");
-}
-
 html{
 	height: 100%;
 }
@@ -164,10 +154,21 @@ h3 {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 400px;
-	min-height: 470px;
+	width: 480px;
+	min-height: 550px;
 	background-image: url("../images/svg/chapters_scroll.svg");
 	background-repeat: no-repeat;
 	background-size: 100%;
-	padding: 10px 50px;
+	padding: 10px 65px;
+}
+
+#settings > h2 {
+	text-align: center;
+	margin-block-end: 2em;
+}
+
+#disconnect-btn {
+	text-decoration: underline;
+	cursor: pointer;
+	color: black;
 }
