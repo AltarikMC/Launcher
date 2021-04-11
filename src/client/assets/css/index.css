@@ -28,6 +28,7 @@ body{
 	background-size: 100%;
 	width: 322px;
 	height: 398px;
+	padding: 20px 50px;
 }
 
 #media {
@@ -171,4 +172,21 @@ h3 {
 	text-decoration: underline;
 	cursor: pointer;
 	color: black;
+}
+
+.selected h3 {
+	color: red;
+}
+
+#sidebar h2,
+#sidebar-content h3 {
+	margin: 0;
+}
+
+#sidebar h2 {
+	margin-bottom: 10px;
+}
+
+#sidebar-content {
+	overflow: auto;
 }

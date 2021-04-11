@@ -2,7 +2,6 @@ const isDev = require('electron-is-dev')
 const { Notification } = require('electron')
 const os = require('os')
 const pkg = require('../../package.json')
-const { format } = require('util')
 const server = 'https://update.electronjs.org'
 
 function initUpdater(autoUpdater) {
@@ -12,9 +11,13 @@ function initUpdater(autoUpdater) {
     }, 10 * 60 * 1000) // 10 minutes
 }
 
-function configUpdater(app, autoUpdater, dialog) {
-    if(isDev)
+function configUpdater(app, autoUpdater, dialog, logger) {
+    if(isDev) {
+        logger.info(`developpement version ${app.getVersion()}`)
         return
+    }
+    logger.info(`production version ${app.getVersion()}`)
+        
     const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${app.getVersion()}`
     autoUpdater.setFeedURL(feed)
     app.isReady ? initUpdater(autoUpdater) : app.on("ready", () => initUpdater(autoUpdater))
@@ -31,38 +34,26 @@ function configUpdater(app, autoUpdater, dialog) {
         }
 
         dialog.showMessageBox(dialogOpts).then((returnValue) => {
-            if (returnValue.response === 0) autoUpdater.quitAndInstall()
+            if (returnValue.response === 0) {
+                logger.info("Quit applicaiton to install update")
+                autoUpdater.quitAndInstall()
+            }
         })
     })
 
     autoUpdater.on('error', message => {
-        console.error('There was a problem updating the application')
-        console.error(message)
-        /*
-        showNotification(feed)
-        const dialogOpts = {
-            type: 'info',
-            buttons: ['Fermer'],
-            title: 'Erreur lors de la tentative de mise à jour du launcher',
-            message: "Une erreur est survenue lros de la tentative de mise à jour du launcher",
-            detail: message
-        }
-
-        dialog.showMessageBox(dialogOpts) */
+        logger.error('There was a problem updating the application')
+        logger.error(message)
     })
 
     autoUpdater.on('update-available', () => {
         showNotification("Altarik launcher", "downloading update")
-        autoUpdater.down
+        logger.info("update available, downloading...")
     })
 }
 
 function showNotification(title, body="") {
-    const content = {
-      title: title,
-      body: body
-    }
-    new Notification(content).show()
+    new Notification({ title: title, body: body }).show()
 }
 
 module.exports = {

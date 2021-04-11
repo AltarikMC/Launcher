@@ -11,14 +11,18 @@ const maxMem = document.querySelector('#maxMem')
 const outputMinMem = document.querySelector('#outputMinMem')
 const outputMaxMem = document.querySelector('#outputMaxMem')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
+const sidebar = document.querySelector("#sidebar-content")
 
-document.body.onload = (e) => {
+let selectedChapter = -1;
+
+document.body.onload = () => {
     minMem.max = totalMem
     maxMem.max = totalMem
     minMem.value = localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 
     outputMinMem.innerHTML = minMem.value
     maxMem.value = localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048
     outputMaxMem.innerHTML = maxMem.value
+    demandModsInformations()
 }
 
 ipcRenderer.on("nick", (event, args) => {
@@ -33,7 +37,8 @@ launchBtn.addEventListener("click", e => {
     if(Number(minMem.value) <= Number(maxMem.value)){
         ipcRenderer.send('launch', {
             minMem: minMem.value + "M",
-            maxMem: maxMem.value + "M"
+            maxMem: maxMem.value + "M",
+            chapter: selectedChapter
         })
         launchBtn.disabled = true
         localStorage.setItem("minMem", minMem.value)
@@ -81,6 +86,32 @@ ipcRenderer.on('launch', (e, args) => {
     fullProgressBar.classList.add('hidden')
     loadingMessage.classList.add('hidden')
 })
+
+ipcRenderer.on("modsInformations", (e, args) => {
+    if(args === null) {
+        sidebar.innerHTML = "<p>Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</p>"
+        + "<button onclick=\"demandModsInformations()\">Réessayer</button>"
+    } else {
+        let element = ""
+        for(const i in args) {
+            element += `<div data-chapter="${i}" onclick="changeSelectedChapter(this)"><h3>${args[i].title}</h3><p>${args[i].description}</p></div>`
+        }
+        sidebar.innerHTML = element
+    }
+})
+
+function demandModsInformations() {
+    ipcRenderer.send('demandModsInformations')
+}
+
+function changeSelectedChapter(element) {
+    selectedChapter = Number(element.dataset.chapter)
+    document.querySelectorAll("#sidebar-content > div").forEach((v, key) => {
+        v.classList.remove("selected")
+    })
+    element.classList.add("selected")
+    launchBtn.classList.remove('hidden')
+}
 
 disconnectBtn.addEventListener('click', e => {
     ipcRenderer.send('disconnect')

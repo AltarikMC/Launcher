@@ -2,3 +2,4 @@ node_modules/
 game
 out/
 .vscode/
+launcher.json
