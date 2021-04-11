@@ -90,7 +90,7 @@ ipcMain.on("login", (event, args) => {
     }, 1000)
     
   }).catch((err) => {
-    logger.warn(err)
+    logger.error(err)
     showNotification("Erreur de connexion")
   })
 })
@@ -140,6 +140,7 @@ ipcMain.on("launch", (event, args) => {
         })
     }).catch((err) => {
         showNotification("Impossible de lancer le jeu")
+        event.sender.send("close", 1)
         logger.error('Unable to launch the game')
         logger.error(err)
     })
@@ -166,9 +167,9 @@ function getModsInformations(event) {
             event.sender.send('modsInformations', extractModsFromFileSystem())
         }
     }).catch(err => {
-        logger.error("Unable to connect to server")
-        logger.error(err)
-        event.sender.send('informations', extractModsFromFileSystem())
+        logger.warn("Unable to connect to server")
+        logger.warn(err)
+        event.sender.send('modsInformations', extractModsFromFileSystem())
     })
 }
 
@@ -179,6 +180,7 @@ function extractModsFromFileSystem() {
         return extractModsInformations(JSON.parse(o.data))
     } else {
         showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton")
+        logger.error("Unable to get chapters informations from server or filesystem")
         return null
     }
 }

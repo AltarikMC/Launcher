@@ -7,7 +7,10 @@ html{
 }
 
 body{
-	background: black;
+	background-color: black;
+	background-image: url("../images/background.jpg");
+	background-size: cover;
+    background-repeat: no-repeat;
 	margin:0;
 	height:100%;
 	font-family: "Roboto";
@@ -28,7 +31,9 @@ body{
 	background-size: 100%;
 	width: 322px;
 	height: 398px;
-	padding: 20px 50px;
+	padding: 10px 50px;
+	font-family: "French-Press";
+	font-size: 26px;
 }
 
 #media {
@@ -174,19 +179,31 @@ h3 {
 	color: black;
 }
 
-.selected h3 {
-	color: red;
-}
+
 
 #sidebar h2,
 #sidebar-content h3 {
 	margin: 0;
 }
 
-#sidebar h2 {
-	margin-bottom: 10px;
+#sidebar-content {
+	color: rgba(56, 56, 56, 0.6);
+}
+
+#sidebar-content .selected {
+	color: black;
 }
 
 #sidebar-content {
 	overflow: auto;
+}
+
+#sidebar-content p {
+	margin: 0px;
+}
+
+#sidebar-content hr {
+	margin: 0px 0px 5px 0px;
+	border-width:0;
+	border-top: 1px solid black;
 }

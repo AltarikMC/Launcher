@@ -89,12 +89,12 @@ ipcRenderer.on('launch', (e, args) => {
 
 ipcRenderer.on("modsInformations", (e, args) => {
     if(args === null) {
-        sidebar.innerHTML = "<p>Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</p>"
+        sidebar.innerHTML = "<hr><p>Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</p>"
         + "<button onclick=\"demandModsInformations()\">Réessayer</button>"
     } else {
         let element = ""
         for(const i in args) {
-            element += `<div data-chapter="${i}" onclick="changeSelectedChapter(this)"><h3>${args[i].title}</h3><p>${args[i].description}</p></div>`
+            element += `<hr><div data-chapter="${i}" onclick="changeSelectedChapter(this)"><h3>${args[i].title}</h3><p>${args[i].description}</p></div>`
         }
         sidebar.innerHTML = element
     }
@@ -110,7 +110,8 @@ function changeSelectedChapter(element) {
         v.classList.remove("selected")
     })
     element.classList.add("selected")
-    launchBtn.classList.remove('hidden')
+    launchText.innerHTML = "JOUER"
+    launchBtn.disabled = false
 }
 
 disconnectBtn.addEventListener('click', e => {
