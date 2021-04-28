@@ -1,6 +1,6 @@
 {
   "name": "altarik-launcher",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "repository": "AltarikMC/Launcher",
