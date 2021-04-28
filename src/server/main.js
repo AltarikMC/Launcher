@@ -24,8 +24,6 @@ let auth = null
 
 let Minecraftpath = join(appdata, ".altarik")
 // let clientPackage = "https://www.dropbox.com/s/ww6a052nzzgojdm/modpack.zip?dl=1"
-let version = "1.16.4"
-let versionFolder = "fabric-loader-0.10.8-1.16.4"
 let modsList = undefined
 
 function createWindow () {
@@ -104,15 +102,15 @@ ipcMain.on("notification", (event, args) => {
 })
 
 ipcMain.on("launch", (event, args) => {
-    extractMods(Number(args.chapter), event).then(() => {
+    extractMods(Number(args.chapter), event).then((chapter) => {
         launcher.launch({
             // clientPackage: clientPackage,
             authorization: auth,
             root: Minecraftpath,
             version: {
-                number: version,
+                number: chapter.minecraftVersion,
                 type: "release",
-                custom: versionFolder
+                custom: chapter.customVersion
             },
             memory: {
                 max: args.maxMem,
@@ -228,7 +226,7 @@ async function extractMods(chapterId, event) {
                     }
                 }
                 event.sender.send("progress", {type: "mods", task: Number(j)+1, total: chapter.modspack.mods.length })
-                resolve()
+                resolve(chapter)
                 return
                 
             }
