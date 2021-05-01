@@ -17,10 +17,6 @@ module.exports = {
                 setupIcon: path.resolve(__dirname, 'icon.ico'),
                 setupExe: "altarik-launcher-win32-x64.exe"
             }
-        },
-	{
-            name: '@electron-forge/maker-zip',
-            platforms: ['darwin', 'linux']
         }
     ]
 }

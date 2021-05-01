@@ -3,3 +3,4 @@ game
 out/
 .vscode/
 launcher.json
+*.code-workspace
