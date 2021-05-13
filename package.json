@@ -1,6 +1,6 @@
 {
   "name": "altarik-launcher",
-  "author":"Altarik",
+  "author": "Altarik",
   "version": "0.3.2",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
@@ -13,7 +13,9 @@
   "maintainers": [
     "SexiestCHiba"
   ],
-  "os": ["win-32"],
+  "os": [
+    "win32"
+  ],
   "license": "BSD-3-Clause",
   "scripts": {
     "start": "electron-forge start",
