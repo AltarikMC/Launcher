@@ -64,16 +64,16 @@ ipcMain.on("login", (event, args) => {
     minecraft.login(event, win, showNotification, args.user, args.pass)
 })
 
+ipcMain.on("launch", (event, args) => {
+  minecraft.launch(event, showNotification, args)
+})
+
 function showNotification(title, body="") {
   new Notification({ title: title, body: body }).show()
 }
 
 ipcMain.on("notification", (event, args) => {
   showNotification(args.title, args.body)
-})
-
-ipcMain.on("launch", (event, args) => {
-    minecraft.launch(event, args)
 })
 
 ipcMain.on("disconnect", (e) => {

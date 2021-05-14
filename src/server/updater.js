@@ -12,6 +12,8 @@ function initUpdater(autoUpdater) {
 }
 
 function configUpdater(app, autoUpdater, dialog, logger) {
+    logger.info(`platform: ${process.platform}`)
+    logger.info(`arch: ${process.arch}`)
     if(isDev) {
         logger.info(`developpement version ${app.getVersion()}`)
         return
