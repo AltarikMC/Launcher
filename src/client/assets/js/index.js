@@ -12,6 +12,8 @@ const outputMinMem = document.querySelector('#outputMinMem')
 const outputMaxMem = document.querySelector('#outputMaxMem')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
 const sidebar = document.querySelector("#sidebar-content")
+const invalidateButton = document.querySelector("#invalidateData")
+let gameLaunching = false
 
 let selectedChapter = -1;
 
@@ -43,6 +45,7 @@ launchBtn.addEventListener("click", e => {
         launchBtn.disabled = true
         localStorage.setItem("minMem", minMem.value)
         localStorage.setItem("maxMem", maxMem.value)
+        gameLaunching = true
     } else{
         ipcRenderer.send('notification', {
             title: "Erreur de lancement",
@@ -57,7 +60,8 @@ document.querySelector("#web").addEventListener("click", e => {
 })
 
 document.querySelector("#options").addEventListener("click", e => {
-    fullscreen.style.display = "block"
+    if(!gameLaunching)
+        fullscreen.style.display = "block"
 })
 
 document.querySelector("#discord").addEventListener("click", e => {
@@ -67,6 +71,17 @@ document.querySelector("#discord").addEventListener("click", e => {
 document.querySelector("#close").addEventListener("click", e => {
     fullscreen.style.display = "none"
 });
+
+invalidateButton.addEventListener("click", e => {
+    invalidateButton.disabled = true
+    invalidateButton.childNodes[0].nodeValue = "Opération en cours"
+    ipcRenderer.send('invalidateData')
+})
+
+ipcRenderer.on("invalidated", e => {
+    invalidateButton.disabled = false
+    invalidateButton.childNodes[0].nodeValue = "Supprimer et retélécharger les bibliothèques"
+})
 
 ipcRenderer.on("progress", (e, args) => {
     progressBar.style.width = (args.task / Math.max(args.total, args.task)) * 100 + "%"
@@ -80,6 +95,7 @@ ipcRenderer.on("close", (e, args) => {
     loadingMessage.innerHTML = "Chargement de Minecraft en cours..."
     progressBar.style.width = "0"
     launchBtn.disabled = false
+    gameLaunching = false
 })
 
 ipcRenderer.on('launch', (e, args) => {

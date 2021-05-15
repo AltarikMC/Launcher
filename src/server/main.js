@@ -64,6 +64,10 @@ ipcMain.on("login", (event, args) => {
     minecraft.login(event, win, showNotification, args.user, args.pass)
 })
 
+ipcMain.on("invalidateData", event => {
+    minecraft.invalidateData(event)
+})
+
 ipcMain.on("launch", (event, args) => {
   minecraft.launch(event, showNotification, args)
 })

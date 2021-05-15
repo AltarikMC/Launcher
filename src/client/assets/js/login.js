@@ -1,9 +1,12 @@
-user = document.querySelector('#nickname')
-password = document.querySelector('#password')
+const form = document.querySelector('#login-form')
+const user = document.querySelector('#nickname')
+const password = document.querySelector('#password')
 
-document.querySelector('#login-form').addEventListener("submit", (e) => {
+
+form.addEventListener("submit", (e) => {
     e.preventDefault()
-    if(user.value){
+    form.disabled = true
+    if(user.value) {
         ipcRenderer.send("login", {
             user: user.value,
             pass: password.value
@@ -15,4 +18,8 @@ document.querySelector('#login-form').addEventListener("submit", (e) => {
         })
     }
     
+})
+
+ipcRenderer.on("loginError", event => {
+    form.disabled = false
 })

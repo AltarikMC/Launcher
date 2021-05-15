@@ -25,6 +25,7 @@ class Minecraft {
                     event.sender.send("nick", { name: v.name })
                 })
             }).catch((err) => {
+                event.sender.send("loginError")
                 logger.error(err)
                 showNotification("Erreur de connexion")
             })
@@ -51,7 +52,7 @@ class Minecraft {
                     }
                 })
                 this.launcher.on('debug', (e) => logger.info(`debug: ${e}`));
-                // this.launcher.on('data', (e) => logger.info(`data: ${e}`));
+                this.launcher.on('data', (e) => logger.info(`data: ${e}`));
                 this.launcher.on('progress', (e) => {
                     event.sender.send("progress", e)
                     logger.info(`progress ${e.type} :${e.task} / ${e.total}`)
@@ -260,6 +261,19 @@ class Minecraft {
                 reject(err)
             })
         })
+    }
+
+    invalidateData(event) {
+        const assets = join(this.minecraftpath, 'assets')
+        const librairies = join(this.minecraftpath,'libraries')
+        const natives = join(this.minecraftpath, 'natives')
+        if(fs.existsSync(assets))
+            fs.rmdirSync(assets, { recursive: true })
+        if(fs.existsSync(librairies))
+            fs.rmdirSync(librairies, { recursive: true })
+        if(fs.existsSync(natives))
+            fs.rmdirSync(natives, { recursive: true })
+        event.sender.send("invalidated")
     }
 }
 
