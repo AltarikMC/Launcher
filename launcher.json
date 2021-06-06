@@ -9,11 +9,13 @@
             "modspack": {
                 "mods": [
                     "https://www.dropbox.com/s/ww6a052nzzgojdm/modpack.zip?dl=1",
-                    "https://www.dropbox.com/s/rn72wq0qxd5xk8a/building-blocks-1.0.0.zip?dl=1"
+                    "https://www.dropbox.com/s/rn72wq0qxd5xk8a/building-blocks-1.0.0.zip?dl=1",
+                    "https://www.dropbox.com/s/ty7ry9dr8m81upv/worldedit-mod-7.2.5-dist.zip?dl=1"
                 ],
                 "sha1sum": [ 
                     "97de8fab9a1a3448fcded5dd33b0d3b879e1caa2",
-                    "a9ff83d9e8c814d6393a8b4c9e610dda5b952195"
+                    "a9ff83d9e8c814d6393a8b4c9e610dda5b952195",
+                    "d00de0e4b4d2e9a2130119282a5ce3391d6e0537"
                 ]
             },
             "java": {
