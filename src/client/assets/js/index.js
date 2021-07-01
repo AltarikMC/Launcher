@@ -21,9 +21,9 @@ document.body.onload = () => {
     minMem.max = totalMem
     maxMem.max = totalMem
     minMem.value = localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 
-    outputMinMem.innerHTML = minMem.value
+    outputMinMem.textContent = minMem.value
     maxMem.value = localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048
-    outputMaxMem.innerHTML = maxMem.value
+    outputMaxMem.textContent = maxMem.value
     demandModsInformations()
 }
 
@@ -134,10 +134,10 @@ disconnectBtn.addEventListener('click', e => {
     ipcRenderer.send('disconnect')
 })
 
-minMem.addEventListener("input", (e) => {
-    outputMinMem.innerHTML = e.target.value
+minMem.addEventListener("input", e => {
+    outputMinMem.textContent = e.target.value
 })
 
-maxMem.addEventListener("input", (e) => {
-    outputMaxMem.innerHTML = e.target.value
+maxMem.addEventListener("input", e => {
+    outputMaxMem.textContent = e.target.value
 })
