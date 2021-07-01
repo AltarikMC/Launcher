@@ -26,7 +26,7 @@ body{
 	position:absolute;
 	top: 50px;
 	left: 20px;
-	background-image: url("../images/svg/chapters_scroll.svg");
+	background-image: url("../images/chapters_scroll.png");
 	background-repeat: no-repeat;
 	background-size: 100%;
 	width: 322px;
@@ -45,12 +45,17 @@ body{
 }
 
 #media > div {
-	background-image: url("../images/svg/buttons.svg");
+	background-image: url("../images/buttons.png");
 	background-size: 100%;
 	background-repeat: no-repeat;
 	padding: 9px;
 	flex: 33%;
 	cursor: pointer;
+}
+
+#media img {
+	width: 89px;
+	height: 89px;
 }
 
 #main{
@@ -78,7 +83,7 @@ h3 {
 	position: absolute;
 	bottom: 20px;
 	right: 25px;
-	background-image: url("../images/svg/play_button.svg");
+	background-image: url("../images/play_button.png");
 	background-repeat: no-repeat;
 	background-size: 100%;
 	width:312px;
@@ -119,7 +124,7 @@ h3 {
 #account {
 	width:312px;
 	height: 105px;
-	background-image: url('../images/svg/nickname_scroll.svg');
+	background-image: url('../images/nickname_scroll.png');
 	background-repeat: no-repeat;
 	background-size: 100%;
 	position: absolute;
@@ -162,7 +167,7 @@ h3 {
 	transform: translate(-50%, -50%);
 	width: 480px;
 	min-height: 550px;
-	background-image: url("../images/svg/chapters_scroll.svg");
+	background-image: url("../images/chapters_scroll.png");
 	background-repeat: no-repeat;
 	background-size: 100%;
 	padding: 10px 65px;
