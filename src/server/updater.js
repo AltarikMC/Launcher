@@ -12,6 +12,9 @@ function initUpdater(autoUpdater) {
 }
 
 function configUpdater(app, autoUpdater, dialog, logger) {
+    logger.info(`electron version: ${process.versions['electron']}`)
+    logger.info(`chrome version: ${process.versions['chrome']}`)
+    logger.info(`Node version: ${process.versions['node']}`)
     logger.info(`platform: ${process.platform}`)
     logger.info(`arch: ${process.arch}`)
     if(isDev) {
