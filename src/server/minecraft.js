@@ -3,10 +3,11 @@ const { Client, Authenticator } = require('minecraft-launcher-core')
 const axios = require('axios').default
 const hasha = require('hasha');
 const fs = require('fs')
-const { join, resolve } = require('path')
+const { join } = require('path')
 const constants = require("constants")
 const zip = require('extract-zip')
 const logger = require('electron-log')
+const msmc = require('msmc')
 
 class Minecraft {
 
@@ -16,6 +17,9 @@ class Minecraft {
     auth = null
     modsList = undefined
 
+    /**
+     * Used to login through Mojang account
+     */
     login(event, win, showNotification, username, password) {
         this.auth = null
         if(isDev || password.trim() !== "") {
@@ -32,6 +36,42 @@ class Minecraft {
         } else {
             showNotification("Veuillez renseignez un mot de passe")
         }
+    }
+
+    /**
+     * Used to login through a Microsoft account
+     */
+    microsoftLogin(event, win, showNotification) {
+        msmc.getElectron().FastLaunch(
+            (callback) => {
+                this.auth = msmc.getMCLC().getAuth(callback)
+                this.auth.then(v => {
+                    win.loadFile('src/client/index.html').then(() => {
+                        event.sender.send("nick", { name: v.name })
+                    })
+                }).catch((err) => {
+                    event.sender.send("loginError")
+                    logger.error(err)
+                    showNotification("Erreur de connexion")
+                })
+            },
+            (update) => {
+                switch (update.type) {
+                    case "Rejection":
+                        event.sender.send("loginError")
+                        showNotification("Connexion rejetée")
+                        logger.error("Fetch rejected!", update.data);
+                      break;
+                    case "Error":
+                        event.sender.send("loginError")
+                        showNotification("Une erreur est survenue", update.data)
+                        logger.error("MC-Account error:", update.data);
+                      break;
+                    case "Cancelled":
+                        logger.warn("Connexion annulée");
+                        event.sender.send("loginError")
+                  }
+            }, "login")
     }
 
     launch(event, showNotification, args) {
