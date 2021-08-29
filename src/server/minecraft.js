@@ -3,10 +3,11 @@ const { Client, Authenticator } = require('minecraft-launcher-core')
 const axios = require('axios').default
 const hasha = require('hasha');
 const fs = require('fs')
-const { join, resolve } = require('path')
+const { join } = require('path')
 const constants = require("constants")
 const zip = require('extract-zip')
 const logger = require('electron-log')
+const msmc = require('msmc')
 
 class Minecraft {
 
@@ -16,6 +17,9 @@ class Minecraft {
     auth = null
     modsList = undefined
 
+    /**
+     * Used to login through Mojang account
+     */
     login(event, win, showNotification, username, password) {
         this.auth = null
         if(isDev || password.trim() !== "") {
@@ -26,12 +30,49 @@ class Minecraft {
                 })
             }).catch((err) => {
                 event.sender.send("loginError")
-                logger.error(err)
+                logger.error("[MJ login] User haven't purchase the game")
                 showNotification("Erreur de connexion")
             })
         } else {
             showNotification("Veuillez renseignez un mot de passe")
         }
+    }
+
+    /**
+     * Used to login through a Microsoft account
+     */
+    microsoftLogin(event, win, showNotification) {
+        msmc.fastLaunch("electron",
+        (update) => {
+            switch (update.type) {
+                case "Error":
+                    event.sender.send("loginError")
+                    showNotification("Une erreur est survenue", update.data)
+                    logger.error("MC-Account error:", update.data);
+                  break;
+              }
+        }).then(result => {
+            if(msmc.errorCheck(result)) {
+                event.sender.send("loginError")
+                logger.error(result.reason)
+                showNotification("Erreur de connexion", result.reason)
+            } else {
+                if(!msmc.isDemoUser(result)) {
+                    this.auth = msmc.getMCLC().getAuth(result)
+                    win.loadFile('src/client/index.html').then(() => {
+                        event.sender.send("nick", { name: this.auth.name })
+                    })
+                } else {
+                    event.sender.send("loginError")
+                    logger.error("[MS login] User haven't purchase the game")
+                    showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte")
+                }
+            }
+        }).catch(reason => {
+            event.sender.send("loginError")
+            logger.error(reason)
+            showNotification("Erreur de connexion")
+        })
     }
 
     launch(event, showNotification, args) {

@@ -20,7 +20,7 @@ body{
     height:100%;
 }
 
-#login {
+#content > * {
     position:relative;
     width: 300px;
     top:50%;
@@ -28,6 +28,11 @@ body{
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 8px;
+}
+
+#microsoft-button {
+    border-width: 0;
+    cursor: pointer;
 }
 
 #login input[type="text"],

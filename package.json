@@ -26,7 +26,6 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.59",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.59",
-    "@electron-forge/maker-zip": "^6.0.0-beta.59",
     "electron": "^13.2.1"
   },
   "dependencies": {
@@ -36,7 +35,8 @@
     "electron-squirrel-startup": "^1.0.0",
     "extract-zip": "^2.0.1",
     "hasha": "^5.2.2",
-    "minecraft-launcher-core": "^3.16.7"
+    "minecraft-launcher-core": "^3.16.7",
+    "msmc": "^2.2.0"
   },
   "config": {
     "forge": "./config.forge.js"
