@@ -30,7 +30,7 @@ class Minecraft {
                 })
             }).catch((err) => {
                 event.sender.send("loginError")
-                logger.error(err)
+                logger.error("[MJ login] User haven't purchase the game")
                 showNotification("Erreur de connexion")
             })
         } else {
@@ -42,36 +42,37 @@ class Minecraft {
      * Used to login through a Microsoft account
      */
     microsoftLogin(event, win, showNotification) {
-        msmc.getElectron().FastLaunch(
-            (callback) => {
-                this.auth = msmc.getMCLC().getAuth(callback)
-                this.auth.then(v => {
-                    win.loadFile('src/client/index.html').then(() => {
-                        event.sender.send("nick", { name: v.name })
-                    })
-                }).catch((err) => {
+        msmc.fastLaunch("electron",
+        (update) => {
+            switch (update.type) {
+                case "Error":
                     event.sender.send("loginError")
-                    logger.error(err)
-                    showNotification("Erreur de connexion")
-                })
-            },
-            (update) => {
-                switch (update.type) {
-                    case "Rejection":
-                        event.sender.send("loginError")
-                        showNotification("Connexion rejetée")
-                        logger.error("Fetch rejected!", update.data);
-                      break;
-                    case "Error":
-                        event.sender.send("loginError")
-                        showNotification("Une erreur est survenue", update.data)
-                        logger.error("MC-Account error:", update.data);
-                      break;
-                    case "Cancelled":
-                        logger.warn("Connexion annulée");
-                        event.sender.send("loginError")
-                  }
-            }, "login")
+                    showNotification("Une erreur est survenue", update.data)
+                    logger.error("MC-Account error:", update.data);
+                  break;
+              }
+        }).then(result => {
+            if(msmc.errorCheck(result)) {
+                event.sender.send("loginError")
+                logger.error(result.reason)
+                showNotification("Erreur de connexion", result.reason)
+            } else {
+                if(!msmc.isDemoUser(result)) {
+                    this.auth = msmc.getMCLC().getAuth(result)
+                    win.loadFile('src/client/index.html').then(() => {
+                        event.sender.send("nick", { name: this.auth.name })
+                    })
+                } else {
+                    event.sender.send("loginError")
+                    logger.error("[MS login] User haven't purchase the game")
+                    showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte")
+                }
+            }
+        }).catch(reason => {
+            event.sender.send("loginError")
+            logger.error(reason)
+            showNotification("Erreur de connexion")
+        })
     }
 
     launch(event, showNotification, args) {

@@ -80,7 +80,7 @@ ipcMain.on("launch", (event, args) => {
 })
 
 function showNotification(title, body="") {
-    new Notification({ title: title, body: body }).show()
+    new Notification({ title: title, body: body, silent: false, icon: "../../icon.ico"}).show()
 }
 
 ipcMain.on("notification", (event, args) => {
