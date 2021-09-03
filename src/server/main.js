@@ -27,8 +27,9 @@ function createWindow () {
         contextIsolation: false
         },
         frame: false,
+        nativeWindowOpen: true
     })
-    // Menu.setApplicationMenu(null)
+    Menu.setApplicationMenu(null)
     win.loadFile('src/client/login.html')
     win.on("close", () => {
         app.quit()

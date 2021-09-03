@@ -1,4 +1,5 @@
 *, *::after, *::before {
+	user-select: none;
 	-webkit-user-select: none;
 	/*-webkit-user-drag: none; */
 }
@@ -13,6 +14,7 @@
 	color:white;
 	cursor: move;
 	-webkit-app-region: drag;
+	user-select: none;
 	-webkit-user-select: none;
 	z-index: 100;
 }
@@ -24,6 +26,12 @@
 
 #menubar .left{
 	float:left;
+}
+
+.left > img {
+	padding-left: 15px;
+	height: 28px;
+	width: auto;
 }
 
 #menubar .right{
