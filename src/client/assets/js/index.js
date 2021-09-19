@@ -1,124 +1,119 @@
 const os = require('os')
-const launchBtn = document.querySelector('#launch-btn')
-const launchText = document.querySelector("#launch-text")
-const fullProgressBar = document.querySelector('#fullprogressbar')
-const progressBar = document.querySelector('#progressbar')
-const loadingMessage = document.querySelector('#loading-message')
-const disconnectBtn = document.querySelector('#disconnect-btn')
-const fullscreen = document.querySelector('#fullscreen')
-const minMem = document.querySelector('#minMem')
-const maxMem = document.querySelector('#maxMem')
-const outputMinMem = document.querySelector('#outputMinMem')
-const outputMaxMem = document.querySelector('#outputMaxMem')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
+
+let app = new vue({
+    el: "#vue",
+    data: {
+        minMemValue: localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 ,
+        maxMemValue: localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048,
+        memStep: 128,
+        memMax: totalMem,
+        invalidateButtonText: "Supprimer et retélécharger les bibliothèques",
+        invalidateButtonDisabled: false,
+        displayFullscreen: "none",
+        nick: "Chargement",
+        launchBtnText: "Selectionnez un chapitre",
+        launchBtnDisable: true,
+        launchBtnHidden: false,
+        loadingMessageHidden: true,
+        loadingMessageText: "Téléchargement de Minecraft en cours...",
+        fullprogressbarHidden: true,
+        progressbarWidth: 0,
+        sidebarContent: "<hr><p>Chargement en cours</p>"
+    },
+    mounted: function () {
+        this.demandModsInformations()
+    },
+    methods: {
+        invalidateData: function () {
+            this.invalidateButtonDisabled = true
+            this.invalidateButtonText = "Opération en cours"
+            ipcRenderer.send('invalidateData')
+        },
+        launchBtnClick: function () {
+            this.launchBtnHidden = true
+            this.fullprogressbarHidden = false
+            app.loadingMessageHidden = false
+            if(Number(this.minMemValue) <= Number(this.maxMemValue)){
+                ipcRenderer.send('launch', {
+                    minMem: this.minMemValue + "M",
+                    maxMem: this.maxMemValue + "M",
+                    chapter: selectedChapter
+                })
+                app.launchBtnDisable = true
+                localStorage.setItem("minMem", this.minMemValue)
+                localStorage.setItem("maxMem", this.maxMemValue)
+                gameLaunching = true
+            } else{
+                ipcRenderer.send('notification', {
+                    title: "Erreur de lancement",
+                    body: "La mémoire minimale doit être inférieure ou égale à la mémoire maximale"
+                })
+            }
+        },
+        disconnectBtn: function () {
+            ipcRenderer.send('disconnect')
+        },
+        options: function () {
+            if(!gameLaunching)
+                this.displayFullscreen = "block"
+        },
+        discord: () => shell.openExternal("https://discord.gg/b923tMhmRE"),
+        web: () => shell.openExternal("https://altarik.fr"),
+        closeFullscreen: function () {
+            this.displayFullscreen = "none"
+        },
+        demandModsInformations: function () {
+            ipcRenderer.send('demandModsInformations')
+        }
+    }
+})
+
 const sidebar = document.querySelector("#sidebar-content")
-const invalidateButton = document.querySelector("#invalidateData")
 let gameLaunching = false
 
 let selectedChapter = -1;
 
-document.body.onload = () => {
-    minMem.max = totalMem
-    maxMem.max = totalMem
-    minMem.value = localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 
-    outputMinMem.textContent = minMem.value
-    maxMem.value = localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048
-    outputMaxMem.textContent = maxMem.value
-    demandModsInformations()
-}
-
-ipcRenderer.on("nick", (event, args) => {
-    console.log(args)
-    document.querySelector("#nick").innerHTML = args.name
-})
-
-launchBtn.addEventListener("click", e => {
-    launchText.classList.add('hidden')
-    fullProgressBar.classList.remove('hidden')
-    loadingMessage.classList.remove('hidden')
-    if(Number(minMem.value) <= Number(maxMem.value)){
-        ipcRenderer.send('launch', {
-            minMem: minMem.value + "M",
-            maxMem: maxMem.value + "M",
-            chapter: selectedChapter
-        })
-        launchBtn.disabled = true
-        localStorage.setItem("minMem", minMem.value)
-        localStorage.setItem("maxMem", maxMem.value)
-        gameLaunching = true
-    } else{
-        ipcRenderer.send('notification', {
-            title: "Erreur de lancement",
-            body: "La mémoire minimale doit être inférieure ou égale à la mémoire maximale"
-        })
-    }
-    
-})
-
-document.querySelector("#web").addEventListener("click", e => {
-    shell.openExternal("https://altarik.fr")
-})
-
-document.querySelector("#options").addEventListener("click", e => {
-    if(!gameLaunching)
-        fullscreen.style.display = "block"
-})
-
-document.querySelector("#discord").addEventListener("click", e => {
-    shell.openExternal("https://discord.gg/b923tMhmRE")
-})
-
-document.querySelector("#close").addEventListener("click", e => {
-    fullscreen.style.display = "none"
-});
-
-invalidateButton.addEventListener("click", e => {
-    invalidateButton.disabled = true
-    invalidateButton.childNodes[0].nodeValue = "Opération en cours"
-    ipcRenderer.send('invalidateData')
-})
+ipcRenderer.on("nick", (_, args) => app.nick = args.name)
 
 ipcRenderer.on("invalidated", e => {
-    invalidateButton.disabled = false
-    invalidateButton.childNodes[0].nodeValue = "Supprimer et retélécharger les bibliothèques"
+    app.invalidateButtonDisabled = false
+    app.invalidateButtonText = "Supprimer et retélécharger les bibliothèques"
 })
 
 ipcRenderer.on("progress", (e, args) => {
-    progressBar.style.width = (args.task / Math.max(args.total, args.task)) * 100 + "%"
-    loadingMessage.innerHTML = "Téléchargement de " + args.type + ": " + args.task + " sur " + Math.max(args.total, args.task)
+    app.progressbarWidth =  (args.task / Math.max(args.total, args.task)) * 100
+    app.loadingMessageText =  "Téléchargement de " + args.type + ": " + args.task + " sur " + Math.max(args.total, args.task)
 })
 
-ipcRenderer.on("close", (e, args) => {
-    launchText.classList.remove('hidden')
-    fullProgressBar.classList.add('hidden')
-    loadingMessage.classList.add('hidden')
-    loadingMessage.innerHTML = "Chargement de Minecraft en cours..."
-    progressBar.style.width = "0"
-    launchBtn.disabled = false
+ipcRenderer.on("close", (_e, _args) => {
+    app.launchBtnHidden = false
+    app.fullprogressbarHidden = true
+    app.loadingMessageHidden = true
+    app.loadingMessageText = "Chargement de Minecraft en cours..."
+    app.progressbarWidth = 0
+    app.launchBtnDisable = false
     gameLaunching = false
 })
 
-ipcRenderer.on('launch', (e, args) => {
-    fullProgressBar.classList.add('hidden')
-    loadingMessage.classList.add('hidden')
+ipcRenderer.on('launch', (_e, _args) => {
+    app.fullprogressbarHidden = true
+    app.loadingMessageText = true
 })
 
 ipcRenderer.on("modsInformations", (e, args) => {
+    console.log(args)
     if(args === null) {
-        sidebar.innerHTML = "<hr><p>Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</p>"
-        + "<button onclick=\"demandModsInformations()\">Réessayer</button>"
+        app.sidebarContent = "<hr><p>Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</p>"
+        + "<button onclick=\"app.demandModsInformations()\">Réessayer</button>"
     } else {
         let element = ""
         for(const i in args) {
             element += `<hr><div data-chapter="${i}" onclick="changeSelectedChapter(this)"><h3>${args[i].title}</h3><p>${args[i].description}</p></div>`
         }
-        sidebar.innerHTML = element
+        app.sidebarContent = element
     }
 })
-
-function demandModsInformations() {
-    ipcRenderer.send('demandModsInformations')
-}
 
 function changeSelectedChapter(element) {
     selectedChapter = Number(element.dataset.chapter)
@@ -126,18 +121,6 @@ function changeSelectedChapter(element) {
         v.classList.remove("selected")
     })
     element.classList.add("selected")
-    launchText.innerHTML = "JOUER"
-    launchBtn.disabled = false
+    app.launchBtnText = "JOUER"
+    app.launchBtnDisable = false
 }
-
-disconnectBtn.addEventListener('click', e => {
-    ipcRenderer.send('disconnect')
-})
-
-minMem.addEventListener("input", e => {
-    outputMinMem.textContent = e.target.value
-})
-
-maxMem.addEventListener("input", e => {
-    outputMaxMem.textContent = e.target.value
-})

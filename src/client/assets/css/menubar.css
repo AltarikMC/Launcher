@@ -65,3 +65,8 @@
 	position: relative;
     top: 2px;
 }
+
+#vue {
+	width: 100vw;
+	height: 100vh;
+}

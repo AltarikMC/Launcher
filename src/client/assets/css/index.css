@@ -148,7 +148,6 @@ h3 {
 	width: 100%;
 	height: calc(100% - 28px);
 	background-color: rgba(0, 0, 0, 0.6);
-	display: none;
 	z-index: 10;
 }
 
@@ -212,3 +211,10 @@ h3 {
 	border-width:0;
 	border-top: 1px solid black;
 }
+
+/* .slider {
+	min-width: 60%;
+	position:relative;
+	left:50%;
+	transform: translateX(-50%);
+} */

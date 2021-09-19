@@ -16,11 +16,16 @@ class Minecraft {
     launcher = new Client()
     auth = null
     modsList = undefined
+    showNotification = undefined
+
+    setShowNotification(showNotification) {
+        this.showNotification = showNotification
+    }
 
     /**
      * Used to login through Mojang account
      */
-    login(event, win, showNotification, username, password) {
+    login(event, win, username, password) {
         this.auth = null
         if(isDev || password.trim() !== "") {
             this.auth = Authenticator.getAuth(username, password)
@@ -31,23 +36,23 @@ class Minecraft {
             }).catch((err) => {
                 event.sender.send("loginError")
                 logger.error("[MJ login] User haven't purchase the game")
-                showNotification("Erreur de connexion")
+                this.showNotification("Erreur de connexion")
             })
         } else {
-            showNotification("Veuillez renseignez un mot de passe")
+            this.showNotification("Veuillez renseignez un mot de passe")
         }
     }
 
     /**
      * Used to login through a Microsoft account
      */
-    microsoftLogin(event, win, showNotification) {
+    microsoftLogin(event, win) {
         msmc.fastLaunch("electron",
         (update) => {
             switch (update.type) {
                 case "Error":
                     event.sender.send("loginError")
-                    showNotification("Une erreur est survenue", update.data)
+                    this.showNotification("Une erreur est survenue", update.data)
                     logger.error("MC-Account error:", update.data);
                   break;
               }
@@ -55,7 +60,7 @@ class Minecraft {
             if(msmc.errorCheck(result)) {
                 event.sender.send("loginError")
                 logger.error(result.reason)
-                showNotification("Erreur de connexion", result.reason)
+                this.showNotification("Erreur de connexion", result.reason)
             } else {
                 if(!msmc.isDemoUser(result)) {
                     this.auth = msmc.getMCLC().getAuth(result)
@@ -65,17 +70,17 @@ class Minecraft {
                 } else {
                     event.sender.send("loginError")
                     logger.error("[MS login] User haven't purchase the game")
-                    showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte")
+                    this.showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte")
                 }
             }
         }).catch(reason => {
             event.sender.send("loginError")
             logger.error(reason)
-            showNotification("Erreur de connexion")
+            this.showNotification("Erreur de connexion")
         })
     }
 
-    launch(event, showNotification, args) {
+    launch(event, args) {
         this.extractJava(Number(args.chapter), event).then((javaPath) => {
             this.extractMods(Number(args.chapter), event).then((chapter) => {
                 this.launcher.launch({
@@ -108,17 +113,17 @@ class Minecraft {
                     if(e !== 0) {
                         logger.warn("Minecraft didn't close properly")
                         logger.warn(e)
-                        showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement")
+                        this.showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement")
                     }
                 })
             }).catch((err) => {
-                showNotification("Impossible de lancer le jeu")
+                this.showNotification("Impossible de lancer le jeu")
                 event.sender.send("close", 1)
                 logger.error('Unable to launch the game')
                 logger.error(err)
             })
         }).catch(err => {
-            showNotification("Impossible d'intaller Java pour votre configuration")
+            this.showNotification("Impossible d'intaller Java pour votre configuration")
             event.sender.send("close", 1)
             logger.warn("Unable to install java")
             logger.warn(err)
@@ -132,7 +137,10 @@ class Minecraft {
                 let folder = join(process.env.LOCALAPPDATA, "altarik-launcher", "data")
                 if(!fs.existsSync(folder))
                     fs.mkdirSync(folder)
-                fs.writeFileSync(join(folder, "launcher.json"), JSON.stringify(o.data))
+                let file = join(folder, "launcher.json")
+                if(fs.existsSync(file))
+                    fs.rmSync(file)
+                fs.writeFileSync(file, JSON.stringify(o.data))
                 event.sender.send('modsInformations', this.extractModsInformations(o.data))
             } else {
                 event.sender.send('modsInformations', this.extractModsFromFileSystem())
@@ -145,12 +153,12 @@ class Minecraft {
     }
     
     extractModsFromFileSystem() {
-        content = fs.readFileSync(join(process.env.LOCALAPPDATA, "altarik-launcher/data/launcher.json"))
+        let content = fs.readFileSync(join(process.env.LOCALAPPDATA, "altarik-launcher/data/launcher.json"))
         if(content !== null) {
-            showNotification("Impossible de récupérer certaines informations en ligne", "utilisation des dernières données récupérées")
+            this.showNotification("Impossible de récupérer certaines informations en ligne", "utilisation des dernières données récupérées")
             return this.extractModsInformations(JSON.parse(content))
         } else {
-            showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton")
+            this.showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton")
             logger.error("Unable to get chapters informations from server or filesystem")
             return null
         }
@@ -215,9 +223,9 @@ class Minecraft {
     
     downloadMods(link, path) {
         return new Promise((resolve, reject) => {
-            axios.get(link, {
-                responseType: "stream"
-            }).then(res => {
+            if(!navigator.onLine)
+                reject("offline")
+            axios.get(link, {responseType: "stream"}).then(res => {
                 if(res.status === 200) {
                     if(fs.existsSync(path))
                         fs.rmSync(path)
@@ -305,6 +313,7 @@ class Minecraft {
     }
 
     invalidateData(event) {
+        logger.info("invalidate game data...")
         const assets = join(this.minecraftpath, 'assets')
         const librairies = join(this.minecraftpath,'libraries')
         const natives = join(this.minecraftpath, 'natives')
@@ -314,6 +323,7 @@ class Minecraft {
             fs.rmdirSync(librairies, { recursive: true })
         if(fs.existsSync(natives))
             fs.rmdirSync(natives, { recursive: true })
+        logger.info("Game data invalidated")
         event.sender.send("invalidated")
     }
 }

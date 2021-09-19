@@ -9,6 +9,7 @@ if (require('electron-squirrel-startup')) {
 require('./updater.js').configUpdater(app, autoUpdater, dialog, logger) 
 
 const minecraft = require('./minecraft.js')
+minecraft.showNotification = showNotification
 
 const iconPath = join(__dirname, "icon.ico")
 let win = null
@@ -29,7 +30,7 @@ function createWindow () {
         frame: false,
         nativeWindowOpen: true
     })
-    Menu.setApplicationMenu(null)
+    // Menu.setApplicationMenu(null)
     win.loadFile('src/client/login.html')
     win.on("close", () => {
         app.quit()
@@ -65,11 +66,11 @@ app.on('activate', () => {
 })
 
 ipcMain.on("login", (event, args) => {
-    minecraft.login(event, win, showNotification, args.user, args.pass)
+    minecraft.login(event, win, args.user, args.pass)
 })
 
 ipcMain.on("microsoft-login", (event, args) => {
-    minecraft.microsoftLogin(event, win, showNotification)
+    minecraft.microsoftLogin(event, win)
 })
 
 ipcMain.on("invalidateData", event => {
@@ -77,7 +78,7 @@ ipcMain.on("invalidateData", event => {
 })
 
 ipcMain.on("launch", (event, args) => {
-  minecraft.launch(event, showNotification, args)
+  minecraft.launch(event, args)
 })
 
 function showNotification(title, body="") {
