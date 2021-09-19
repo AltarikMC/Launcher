@@ -1,13 +1,12 @@
 'use strict';
 const { ipcRenderer, shell } = require('electron');
-// const isDev = require("electron-is-dev")
-const vue = require(/*isDev ? */ 'vue/dist/vue'/* : 'vue' */)
+const vue = require('vue/dist/vue.common.prod')
 
 window.addEventListener("DOMContentLoaded", () => {
     const minimizeButton = document.getElementById("minimize-btn")
     const closeButton = document.getElementById("close-btn")
 
-    minimizeButton.addEventListener("click", e => ipcRenderer.send('minimizeWindow'))
+    minimizeButton.addEventListener("click", () => ipcRenderer.send('minimizeWindow'))
 
-    closeButton.addEventListener("click", e => ipcRenderer.send('closeWindow'))
+    closeButton.addEventListener("click", () => ipcRenderer.send('closeWindow'))
 })

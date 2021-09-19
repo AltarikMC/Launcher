@@ -1,14 +1,15 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "repository": "AltarikMC/Launcher",
   "bugs": "https://github.com/AltarikMC/Launcher/issues",
   "keywords": [],
   "contributors": [
-    "SexiestCHiba"
+    "SexiestCHiba",
+    "Altarik"
   ],
   "maintainers": [
     "SexiestCHiba"
