@@ -223,8 +223,6 @@ class Minecraft {
     
     downloadMods(link, path) {
         return new Promise((resolve, reject) => {
-            if(!navigator.onLine)
-                reject("offline")
             axios.get(link, {responseType: "stream"}).then(res => {
                 if(res.status === 200) {
                     if(fs.existsSync(path))
