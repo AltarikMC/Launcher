@@ -3,3 +3,4 @@ game
 out/
 .vscode/
 *.code-workspace
+.idea

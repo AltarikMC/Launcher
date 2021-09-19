@@ -3,66 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Altarik Launcher</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval';" />
     <link href="assets/css/fonts.css" rel="stylesheet" />
     <link href="assets/css/index.css" rel="stylesheet" />
     <link href="assets/css/menubar.css" rel="stylesheet" />
     <link rel="shortcut icon" type="image/png" href="assets/images/icon.png"/>
 </head>
 <body>
-	<div id="menubar">
-        <ul class="left">
-            <img src="../../icon.ico">
-        </ul>
-        <ul class="right">
-            <!-- Mettre ce code en ligne pour éviter que chrome ne met un espace automatiquement entre les éléments -->
-            <li id="minimize-btn"><i class="material-icons">minimize</i></li><!--<li id="max-unmax-btn"><i class="material-icons">crop_square</i></li>--><li id="close-btn"><i class="material-icons">close</i></li>
-        </ul>
-    </div>
-    <div id="fullscreen">
-        <div id="close"><i class="material-icons">close</i></div>
-        <div id="settings">
-                <h2>Modifier la configuration</h2>
-                <span href="" id="disconnect-btn">Se déconnecter</span>
-                <h4>Allocation mémoire</h4>
-                <label for="minMem">mémoire minimale : <span id="outputMinMem"></span></label><br />
-                <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="minMem"><br />
-                <label for="maxMem">mémoire maximale : <span id="outputMaxMem"></span></label><br />
-                <input type="range" min="1024" max="2048" step="128" value="1" class="slider" id="maxMem"><br />
-                <h4>Au secours, mon jeu ne démarre pas</h4>
-                <button id="invalidateData">Supprimer et retélécharger les bibliothèques</button>
+    <div id="vue">
+        <div id="menubar">
+            <ul class="left">
+                <img src="../../icon.ico">
+            </ul>
+            <ul class="right">
+                <!-- Mettre ce code en ligne pour éviter que chrome ne met un espace automatiquement entre les éléments -->
+                <li id="minimize-btn"><i class="material-icons">minimize</i></li><!--<li id="max-unmax-btn"><i class="material-icons">crop_square</i></li>--><li id="close-btn"><i class="material-icons">close</i></li>
+            </ul>
         </div>
-    </div>
-    <div id="content">
-        <div id="sidebar">
-            <h2>Chapitres</h2>
-            <div id="sidebar-content">
-
+        <div id="fullscreen" :style="{ display: displayFullscreen }">
+            <div @click="closeFullscreen" id="close"><i class="material-icons">close</i></div>
+            <div id="settings">
+                    <h2>Modifier la configuration</h2>
+                    <span href="" id="disconnect-btn" @click="disconnectBtn">Se déconnecter</span>
+                    <h4>Allocation mémoire</h4>
+                    <label for="minMem">mémoire minimale : <span id="outputMinMem">{{ minMemValue }}</span></label><br />
+                    <input type="number" min="1024" :max="memMax" :step="memStep" v-model="minMemValue" class="slider" id="minMem"><br />
+                    <label for="maxMem">mémoire maximale : <span id="outputMaxMem">{{ maxMemValue }}</span></label><br />
+                    <input type="number" min="1024" :max="memMax" :step="memStep" v-model="maxMemValue" class="slider" id="maxMem"><br />
+                    <h4>Au secours, mon jeu ne démarre pas</h4>
+                    <button @click="invalidateData" :disabled="invalidateButtonDisabled">{{ invalidateButtonText }}</button>
             </div>
         </div>
-        <div id="media">
-            <div id="options">
-                <img src="assets/images/settings.png">
+        <div id="content">
+            <div id="sidebar">
+                <h2>Chapitres</h2>
+                <div id="sidebar-content" v-html="sidebarContent"></div>
             </div>
-            <div id="discord">
-                <img src="assets/images/discord.png">
+            <div id="media">
+                <div @click="options">
+                    <img src="assets/images/settings.png">
+                </div>
+                <div @click="discord">
+                    <img src="assets/images/discord.png">
+                </div>
+                <div @click="web">
+                    <img src="assets/images/web.png">
+                </div>
+                
             </div>
-            <div id="web">
-                <img src="assets/images/web.png">
+            <div id="main">
+                <div id="account">
+                    <div id="nick">{{ nick }}</div><!-- <img src=""> Head du joueur -->
+                </div>
+                <button @click="launchBtnClick" id="launch-btn" :disabled="launchBtnDisable">
+                    <div id="launch-text" :class="[{hidden: launchBtnHidden}]">{{ launchBtnText }}</div>
+                    <div id="loading-message" :class="[{hidden: loadingMessageHidden}]">{{ loadingMessageText }}</div>
+                    <div id="fullprogressbar" :class="[{hidden: fullprogressbarHidden}]"><div id="progressbar" :style="{ width: progressbarWidth + '%' }"></div></div>
+                </button>
             </div>
-            
         </div>
-        <div id="main">
-            <div id="account">
-                <div id="nick"></div><!-- <img src=""> Head du joueur -->
-            </div>
-            <button id="launch-btn" disabled>
-                <div id="launch-text">Selectionnez un chapitre</div>
-                <div id="loading-message" class="hidden">Téléchargement de Minecraft en cours...</div>
-                <div id="fullprogressbar" class="hidden"><div id="progressbar"></div></div>
-            </button>
-        </div>
-    </p>
     </div>
     <script src="assets/js/script.js"></script>
     <script src="assets/js/index.js"></script>
