@@ -69,7 +69,7 @@ ipcMain.on("login", (event, args) => {
     minecraft.login(event, win, args.user, args.pass)
 })
 
-ipcMain.on("microsoft-login", (event, args) => {
+ipcMain.on("microsoft-login", (event) => {
     minecraft.microsoftLogin(event, win)
 })
 
@@ -89,7 +89,7 @@ ipcMain.on("notification", (event, args) => {
     showNotification(args.title, args.body)
 })
 
-ipcMain.on("disconnect", (e) => {
+ipcMain.on("disconnect", () => {
     win.loadFile('src/client/login.html')
 })
 

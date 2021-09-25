@@ -1,6 +1,5 @@
 const isDev = require('electron-is-dev')
 const { Notification } = require('electron')
-const os = require('os')
 const pkg = require('../../package.json')
 const server = 'https://update.electronjs.org'
 
@@ -28,8 +27,7 @@ function configUpdater(app, autoUpdater, dialog, logger) {
     app.isReady ? initUpdater(autoUpdater) : app.on("ready", () => initUpdater(autoUpdater))
     
 
-    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateURL) => {
-        showNotification(releaseNotes, updateURL)
+    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
         const dialogOpts = {
             type: 'info',
             buttons: ['Rédémarrer', 'Plus tard'],
@@ -40,19 +38,20 @@ function configUpdater(app, autoUpdater, dialog, logger) {
 
         dialog.showMessageBox(dialogOpts).then((returnValue) => {
             if (returnValue.response === 0) {
-                logger.info("Quit applicaiton to install update")
+                logger.info("Leaving application to install update...")
                 autoUpdater.quitAndInstall()
             }
         })
     })
 
     autoUpdater.on('error', message => {
+        showNotification("Impossible de mettre à jour le launcher", "vérifier votre connexion")
         logger.error('There was a problem updating the application')
         logger.error(message)
     })
 
     autoUpdater.on('update-available', () => {
-        showNotification("Altarik launcher", "downloading update")
+        showNotification("Altarik launcher", "Téléchargement de la mise à jour")
         logger.info("update available, downloading...")
     })
 }

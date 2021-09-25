@@ -11,7 +11,7 @@ const msmc = require('msmc')
 
 class Minecraft {
 
-    appdata = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
+    appdata = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
     minecraftpath = join(this.appdata, ".altarik")
     launcher = new Client()
     auth = null
@@ -33,7 +33,7 @@ class Minecraft {
                 win.loadFile('src/client/index.html').then(() => {
                     event.sender.send("nick", { name: v.name })
                 })
-            }).catch((err) => {
+            }).catch(() => {
                 event.sender.send("loginError")
                 logger.error("[MJ login] User haven't purchase the game")
                 this.showNotification("Erreur de connexion")
@@ -192,13 +192,11 @@ class Minecraft {
                             if(sha1 === chapter.modspack.sha1sum[j]) {
                                 await this.unzipMods(path).catch(err => {
                                     reject(err)
-                                    return
                                 })
                             } else {
                                 logger.warn(`sha1sum ${sha1} don't correspond to ${chapter.modspack.sha1sum[j]} of mods ${path}`)
                                 await this.downloadAndExtractMods(chapter.modspack.mods[j], path).catch(err => {
                                     reject(err)
-                                    return
                                 })
                             }
                             event.sender.send("progress", {type: "mods", task: Number(j)+1, total: chapter.modspack.mods.length })
@@ -217,7 +215,6 @@ class Minecraft {
                 }
             }
             reject("didn't found the correct chapter" + chapter)
-            return
         })
     }
     

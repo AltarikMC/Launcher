@@ -13,7 +13,7 @@ body{
     background-repeat: no-repeat;
 	margin:0;
     height:100%;
-    font-family: "Roboto";
+    font-family: "Roboto", sans-serif;
 }
 
 #content{

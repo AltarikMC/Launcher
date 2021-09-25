@@ -68,15 +68,13 @@ let app = new vue({
         }
     }
 })
-
-const sidebar = document.querySelector("#sidebar-content")
 let gameLaunching = false
 
 let selectedChapter = -1;
 
 ipcRenderer.on("nick", (_, args) => app.nick = args.name)
 
-ipcRenderer.on("invalidated", e => {
+ipcRenderer.on("invalidated", () => {
     app.invalidateButtonDisabled = false
     app.invalidateButtonText = "Supprimer et retélécharger les bibliothèques"
 })
@@ -117,7 +115,7 @@ ipcRenderer.on("modsInformations", (e, args) => {
 
 function changeSelectedChapter(element) {
     selectedChapter = Number(element.dataset.chapter)
-    document.querySelectorAll("#sidebar-content > div").forEach((v, key) => {
+    document.querySelectorAll("#sidebar-content > div").forEach((v) => {
         v.classList.remove("selected")
     })
     element.classList.add("selected")

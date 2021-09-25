@@ -13,7 +13,7 @@ body{
     background-repeat: no-repeat;
 	margin:0;
 	height:100%;
-	font-family: "Roboto";
+	font-family: "Roboto", sans-serif;
 	color: black;
 }
 
@@ -32,7 +32,7 @@ body{
 	width: 322px;
 	height: 398px;
 	padding: 10px 50px;
-	font-family: "French-Press";
+	font-family: "French-Press", sans-serif;
 	font-size: 26px;
 }
 
@@ -73,7 +73,7 @@ h3 {
 }
 
 #launch-text {
-	font-family: "French-Press";
+	font-family: "French-Press", sans-serif;
 	font-size: 52px;
 	font-weight: bold;
 }
@@ -90,7 +90,7 @@ h3 {
 	height:122px;
 	padding:10px;
 	text-align: center;
-	border-width: 0px;
+	border-width: 0;
 }
 
 .hidden{
@@ -116,7 +116,7 @@ h3 {
 	position:relative;
 	margin: 0 auto;
 	height:28px;
-	font-family: "French-Press";
+	font-family: "French-Press", sans-serif;
 	font-size: 24px;
 	color:white;
 }
@@ -130,11 +130,11 @@ h3 {
 	position: absolute;
 	right: 25px;
 	top: 50px;
-	padding: 0px 30px;
+	padding: 0 30px;
 }
 
 #nick {
-	font-family: "French-Press";
+	font-family: "French-Press", sans-serif;
 	font-size: 28px;
 	position: relative;
 	top:45%;
@@ -203,11 +203,11 @@ h3 {
 }
 
 #sidebar-content p {
-	margin: 0px;
+	margin: 0;
 }
 
 #sidebar-content hr {
-	margin: 0px 0px 5px 0px;
+	margin: 0 0 5px 0;
 	border-width:0;
 	border-top: 1px solid black;
 }

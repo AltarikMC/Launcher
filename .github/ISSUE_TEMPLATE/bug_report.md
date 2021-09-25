@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bugs report
 about: Create a report to help us improve
 title: "[BUG]"
 labels: bug
@@ -20,16 +20,17 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+**Screenshots and logs**
 If applicable, add screenshots to help explain your problem.
+Please give logs files too or a part of them, there are located in %AppData%\altarik-launcher\logs\
 
 **Desktop (please complete the following information):**
- - OS: [e.g. Windows 10 20H2 / 8.1/ 7 SP1]
+ - OS: [e.g. Windows 10 20H2 build 19043.1237 / 8.1 / 7 SP1]
  - Device components: 
    - Intel i3 8400
    - GTX 1060 3gb
-   - etc.
- - Launcher Version: [e.g. 1.2]
+   - 8 gb DDR4 
+ - Launcher Version: [e.g. 0.6.1 can be found in logs]
 
 **Additional context**
 Add any other context about the problem here.
