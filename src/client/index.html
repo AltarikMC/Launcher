@@ -23,7 +23,7 @@
         <div id="fullscreen" :style="{ display: displayFullscreen }">
             <div @click="closeFullscreen" id="close"><i class="material-icons">close</i></div>
             <div id="settings">
-                    <h2>Modifier la configuration</h2>
+                    <h2>Paramètres</h2>
                     <span href="" id="disconnect-btn" @click="disconnectBtn">Se déconnecter</span>
                     <h4>Allocation mémoire</h4>
                     <label for="minMem">mémoire minimale : <span id="outputMinMem">{{ minMemValue }}</span></label><br />
@@ -40,13 +40,13 @@
                 <div id="sidebar-content" v-html="sidebarContent"></div>
             </div>
             <div id="media">
-                <div @click="options">
+                <div @click="options" title="Paramètres">
                     <img src="assets/images/settings.png">
                 </div>
-                <div @click="discord">
+                <div @click="discord" title="Rejoingnez notre Discord">
                     <img src="assets/images/discord.png">
                 </div>
-                <div @click="web">
+                <div @click="web"title="Visitez notre site web">
                     <img src="assets/images/web.png">
                 </div>
                 
