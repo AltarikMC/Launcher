@@ -27,8 +27,7 @@ function createWindow () {
         nodeIntegration: true,
         contextIsolation: false
         },
-        frame: false,
-        nativeWindowOpen: true
+        frame: false
     })
     Menu.setApplicationMenu(null)
     win.loadFile('src/client/login.html')

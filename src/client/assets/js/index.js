@@ -96,7 +96,7 @@ ipcRenderer.on("close", (_e, _args) => {
 
 ipcRenderer.on('launch', (_e, _args) => {
     app.fullprogressbarHidden = true
-    app.loadingMessageText = true
+    app.loadingMessageHidden = true
 })
 
 ipcRenderer.on("modsInformations", (e, args) => {
