@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "repository": "AltarikMC/Launcher",
