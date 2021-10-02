@@ -153,15 +153,21 @@ class Minecraft {
     }
     
     extractModsFromFileSystem() {
-        let content = fs.readFileSync(join(process.env.LOCALAPPDATA, "altarik-launcher/data/launcher.json"))
-        if(content !== null) {
-            this.showNotification("Impossible de récupérer certaines informations en ligne", "utilisation des dernières données récupérées")
-            return this.extractModsInformations(JSON.parse(content))
+        let filepath = join(process.env.LOCALAPPDATA, "altarik-launcher/data/launcher.json")
+        if(fs.existsSync(filepath)) {
+            let content = fs.readFileSync(filepath)
+            if(content !== null) {
+                this.showNotification("Impossible de récupérer certaines informations en ligne", "utilisation des dernières données récupérées")
+                return this.extractModsInformations(JSON.parse(content))
+            } else {
+                this.showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton")
+                logger.error("Unable to get chapters informations from server or filesystem")
+                return null
+            }
         } else {
-            this.showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton")
-            logger.error("Unable to get chapters informations from server or filesystem")
-            return null
+            return null;
         }
+        
     }
     
     extractModsInformations(json) {
