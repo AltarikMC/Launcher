@@ -20,7 +20,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "start": "electron-forge start",
-    "test": "electron .",
+    "test": "electron . --inspect",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },

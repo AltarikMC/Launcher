@@ -246,9 +246,11 @@ class Minecraft {
     
     async unzipMods(zipLocation, outLocation=this.minecraftpath) {
         return new Promise(async (resolve, reject) => {
+            logger.info(`unzipping ${zipLocation} file to ${outLocation}`)
             zip(zipLocation, { dir: outLocation }).then(() => {
                 resolve()
             }).catch(err => {
+                logger.err(`failed to unzip file`)
                 reject(err)
             })
             
@@ -298,16 +300,25 @@ class Minecraft {
                 }
                 event.sender.send("progress", {type: "java", task: 1, total: 1 })
             } else {
-                reject("There is not available version for your system")
+                reject("There is not available version for this system")
             }
         })
     }
 
     async downloadAndExtractJava(infos, downloadFolder, runtimeFolder) {
         return new Promise((resolve, reject) => {
+            logger.info(`Downloading ${infos.name}`)
             this.downloadMods(infos.link, join(downloadFolder, `${infos.name}.zip`)).then(() => {
-                this.unzipMods(join(downloadFolder, `${infos.name}.zip`), runtimeFolder).then(() => resolve()).catch(err => reject(err))
+                logger.info(`download completed`)
+                this.unzipMods(join(downloadFolder, `${infos.name}.zip`), runtimeFolder).then(() => {
+                    logger.info(`File unzipped`)
+                    resolve()
+                }).catch(err => {
+                    logger.info(`Failed to unzip ${join(downloadFolder, `${infos.name}.zip`)}`)
+                    reject(err)
+                })
             }).catch(err => {
+                logger.err(`Download failed`)
                 reject(err)
             })
         })
