@@ -17,11 +17,8 @@ let win = null
 function createWindow () {
     win = new BrowserWindow({
         width: 1000,
-        minWidth: 1000,
-        maxWidth: 1000,
         height: 600,
-        minHeight: 600,
-        maxHeight: 600,
+        resizable: false,
         icon: iconPath,
         webPreferences: {
         nodeIntegration: true,
