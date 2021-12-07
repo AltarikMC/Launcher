@@ -37,7 +37,7 @@
     "extract-zip": "^2.0.1",
     "hasha": "^5.2.2",
     "minecraft-launcher-core": "^3.16.9",
-    "msmc": "^2.2.3",
+    "msmc": "^3.0.1",
     "vue": "^2.6.14"
   },
   "config": {
