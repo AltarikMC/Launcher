@@ -36,6 +36,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "extract-zip": "^2.0.1",
     "hasha": "^5.2.2",
+    "izitoast": "^1.4.0",
     "minecraft-launcher-core": "^3.16.9",
     "msmc": "^3.0.1",
     "vue": "^2.6.14"

@@ -1,5 +1,4 @@
-
-
+// const {default: iziToast } = require('izitoast')
 let app = new vue({
     el: "#vue",
     data: {
@@ -7,10 +6,21 @@ let app = new vue({
         email: "Email",
         password: "Mot de passe",
         send_credentials: "Se connecter",
-        microsoft_button: "Connexion avec un compte Microsoft"
+        microsoft_button: "Connexion avec un compte Microsoft",
+        notificationTitle: "",
+        notificationMessage: ""
+    },
+    mounted: function () {
+        iziToast.settings({
+            close: false,
+            closeOnClick: true,
+            timeout: 5000,
+            position: 'topRight',
+            resetOnHover: true,
+        })
     },
     methods: {
-        formSubmit: (e) => {
+        formSubmit: function (e) {
             e.preventDefault()
             if(!microsoftButton.disabled) {
                 form.disabled = true
@@ -20,20 +30,48 @@ let app = new vue({
                         pass: password.value
                     })
                 }else{
-                    ipcRenderer.send("notification", {
-                        title: "error",
-                        body: "Veuillez entrer des identifiants"
-                    })
+                    this.notificationTitle = "Erreur de connexion"
+                    this.notificationMessage = "Veuillez entrer des identifiants"
+                    this.showWarning()
                 }
             }
         },
-        microsoftButton: (e) => {
+        microsoftButton: function (e) {
             e.preventDefault()
             if(!form.disabled) {
                 microsoftButton.disabled = true
                 form.disabled = true
                 ipcRenderer.send("microsoft-login")
             }
+        },
+        showInfo: function () {
+            iziToast.info({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+                color: 'blue'
+            })
+        },
+        showError: function() {
+            iziToast.show({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+                color: 'red'
+
+            })
+        },
+        showWarning: function() {
+            iziToast.warning({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+                color: 'yellow'
+            })
+        },
+        showSuccess: function () {
+            iziToast.success({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+                color: 'green'
+            })
         }
     }
 });

@@ -36,10 +36,10 @@ class Minecraft {
             }).catch(() => {
                 event.sender.send("loginError")
                 logger.error("[MJ login] User haven't purchase the game")
-                this.showNotification("Erreur de connexion")
+                this.showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte", "error")
             })
         } else {
-            this.showNotification("Veuillez renseignez un mot de passe")
+            this.showNotification("Erreur de connexion", "Veuillez renseignez un mot de passe", "warning")
         }
     }
 
@@ -52,7 +52,7 @@ class Minecraft {
             switch (update.type) {
                 case "Error":
                     event.sender.send("loginError")
-                    this.showNotification("Une erreur est survenue", update.data)
+                    this.showNotification("Une erreur est survenue", update.data, "error")
                     logger.error("MC-Account error:", update.data);
                   break;
               }
@@ -60,7 +60,7 @@ class Minecraft {
             if(msmc.errorCheck(result)) {
                 event.sender.send("loginError")
                 logger.error(result.reason)
-                this.showNotification("Erreur de connexion", result.reason)
+                this.showNotification("Erreur de connexion", result.reason, "error")
             } else {
                 if(!msmc.isDemoUser(result)) {
                     this.auth = msmc.getMCLC().getAuth(result)
@@ -70,13 +70,13 @@ class Minecraft {
                 } else {
                     event.sender.send("loginError")
                     logger.error("[MS login] User haven't purchase the game")
-                    this.showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte")
+                    this.showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte", "error")
                 }
             }
         }).catch(reason => {
             event.sender.send("loginError")
             logger.error(reason)
-            this.showNotification("Erreur de connexion")
+            this.showNotification("Erreur de connexion", "Erreur inconnue", "error")
         })
     }
 
@@ -113,17 +113,17 @@ class Minecraft {
                     if(e !== 0) {
                         logger.warn("Minecraft didn't close properly")
                         logger.warn(e)
-                        this.showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement")
+                        this.showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement", "error")
                     }
                 })
             }).catch((err) => {
-                this.showNotification("Impossible de lancer le jeu")
+                this.showNotification("Impossible de lancer le jeu", "Erreur inconnue", "error")
                 event.sender.send("close", 1)
                 logger.error('Unable to launch the game')
                 logger.error(err)
             })
         }).catch(err => {
-            this.showNotification("Impossible d'intaller Java pour votre configuration")
+            this.showNotification("Impossible de lancer le jeu", "Impossible d'installer Java pour votre configuration", "error")
             event.sender.send("close", 1)
             logger.warn("Unable to install java")
             logger.warn(err)
@@ -157,10 +157,10 @@ class Minecraft {
         if(fs.existsSync(filepath)) {
             let content = fs.readFileSync(filepath)
             if(content !== null) {
-                this.showNotification("Impossible de récupérer certaines informations en ligne", "utilisation des dernières données récupérées")
+                this.showNotification("Impossible de récupérer certaines informations en ligne", "utilisation des dernières données récupérées", "warning")
                 return this.extractModsInformations(JSON.parse(content))
             } else {
-                this.showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton")
+                this.showNotification("Impossible de récupérer certaines informations en ligne", "Veuillez réessayez en cliquant sur le bouton", "warning")
                 logger.error("Unable to get chapters informations from server or filesystem")
                 return null
             }

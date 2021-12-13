@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, Notification, autoUpdater, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, autoUpdater, dialog } = require('electron')
 const logger = require('electron-log')
 const { join } = require('path')
 if (require('electron-squirrel-startup')) {
@@ -6,7 +6,7 @@ if (require('electron-squirrel-startup')) {
     app.quit()
     return
 }
-require('./updater.js').configUpdater(app, autoUpdater, dialog, logger) 
+require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification) 
 
 const minecraft = require('./minecraft.js')
 minecraft.showNotification = showNotification
@@ -77,16 +77,14 @@ ipcMain.on("launch", (event, args) => {
   minecraft.launch(event, args)
 })
 
-function showNotification(title, body="") {
-    new Notification({ title: title, body: body, silent: false, icon: "../../icon.ico"}).show()
+function showNotification(title, body="", clazz="info") {
+    win.webContents.send('notification', {title: title, body: body, class: clazz})
 }
 
-ipcMain.on("notification", (event, args) => {
-    showNotification(args.title, args.body)
-})
-
 ipcMain.on("disconnect", () => {
-    win.loadFile('src/client/login.html')
+    minecraft.auth = null
+    win.loadFile('src/client/login.html').then(() =>  showNotification("Déconnecté", "Vous avez été déconnecter de votre compte", "success"))
+   
 })
 
 

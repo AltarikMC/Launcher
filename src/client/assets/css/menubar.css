@@ -70,3 +70,7 @@
 	width: 100vw;
 	height: 100vh;
 }
+
+.iziToast-wrapper-topRight {
+    top: 25px;
+}

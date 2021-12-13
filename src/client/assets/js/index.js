@@ -19,15 +19,27 @@ let app = new vue({
         loadingMessageText: "Téléchargement de Minecraft en cours...",
         fullprogressbarHidden: true,
         progressbarWidth: 0,
-        sidebarContent: "<hr><p>Chargement en cours</p>"
+        sidebarContent: "<hr><p>Chargement en cours</p>",
+        notificationTitle: "",
+        notificationMessage: ""
     },
     mounted: function () {
         this.demandModsInformations()
+        iziToast.settings({
+            close: false,
+            closeOnClick: true,
+            timeout: 5000,
+            position: 'topRight',
+            resetOnHover: true,
+        })
     },
     methods: {
         invalidateData: function () {
             this.invalidateButtonDisabled = true
             this.invalidateButtonText = "Opération en cours"
+            this.notificationTitle = "Opération en cours"
+            this.notificationMessage = "Suppression des données du jeu en cours"
+            this.showInfo()
             ipcRenderer.send('invalidateData')
         },
         launchBtnClick: function () {
@@ -45,10 +57,9 @@ let app = new vue({
                 localStorage.setItem("maxMem", this.maxMemValue)
                 gameLaunching = true
             } else{
-                ipcRenderer.send('notification', {
-                    title: "Erreur de lancement",
-                    body: "La mémoire minimale doit être inférieure ou égale à la mémoire maximale"
-                })
+                app.notificationTitle = "Erreur de lancement"
+                app.notificationMessage = "La mémoire minimale doit être inférieure ou égale à la mémoire maximale."
+                this.showError()
             }
         },
         disconnectBtn: function () {
@@ -65,6 +76,32 @@ let app = new vue({
         },
         demandModsInformations: function () {
             ipcRenderer.send('demandModsInformations')
+        },
+        showInfo: function () {
+            iziToast.info({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+            })
+        },
+        showError: function() {
+            iziToast.show({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+                color: 'red'
+
+            })
+        },
+        showWarning: function() {
+            iziToast.warning({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+            })
+        },
+        showSuccess: function () {
+            iziToast.success({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+            })
         }
     }
 })
@@ -77,6 +114,9 @@ ipcRenderer.on("nick", (_, args) => app.nick = args.name)
 ipcRenderer.on("invalidated", () => {
     app.invalidateButtonDisabled = false
     app.invalidateButtonText = "Supprimer et retélécharger les bibliothèques"
+    app.notificationTitle = "Opération terminée"
+    app.notificationMessage = "Les données du jeu ont été supprimé avec succès"
+    app.showSuccess()
 })
 
 ipcRenderer.on("progress", (e, args) => {

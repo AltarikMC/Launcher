@@ -1,5 +1,4 @@
 const isDev = require('electron-is-dev')
-const { Notification } = require('electron')
 const pkg = require('../../package.json')
 const server = 'https://update.electronjs.org'
 
@@ -10,7 +9,7 @@ function initUpdater(autoUpdater) {
     }, 10 * 60 * 1000) // 10 minutes
 }
 
-function configUpdater(app, autoUpdater, dialog, logger) {
+function configUpdater(app, autoUpdater, dialog, logger, showNotification) {
     logger.info(`electron version: ${process.versions['electron']}`)
     logger.info(`chrome version: ${process.versions['chrome']}`)
     logger.info(`Node version: ${process.versions['node']}`)
@@ -45,19 +44,15 @@ function configUpdater(app, autoUpdater, dialog, logger) {
     })
 
     autoUpdater.on('error', message => {
-        showNotification("Impossible de mettre à jour le launcher", "vérifier votre connexion")
+        showNotification("Impossible de mettre à jour le launcher", "vérifier votre connexion", "warning")
         logger.error('There was a problem updating the application')
         logger.error(message)
     })
 
     autoUpdater.on('update-available', () => {
-        showNotification("Altarik launcher", "Téléchargement de la mise à jour")
+        showNotification("Mise à jour", "Téléchargement de la mise à jour", "warning")
         logger.info("update available, downloading...")
     })
-}
-
-function showNotification(title, body="") {
-    new Notification({ title: title, body: body }).show()
 }
 
 module.exports = {
