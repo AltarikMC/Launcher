@@ -2,13 +2,6 @@ const isDev = require('electron-is-dev')
 const pkg = require('../../package.json')
 const server = 'https://update.electronjs.org'
 
-function initUpdater(autoUpdater) {
-    autoUpdater.checkForUpdates()
-    setInterval(() => {
-        autoUpdater.checkForUpdates()
-    }, 10 * 60 * 1000) // 10 minutes
-}
-
 function configUpdater(app, autoUpdater, dialog, logger, showNotification) {
     logger.info(`electron version: ${process.versions['electron']}`)
     logger.info(`chrome version: ${process.versions['chrome']}`)
@@ -23,10 +16,10 @@ function configUpdater(app, autoUpdater, dialog, logger, showNotification) {
         
     const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${app.getVersion()}`
     autoUpdater.setFeedURL(feed)
-    app.isReady ? initUpdater(autoUpdater) : app.on("ready", () => initUpdater(autoUpdater))
-    
+    logger.info("Checking for update...")
+    autoUpdater.checkForUpdates()
 
-    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
         const dialogOpts = {
             type: 'info',
             buttons: ['Rédémarrer', 'Plus tard'],

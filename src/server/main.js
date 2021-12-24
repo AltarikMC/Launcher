@@ -6,8 +6,6 @@ if (require('electron-squirrel-startup')) {
     app.quit()
     return
 }
-require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification) 
-
 const minecraft = require('./minecraft.js')
 minecraft.showNotification = showNotification
 
@@ -27,7 +25,9 @@ function createWindow () {
         frame: false
     })
     Menu.setApplicationMenu(null)
-    win.loadFile('src/client/login.html')
+    win.loadFile('src/client/login.html').then(() => {
+        require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification)
+    })
     win.on("close", () => {
         app.quit()
     })
@@ -35,10 +35,9 @@ function createWindow () {
 
 const { setWindow, minimizeWindow, closeWindow } = require("./menubar.js");
 
-setWindow(win)
-
 app.whenReady().then(() => {
     createWindow()
+    setWindow(win)
 })
 
 app.on('window-all-closed', () => {
