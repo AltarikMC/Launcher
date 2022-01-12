@@ -82,7 +82,7 @@ function showNotification(title, body="", clazz="info") {
 
 ipcMain.on("disconnect", () => {
     minecraft.auth = null
-    win.loadFile('src/client/login.html').then(() =>  showNotification("Déconnecté", "Vous avez été déconnecter de votre compte", "success"))
+    win.loadFile('src/client/login.html').then(() =>  showNotification("Déconnecté", "Vous avez été déconnecté de votre compte", "success"))
    
 })
 
