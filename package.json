@@ -4,15 +4,17 @@
   "version": "1.0.2",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
+  "homepage": "https://altarik.fr/",
+  "private": true,
   "repository": "AltarikMC/Launcher",
   "bugs": "https://github.com/AltarikMC/Launcher/issues",
   "keywords": [],
   "contributors": [
-    "SexiestCHiba",
+    "Quentin Legot",
     "Altarik"
   ],
   "maintainers": [
-    "SexiestCHiba"
+    "Quentin Legot"
   ],
   "os": [
     "win32"
