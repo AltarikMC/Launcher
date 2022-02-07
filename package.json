@@ -41,7 +41,7 @@
     "izitoast": "^1.4.0",
     "minecraft-launcher-core": "^3.16.11",
     "msmc": "^3.0.6",
-    "vue": "^2.6.14"
+    "vue": "^3.2.30"
   },
   "config": {
     "forge": "./config.forge.js"
