@@ -24,7 +24,7 @@ function createWindow () {
         },
         frame: false
     })
-    Menu.setApplicationMenu(null)
+    //Menu.setApplicationMenu(null)
     win.loadFile('src/client/login.html').then(() => {
         require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification)
     })
@@ -84,11 +84,6 @@ ipcMain.on("disconnect", () => {
     minecraft.auth = null
     win.loadFile('src/client/login.html').then(() =>  showNotification("Déconnecté", "Vous avez été déconnecté de votre compte", "success"))
    
-})
-
-
-ipcMain.on("demandModsInformations", (e) => {
-    minecraft.getModsInformations(e)
 })
 
 

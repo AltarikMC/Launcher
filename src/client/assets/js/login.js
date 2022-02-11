@@ -1,16 +1,16 @@
 // const {default: iziToast } = require('izitoast')
-let app = new vue({
-    el: "#vue",
-    data: {
-        login: "Connexion",
-        email: "Email",
-        password: "Mot de passe",
-        send_credentials: "Se connecter",
-        microsoft_button: "Connexion avec un compte Microsoft",
-        notificationTitle: "",
-        notificationMessage: ""
+
+app = vue.createApp({
+    data() {
+        return {
+            login: "Connexion",
+            email: "Email",
+            password: "Mot de passe",
+            send_credentials: "Se connecter",
+            microsoft_button: "Connexion avec un compte Microsoft",
+        }
     },
-    mounted: function () {
+    mounted() {
         iziToast.settings({
             close: false,
             closeOnClick: true,
@@ -20,7 +20,7 @@ let app = new vue({
         })
     },
     methods: {
-        formSubmit: function (e) {
+        formSubmit (e) {
             e.preventDefault()
             if(!microsoftButton.disabled) {
                 form.disabled = true
@@ -30,13 +30,12 @@ let app = new vue({
                         pass: password.value
                     })
                 }else{
-                    this.notificationTitle = "Erreur de connexion"
-                    this.notificationMessage = "Veuillez entrer des identifiants"
-                    this.showWarning()
+                    this.showWarning("Erreur de connexion", "Veuillez entrer des identifiants")
+                    form.disabled = false
                 }
             }
         },
-        microsoftButton: function (e) {
+        microsoftButton(e) {
             e.preventDefault()
             if(!form.disabled) {
                 microsoftButton.disabled = true
@@ -44,43 +43,46 @@ let app = new vue({
                 ipcRenderer.send("microsoft-login")
             }
         },
-        showInfo: function () {
+        showInfo(title, body) {
             iziToast.info({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
+                title: title,
+                message: body,
                 color: 'blue'
             })
         },
-        showError: function() {
-            iziToast.show({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
-                color: 'red'
-
+        showError(title, body) {
+            iziToast.error({
+                title: title,
+                message: body,
+                color: 'red',
             })
         },
-        showWarning: function() {
+        showWarning(title, body) {
             iziToast.warning({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
+                title: title,
+                message: body,
                 color: 'yellow'
             })
         },
-        showSuccess: function () {
+        showSuccess(title, body) {
             iziToast.success({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
+                title: title,
+                message: body,
                 color: 'green'
             })
         }
     }
 });
 
+app.mount("#vue");
+
 // theirs const are declared after vue cause vue modify them when declaring new vue instance
 const form = document.querySelector('#login-form')
 const user = document.querySelector('#nickname')
 const password = document.querySelector('#password')
 const microsoftButton = document.querySelector("#microsoft-button")
+
+
 
 ipcRenderer.on("loginError", () => {
     form.disabled = false

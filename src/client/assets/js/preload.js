@@ -1,7 +1,7 @@
 'use strict';
-const { ipcRenderer, shell } = require('electron');
-const vue = require('vue/dist/vue.common.prod')
-
+const { ipcRenderer } = require('electron');
+const vue = require('vue/dist/vue.cjs.js')
+let app;
 window.addEventListener("DOMContentLoaded", () => {
     const minimizeButton = document.getElementById("minimize-btn")
     const closeButton = document.getElementById("close-btn")
@@ -16,15 +16,15 @@ ipcRenderer.on('notification', (_e, args) => {
     app.notificationMessage = args.body
     switch(args.class) {
         case "success":
-            app.showSuccess()
+            app._component.methods.showSuccess(args.title, args.body)
             break;
         case "warning":
-            app.showWarning()
+            app._component.methods.showWarning(args.title, args.body)
             break;
         case "error":
-            app.showError()
+            app._component.methods.showError(args.title, args.body)
             break;
         case "info":default:
-            app.showInfo()
+            app._component.methods.showInfo(args.title, args.body)
     }
 })

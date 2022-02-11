@@ -31,7 +31,11 @@ class Minecraft {
             this.auth = Authenticator.getAuth(username, password)
             this.auth.then(v => {
                 win.loadFile('src/client/index.html').then(() => {
-                    event.sender.send("nick", { name: v.name })
+                    setInterval(() => {
+                        event.sender.send("nick", { name: v.name })
+                        this.getModsInformations(e)
+                    }, 1000)
+                    
                 })
             }).catch(() => {
                 event.sender.send("loginError")
