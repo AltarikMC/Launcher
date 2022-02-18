@@ -86,5 +86,7 @@ ipcMain.on("disconnect", () => {
    
 })
 
-
-
+ipcMain.on("pageReady", (event) => {
+    event.sender.send("nick", { name: minecraft.auth.name })
+    minecraft.getModsInformations(event)
+})

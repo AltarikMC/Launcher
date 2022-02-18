@@ -21,7 +21,9 @@ app = vue.createApp({
             progressbarWidth: 0,
             sidebarContent: "<hr><p>Chargement en cours</p>",
             modsInformations: [],
-            modsInformationsLoaded: true
+            modsInformationsLoaded: true,
+            selectedChapter: -1,
+            gameLaunching: false
         }
         
     },
@@ -33,16 +35,6 @@ app = vue.createApp({
             position: 'topRight',
             resetOnHover: true,
         })
-        ipcRenderer.on("modsInformations", (e, args) => {
-            console.log("loaded")
-            if(args === null) {
-                this.modsInformationsLoaded = false
-            } else {
-                this.modsInformationsLoaded = true
-            }
-            this.updateModsInformations(args)
-        })
-        ipcRenderer.on("nick", (_, args) => root.nick = args.name)
     },
     methods: {
         invalidateData () {
@@ -61,21 +53,26 @@ app = vue.createApp({
                 ipcRenderer.send('launch', {
                     minMem: this.minMemValue + "M",
                     maxMem: this.maxMemValue + "M",
-                    chapter: selectedChapter
+                    chapter: this.selectedChapter
                 })
                 this.launchBtnDisable = true
                 localStorage.setItem("minMem", this.minMemValue)
                 localStorage.setItem("maxMem", this.maxMemValue)
-                gameLaunching = true
+                this.gameLaunching = true
             } else {
                 this.showError("Erreur de lancement", "La mémoire minimale doit être inférieure ou égale à la mémoire maximale.")
             }
+        },
+        changeSelectedChapter(index) {
+            this.selectedChapter = parseInt(index)
+            root.launchBtnText = "JOUER"
+            root.launchBtnDisable = false
         },
         disconnectBtn () {
             ipcRenderer.send('disconnect')
         },
         options () {
-            if(!gameLaunching)
+            if(!this.gameLaunching)
                 this.displayFullscreen = "block"
         },
         discord() {
@@ -89,7 +86,6 @@ app = vue.createApp({
         },
         updateModsInformations(content) {
             this.modsInformations = content
-            nextTick(() => {})
         },
         getModsInformations() {
             return this.modsInformations
@@ -121,15 +117,14 @@ app = vue.createApp({
                 message: body,
                 color: 'green'
             })
+        },
+        isSelected(index) {
+            return this.selectedChapter === index
         }
     }
 })
 
 let root = app.mount("#vue")
-
-let gameLaunching = false
-
-let selectedChapter = -1;
 
 ipcRenderer.on("invalidated", () => {
     root.invalidateButtonDisabled = false
@@ -149,7 +144,7 @@ ipcRenderer.on("close", (_e, _args) => {
     root.loadingMessageText = "Chargement de Minecraft en cours..."
     root.progressbarWidth = 0
     root.launchBtnDisable = false
-    gameLaunching = false
+    root.gameLaunching = false
 })
 
 ipcRenderer.on('launch', (_e, _args) => {
@@ -157,12 +152,17 @@ ipcRenderer.on('launch', (_e, _args) => {
     root.loadingMessageHidden = true
 })
 
-function changeSelectedChapter(element) {
-    selectedChapter = Number(element.dataset.chapter)
-    document.querySelectorAll("#sidebar-content > div").forEach((v) => {
-        v.classList.remove("selected")
-    })
-    element.classList.add("selected")
-    root.launchBtnText = "JOUER"
-    root.launchBtnDisable = false
-}
+setInterval(() => {
+    ipcRenderer.send("pageReady")
+}, 500)
+
+ipcRenderer.on("modsInformations", (_e, args) => {
+    if(args === null) {
+        root.modsInformationsLoaded = false
+    } else {
+        root.modsInformationsLoaded = true
+    }
+    root.updateModsInformations(args)
+})
+
+ipcRenderer.on("nick", (_e, args) => root.nick = args.name)
