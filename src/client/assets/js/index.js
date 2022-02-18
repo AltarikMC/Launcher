@@ -40,9 +40,7 @@ app = vue.createApp({
         invalidateData () {
             this.invalidateButtonDisabled = true
             this.invalidateButtonText = "Opération en cours"
-            this.notificationTitle = "Opération en cours"
-            this.notificationMessage = "Suppression des données du jeu en cours"
-            this.showInfo()
+            this.showInfo("Opération en cours", "Suppression des données du jeu en cours")
             ipcRenderer.send('invalidateData')
         },
         launchBtnClick () {
