@@ -30,9 +30,7 @@ class Minecraft {
         if(isDev || password.trim() !== "") {
             this.auth = Authenticator.getAuth(username, password)
             this.auth.then(v => {
-                win.loadFile('src/client/index.html').then(() => {
-                    event.sender.send("nick", { name: v.name })
-                })
+                win.loadFile('src/client/index.html')
             }).catch(() => {
                 event.sender.send("loginError")
                 logger.error("[MJ login] User haven't purchase the game")
@@ -64,9 +62,7 @@ class Minecraft {
             } else {
                 if(!msmc.isDemoUser(result)) {
                     this.auth = msmc.getMCLC().getAuth(result)
-                    win.loadFile('src/client/index.html').then(() => {
-                        event.sender.send("nick", { name: this.auth.name })
-                    })
+                    win.loadFile('src/client/index.html')
                 } else {
                     event.sender.send("loginError")
                     logger.error("[MS login] User haven't purchase the game")

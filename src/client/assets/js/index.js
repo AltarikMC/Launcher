@@ -1,30 +1,33 @@
 const os = require('os')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
 
-let app = new vue({
-    el: "#vue",
-    data: {
-        minMemValue: localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 ,
-        maxMemValue: localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048,
-        memStep: 128,
-        memMax: totalMem,
-        invalidateButtonText: "Supprimer et retélécharger les bibliothèques",
-        invalidateButtonDisabled: false,
-        displayFullscreen: "none",
-        nick: "Chargement",
-        launchBtnText: "Selectionnez un chapitre",
-        launchBtnDisable: true,
-        launchBtnHidden: false,
-        loadingMessageHidden: true,
-        loadingMessageText: "Téléchargement de Minecraft en cours...",
-        fullprogressbarHidden: true,
-        progressbarWidth: 0,
-        sidebarContent: "<hr><p>Chargement en cours</p>",
-        notificationTitle: "",
-        notificationMessage: ""
+app = vue.createApp({
+    data() {
+        return {
+            minMemValue: localStorage.getItem("minMem") != null ? localStorage.getItem("minMem") : 1024 ,
+            maxMemValue: localStorage.getItem("maxMem") != null ? localStorage.getItem("maxMem") : 2048,
+            memStep: 128,
+            memMax: totalMem,
+            invalidateButtonText: "Supprimer et retélécharger les bibliothèques",
+            invalidateButtonDisabled: false,
+            displayFullscreen: "none",
+            nick: "Chargement",
+            launchBtnText: "Selectionnez un chapitre",
+            launchBtnDisable: true,
+            launchBtnHidden: false,
+            loadingMessageHidden: true,
+            loadingMessageText: "Téléchargement de Minecraft en cours...",
+            fullprogressbarHidden: true,
+            progressbarWidth: 0,
+            sidebarContent: "<hr><p>Chargement en cours</p>",
+            modsInformations: [],
+            modsInformationsLoaded: true,
+            selectedChapter: -1,
+            gameLaunching: false
+        }
+        
     },
-    mounted: function () {
-        this.demandModsInformations()
+    mounted () {
         iziToast.settings({
             close: false,
             closeOnClick: true,
@@ -34,131 +37,130 @@ let app = new vue({
         })
     },
     methods: {
-        invalidateData: function () {
+        invalidateData () {
             this.invalidateButtonDisabled = true
             this.invalidateButtonText = "Opération en cours"
-            this.notificationTitle = "Opération en cours"
-            this.notificationMessage = "Suppression des données du jeu en cours"
-            this.showInfo()
+            this.showInfo("Opération en cours", "Suppression des données du jeu en cours")
             ipcRenderer.send('invalidateData')
         },
-        launchBtnClick: function () {
+        launchBtnClick () {
             this.launchBtnHidden = true
             this.fullprogressbarHidden = false
-            app.loadingMessageHidden = false
+            this.loadingMessageHidden = false
             if(Number(this.minMemValue) <= Number(this.maxMemValue)){
                 ipcRenderer.send('launch', {
                     minMem: this.minMemValue + "M",
                     maxMem: this.maxMemValue + "M",
-                    chapter: selectedChapter
+                    chapter: this.selectedChapter
                 })
-                app.launchBtnDisable = true
+                this.launchBtnDisable = true
                 localStorage.setItem("minMem", this.minMemValue)
                 localStorage.setItem("maxMem", this.maxMemValue)
-                gameLaunching = true
-            } else{
-                app.notificationTitle = "Erreur de lancement"
-                app.notificationMessage = "La mémoire minimale doit être inférieure ou égale à la mémoire maximale."
-                this.showError()
+                this.gameLaunching = true
+            } else {
+                this.showError("Erreur de lancement", "La mémoire minimale doit être inférieure ou égale à la mémoire maximale.")
             }
         },
-        disconnectBtn: function () {
+        changeSelectedChapter(index) {
+            this.selectedChapter = parseInt(index)
+            root.launchBtnText = "JOUER"
+            root.launchBtnDisable = false
+        },
+        disconnectBtn () {
             ipcRenderer.send('disconnect')
         },
-        options: function () {
-            if(!gameLaunching)
+        options () {
+            if(!this.gameLaunching)
                 this.displayFullscreen = "block"
         },
-        discord: () => shell.openExternal("https://discord.gg/b923tMhmRE"),
-        web: () => shell.openExternal("https://altarik.fr"),
-        closeFullscreen: function () {
+        discord() {
+            shell.openExternal("https://discord.gg/b923tMhmRE") }
+            ,
+        web() {
+            shell.openExternal("https://altarik.fr")
+        },
+        closeFullscreen () {
             this.displayFullscreen = "none"
         },
-        demandModsInformations: function () {
-            ipcRenderer.send('demandModsInformations')
+        updateModsInformations(content) {
+            this.modsInformations = content
         },
-        showInfo: function () {
+        getModsInformations() {
+            return this.modsInformations
+        },
+        showInfo(title, body) {
             iziToast.info({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
+                title: title,
+                message: body,
+                color: 'blue'
             })
         },
-        showError: function() {
-            iziToast.show({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
-                color: 'red'
-
+        showError(title, body) {
+            iziToast.error({
+                title: title,
+                message: body,
+                color: 'red',
             })
         },
-        showWarning: function() {
+        showWarning(title, body) {
             iziToast.warning({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
+                title: title,
+                message: body,
+                color: 'yellow'
             })
         },
-        showSuccess: function () {
+        showSuccess(title, body) {
             iziToast.success({
-                title: this.notificationTitle,
-                message: this.notificationMessage,
+                title: title,
+                message: body,
+                color: 'green'
             })
+        },
+        isSelected(index) {
+            return this.selectedChapter === index
         }
     }
 })
-let gameLaunching = false
 
-let selectedChapter = -1;
-
-ipcRenderer.on("nick", (_, args) => app.nick = args.name)
+let root = app.mount("#vue")
 
 ipcRenderer.on("invalidated", () => {
-    app.invalidateButtonDisabled = false
-    app.invalidateButtonText = "Supprimer et retélécharger les bibliothèques"
-    app.notificationTitle = "Opération terminée"
-    app.notificationMessage = "Les données du jeu ont été supprimé avec succès"
-    app.showSuccess()
+    root.invalidateButtonDisabled = false
+    root.invalidateButtonText = "Supprimer et retélécharger les bibliothèques"
+    root.showSuccess("Opération terminée", "Les données du jeu ont été supprimé avec succès")
 })
 
 ipcRenderer.on("progress", (e, args) => {
-    app.progressbarWidth =  (args.task / Math.max(args.total, args.task)) * 100
-    app.loadingMessageText =  "Téléchargement de " + args.type + ": " + args.task + " sur " + Math.max(args.total, args.task)
+    root.progressbarWidth =  (args.task / Math.max(args.total, args.task)) * 100
+    root.loadingMessageText =  "Téléchargement de " + args.type + ": " + args.task + " sur " + Math.max(args.total, args.task)
 })
 
 ipcRenderer.on("close", (_e, _args) => {
-    app.launchBtnHidden = false
-    app.fullprogressbarHidden = true
-    app.loadingMessageHidden = true
-    app.loadingMessageText = "Chargement de Minecraft en cours..."
-    app.progressbarWidth = 0
-    app.launchBtnDisable = false
-    gameLaunching = false
+    root.launchBtnHidden = false
+    root.fullprogressbarHidden = true
+    root.loadingMessageHidden = true
+    root.loadingMessageText = "Chargement de Minecraft en cours..."
+    root.progressbarWidth = 0
+    root.launchBtnDisable = false
+    root.gameLaunching = false
 })
 
 ipcRenderer.on('launch', (_e, _args) => {
-    app.fullprogressbarHidden = true
-    app.loadingMessageHidden = true
+    root.fullprogressbarHidden = true
+    root.loadingMessageHidden = true
 })
 
-ipcRenderer.on("modsInformations", (e, args) => {
-    console.log(args)
+setInterval(() => {
+    ipcRenderer.send("pageReady")
+}, 500)
+
+ipcRenderer.on("modsInformations", (_e, args) => {
     if(args === null) {
-        app.sidebarContent = "<hr><p>Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</p>"
-        + "<button onclick=\"app.demandModsInformations()\">Réessayer</button>"
+        root.modsInformationsLoaded = false
     } else {
-        let element = ""
-        for(const i in args) {
-            element += `<hr><div data-chapter="${i}" onclick="changeSelectedChapter(this)"><h3>${args[i].title}</h3><p>${args[i].description}</p></div>`
-        }
-        app.sidebarContent = element
+        root.modsInformationsLoaded = true
     }
+    root.updateModsInformations(args)
 })
 
-function changeSelectedChapter(element) {
-    selectedChapter = Number(element.dataset.chapter)
-    document.querySelectorAll("#sidebar-content > div").forEach((v) => {
-        v.classList.remove("selected")
-    })
-    element.classList.add("selected")
-    app.launchBtnText = "JOUER"
-    app.launchBtnDisable = false
-}
+ipcRenderer.on("nick", (_e, args) => root.nick = args.name)

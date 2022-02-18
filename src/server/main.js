@@ -24,7 +24,7 @@ function createWindow () {
         },
         frame: false
     })
-    Menu.setApplicationMenu(null)
+    //Menu.setApplicationMenu(null)
     win.loadFile('src/client/login.html').then(() => {
         require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification)
     })
@@ -86,10 +86,7 @@ ipcMain.on("disconnect", () => {
    
 })
 
-
-ipcMain.on("demandModsInformations", (e) => {
-    minecraft.getModsInformations(e)
+ipcMain.on("pageReady", (event) => {
+    event.sender.send("nick", { name: minecraft.auth.name })
+    minecraft.getModsInformations(event)
 })
-
-
-
