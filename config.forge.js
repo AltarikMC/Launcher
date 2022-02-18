@@ -4,7 +4,7 @@ const pkg = require('./package.json')
 module.exports = {
     packagerConfig: {
         packageName: "altarik-launcher",
-        name: "altarik-launcher",
+        name: "Altarik Launcher",
         productName: "altarik-launcher",
         icon: path.resolve(__dirname, 'icon.ico')
     },
