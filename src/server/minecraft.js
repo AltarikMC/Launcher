@@ -132,7 +132,7 @@ class Minecraft {
             if(o.status === 200 && o.headers["content-type"] === "application/json") {
                 let folder = join(process.env.LOCALAPPDATA, "altarik-launcher", "data")
                 if(!fs.existsSync(folder))
-                    fs.mkdirSync(folder)
+                    fs.mkdirSync(folder, {recursive: true})
                 let file = join(folder, "launcher.json")
                 if(fs.existsSync(file))
                     fs.rmSync(file)
