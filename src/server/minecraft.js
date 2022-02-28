@@ -314,7 +314,7 @@ class Minecraft {
                     reject(err)
                 })
             }).catch(err => {
-                logger.err(`Download failed`)
+                logger.err(`Failed to download ${infos.link} to ${infos.name}.zip`)
                 reject(err)
             })
         })
