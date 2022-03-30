@@ -1,5 +1,3 @@
-// const {default: iziToast } = require('izitoast')
-
 app = vue.createApp({
     data() {
         return {

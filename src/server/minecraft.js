@@ -1,7 +1,7 @@
 const isDev = require('electron-is-dev')
 const { Client, Authenticator } = require('minecraft-launcher-core')
-const axios = require('axios').default
-const hasha = require('hasha');
+const fetch = require('node-fetch').default
+const hasha = require('hasha')
 const fs = require('fs')
 const { join } = require('path')
 const constants = require("constants")
@@ -128,17 +128,25 @@ class Minecraft {
     }
 
     getModsInformations(event) {
-        axios.get("https://altarik.fr/launcher.json").then(o => {
-            if(o.status === 200 && o.headers["content-type"] === "application/json") {
-                let folder = join(process.env.LOCALAPPDATA, "altarik-launcher", "data")
-                if(!fs.existsSync(folder))
-                    fs.mkdirSync(folder, {recursive: true})
-                let file = join(folder, "launcher.json")
-                if(fs.existsSync(file))
-                    fs.rmSync(file)
-                fs.writeFileSync(file, JSON.stringify(o.data))
-                event.sender.send('modsInformations', this.extractModsInformations(o.data))
+        fetch("https://altarik.fr/launcher.json").then(response => {
+            if(response.ok) {
+                response.json().then(data => {
+                    let folder = join(process.env.LOCALAPPDATA, "altarik-launcher", "data")
+                    if(!fs.existsSync(folder))
+                        fs.mkdirSync(folder, {recursive: true})
+                    let file = join(folder, "launcher.json")
+                    if(fs.existsSync(file))
+                        fs.rmSync(file)
+                    fs.writeFileSync(file, JSON.stringify(data))
+                    event.sender.send('modsInformations', this.extractModsInformations(data))
+                }).catch(err => {
+                    event.sender.send('modsInformations', this.extractModsFromFileSystem())
+                    logger.warn(err)
+                    logger.warn("An error occured while trying to connect to server")
+                })
             } else {
+                logger.warn("Unable to connect to server")
+                logger.warn(err)
                 event.sender.send('modsInformations', this.extractModsFromFileSystem())
             }
         }).catch(err => {
@@ -222,17 +230,21 @@ class Minecraft {
     
     downloadMods(link, path) {
         return new Promise((resolve, reject) => {
-            axios.get(link, {responseType: "stream"}).then(res => {
-                if(res.status === 200) {
+            fetch(link).then(response => {
+                if(response.ok) {
                     if(fs.existsSync(path))
                         fs.rmSync(path)
-                    res.data.pipe(fs.createWriteStream(path));
-                    res.data.on("end", () => {
+                    const dest = fs.createWriteStream(path)
+                    response.body.pipe(dest)
+                    response.body.on("end", () => {
                         logger.log("download completed");
                         resolve("download completed")
                     })
+                    dest.on("error", () => {
+                        reject("An error appenned when using stream")
+                    });
                 } else {
-                    reject(res.status)
+                    reject(response.status)
                 }
             }).catch(err => {
                 reject(err)

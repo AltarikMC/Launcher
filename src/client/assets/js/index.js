@@ -35,6 +35,9 @@ app = vue.createApp({
             position: 'topRight',
             resetOnHover: true,
         })
+        setInterval(() => {
+            ipcRenderer.send("pageReady")
+        }, 500)
     },
     methods: {
         invalidateData () {
@@ -149,10 +152,6 @@ ipcRenderer.on('launch', (_e, _args) => {
     root.fullprogressbarHidden = true
     root.loadingMessageHidden = true
 })
-
-setInterval(() => {
-    ipcRenderer.send("pageReady")
-}, 500)
 
 ipcRenderer.on("modsInformations", (_e, args) => {
     if(args === null) {

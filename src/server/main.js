@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, autoUpdater, dialog } = require('electron')
 const logger = require('electron-log')
 const { join } = require('path')
+
 if (require('electron-squirrel-startup')) {
     require("./install.js").handleSquirrelEvent(app)
     app.quit()
