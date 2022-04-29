@@ -32,7 +32,8 @@
                     <label for="maxMem">mémoire maximale : <span id="outputMaxMem">{{ maxMemValue }}</span></label><br />
                     <input type="number" min="1024" :max="memMax" :step="memStep" v-model="maxMemValue" class="slider" id="maxMem"><br />
                     <h4>Au secours, mon jeu ne démarre pas</h4>
-                    <button @click="invalidateData" :disabled="invalidateButtonDisabled">{{ invalidateButtonText }}</button>
+                    <button @click="invalidateData" :disabled="invalidateButtonDisabled">{{ invalidateButtonText }}</button><br />
+                    <span @click="credits">Voir crédits</span>
             </div>
         </div>
         <div id="content">

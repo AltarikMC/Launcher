@@ -85,6 +85,9 @@ app = vue.createApp({
         closeFullscreen () {
             this.displayFullscreen = "none"
         },
+        credits() {
+            ipcRenderer.send("credits")
+        },
         updateModsInformations(content) {
             this.modsInformations = content
         },
