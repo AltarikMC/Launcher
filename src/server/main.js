@@ -66,9 +66,8 @@ ipcMain.on("credits", () => {
         type: 'info',
         buttons: ['OK'],
         title: 'Crédits',
-        message: 'Crédits',
-        detail: `Altarik Launcher
-BSD 3-Clause License
+        message: 'Altarik Launcher',
+        detail: `BSD 3-Clause License
 
 Copyright (c) 2021, Altarik
 All rights reserved.
