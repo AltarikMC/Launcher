@@ -159,7 +159,7 @@ h3 {
 	cursor: pointer;
 }
 
-#settings {
+#settings, #credits {
 	position: relative;
 	top: 50%;
 	left: 50%;
@@ -170,6 +170,12 @@ h3 {
 	background-repeat: no-repeat;
 	background-size: 100%;
 	padding: 10px 65px;
+	max-height: 80vh;
+}
+
+#credits > .content {
+	overflow: auto;
+	max-height: inherit;
 }
 
 #settings > h2 {

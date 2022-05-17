@@ -20,5 +20,17 @@ module.exports = {
                 setupExe: `${pkg.name}-${pkg.version}-win32-x64.exe`
             }
         }
+    ],
+    publishers: [
+        {
+            name: '@electron-forge/publisher-github',
+            config: {
+                repository: {
+                    owner: 'AltarikMC',
+                    name: 'Launcher'
+                },
+                preRelease: false
+            }
+        }
     ]
 }
