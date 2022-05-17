@@ -11,6 +11,8 @@ app = vue.createApp({
             invalidateButtonText: "Supprimer et retélécharger les bibliothèques",
             invalidateButtonDisabled: false,
             displayFullscreen: "none",
+            displaySettings: "none",
+            displayCredits: "none",
             nick: "Chargement",
             launchBtnText: "Selectionnez un chapitre",
             launchBtnDisable: true,
@@ -73,20 +75,27 @@ app = vue.createApp({
             ipcRenderer.send('disconnect')
         },
         options () {
-            if(!this.gameLaunching)
+            if(!this.gameLaunching) {
                 this.displayFullscreen = "block"
+                this.displaySettings = "block"
+                this.displayCredits = "none"
+            }
         },
         discord() {
-            shell.openExternal("https://discord.gg/b923tMhmRE") }
-            ,
+            shell.openExternal("https://discord.gg/b923tMhmRE") 
+        },
         web() {
             shell.openExternal("https://altarik.fr")
         },
         closeFullscreen () {
             this.displayFullscreen = "none"
+            this.displaySettings = "none"
+            this.displayCredits = "none"
         },
         credits() {
-            ipcRenderer.send("credits")
+            this.displayFullscreen = "block"
+            this.displaySettings = "none"
+            this.displayCredits = "block"
         },
         updateModsInformations(content) {
             this.modsInformations = content
