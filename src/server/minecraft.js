@@ -92,6 +92,10 @@ class Minecraft {
                         max: args.maxMem,
                         min: args.minMem
                     }
+                }).then(v => {
+                    if(v === null) {
+                        this.close(event, -1)
+                    }
                 })
                 this.launcher.on('debug', (e) => logger.info(`debug: ${e}`));
                 this.launcher.on('data', (e) => logger.info(`data: ${e}`));
@@ -105,12 +109,7 @@ class Minecraft {
                     logger.info(e)
                 })
                 this.launcher.on('close', (e) => {
-                    event.sender.send("close", e)
-                    if(e !== 0) {
-                        logger.warn("Minecraft didn't close properly")
-                        logger.warn(e)
-                        this.showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement", "error")
-                    }
+                    this.close(event, e)
                 })
             }).catch((err) => {
                 this.showNotification("Impossible de lancer le jeu", "Erreur inconnue", "error")
@@ -125,6 +124,15 @@ class Minecraft {
             logger.warn(err)
         })
         
+    }
+    
+    close(event, code) {
+        event.sender.send("close", code)
+        if(code !== 0) {
+            logger.warn("Minecraft didn't close properly")
+            logger.warn(code)
+            this.showNotification("Une erreur est survenue", "Minecraft ne s'est pas fermé correctement", "error")
+        }
     }
 
     getModsInformations(event) {
