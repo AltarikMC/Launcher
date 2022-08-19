@@ -26,7 +26,7 @@ function createWindow () {
         frame: false
     })
     //Menu.setApplicationMenu(null)
-    win.loadFile('src/client/login.html').then(() => {
+    win.loadFile('src/client/checkingUpdate.html').then(() => {
         require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification)
     })
     win.on("close", () => {
