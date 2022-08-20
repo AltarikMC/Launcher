@@ -3,7 +3,7 @@ app = vue.createApp({
     data() {
         return {
             displayFullscreen: "block",
-            fullscreenText: "Checking for updates..."
+            fullscreenText: "Recherche de mise à jour..."
         }
     },
     mounted() {
