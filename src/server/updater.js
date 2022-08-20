@@ -4,9 +4,8 @@ const server = 'https://update.electronjs.org'
 
 class Updater {
 
-    constructor(app, win, autoUpdater, dialog, logger, ipcMain) {
+    constructor(app, autoUpdater, dialog, logger, ipcMain) {
         this.app = app
-        this.win = win
         this.autoUpdater = autoUpdater
         this.dialog = dialog
         this.logger = logger
@@ -21,13 +20,9 @@ class Updater {
         this.logger.info(`arch: ${process.arch}`)
         if(isDev) {
             this.logger.info(`developpement version ${this.app.getVersion()}`)
-            this.win.loadFile('src/client/login.html')
             return
         }
         this.logger.info(`production version ${this.app.getVersion()}`)
-            
-        const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${this.app.getVersion()}`
-        this.autoUpdater.setFeedURL(feed)
         
         // TODO : replace dialog by automatic restart
         this.autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
@@ -39,7 +34,13 @@ class Updater {
     }
 
     checkForUpdates(win, showNotification) {
+        if(isDev) {
+            win.loadFile('src/client/login.html')
+            return;
+        }
         this.logger.info("Checking for update...")
+        const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${this.app.getVersion()}`
+        this.autoUpdater.setFeedURL(feed)
         this.autoUpdater.checkForUpdates()
         this.autoUpdater.on('error', message => {
             this.logger.error('There was a problem updating the application')

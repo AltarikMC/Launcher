@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain, autoUpdater, dialog } = require('elec
 const logger = require('electron-log')
 const { join } = require('path')
 const updater = require('./updater.js')
-let updaterInstance = new updater.Updater(app, win, autoUpdater, dialog, logger, showNotification)
+let updaterInstance = new updater.Updater(app, autoUpdater, dialog, logger, showNotification)
 updaterInstance.configUpdater()
 
 if (require('electron-squirrel-startup')) {

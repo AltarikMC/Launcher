@@ -7,13 +7,11 @@ app = vue.createApp({
         }
     },
     mounted() {
+        this.sendCheckingUpdate()
     },
     methods: {
         sendCheckingUpdate() {
             ipcRenderer.send("checking-update");
-        },
-        closeFullscreen () {
-            this.displayFullscreen = "none"
         }
     },
 });
