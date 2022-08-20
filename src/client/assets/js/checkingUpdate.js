@@ -19,5 +19,5 @@ app = vue.createApp({
 app.mount("#vue");
 
 ipcRenderer.on("update-available", (event, arg) => {
-    this.fullscreenText = "Mise à jour disponible, téléchargement..."
+    app.fullscreenText = "Mise à jour disponible, téléchargement..."
 });
