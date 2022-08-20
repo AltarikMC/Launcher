@@ -31,20 +31,9 @@ class Updater {
         
         // TODO : replace dialog by automatic restart
         this.autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
-            const dialogOpts = {
-                type: 'info',
-                buttons: ['Rédémarrer', 'Plus tard'],
-                title: 'Une mise à jour du launcher est disponible',
-                message: process.platform === 'win32' ? releaseNotes : releaseName,
-                detail: 'Une nouvelle version du launcher a été téléchargé. Redémarrez l\'application pour appliquer les mises à jour.'
-            }
-    
-            this.dialog.showMessageBox(dialogOpts).then((returnValue) => {
-                if (returnValue.response === 0) {
-                    this.logger.info("Leaving application to install update...")
-                    this.autoUpdater.quitAndInstall()
-                }
-            })
+            this.logger.info(`update downloaded ${releaseName}`)
+            this.logger.info("Leaving application to install update...")
+            this.autoUpdater.quitAndInstall()
         })
     
     }
