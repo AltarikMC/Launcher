@@ -1,5 +1,6 @@
 const os = require('os')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
+const vue = require('vue/dist/vue.cjs.js')
 
 app = vue.createApp({
     data() {
