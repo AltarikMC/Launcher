@@ -1,6 +1,5 @@
 'use strict';
 const { ipcRenderer } = require('electron');
-const vue = require('vue/dist/vue.cjs.js')
 let app;
 window.addEventListener("DOMContentLoaded", () => {
     const minimizeButton = document.getElementById("minimize-btn")

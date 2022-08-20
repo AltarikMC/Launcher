@@ -1,3 +1,4 @@
+const vue = require('vue/dist/vue.cjs.js')
 app = vue.createApp({
     data() {
         return {
@@ -19,6 +20,6 @@ app = vue.createApp({
 
 app.mount("#vue");
 
-ipcRenderer.on("update-status", (event, arg) => {
-    
+ipcRenderer.on("update-available", (event, arg) => {
+    this.fullscreenText = "Mise à jour disponible, téléchargement..."
 });

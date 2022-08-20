@@ -1,6 +1,9 @@
 const { app, BrowserWindow, Menu, ipcMain, autoUpdater, dialog } = require('electron')
 const logger = require('electron-log')
 const { join } = require('path')
+const updater = require('./updater.js')
+let updaterInstance = null
+
 
 if (require('electron-squirrel-startup')) {
     require("./install.js").handleSquirrelEvent(app)
@@ -27,7 +30,8 @@ function createWindow () {
     })
     //Menu.setApplicationMenu(null)
     win.loadFile('src/client/checkingUpdate.html').then(() => {
-        require('./updater.js').configUpdater(app, autoUpdater, dialog, logger, showNotification)
+        updaterInstance = new updater.Updater(app, win, autoUpdater, dialog, logger, showNotification)
+        updaterInstance.configUpdater()
     })
     win.on("close", () => {
         app.quit()
@@ -90,4 +94,8 @@ ipcMain.on("disconnect", () => {
 ipcMain.on("pageReady", (event) => {
     event.sender.send("nick", { name: minecraft.auth.name })
     minecraft.getModsInformations(event)
+})
+
+ipcMain.on("checking-update", () => {
+    updaterInstance.checkForUpdates(win, showNotification)
 })
