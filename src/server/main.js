@@ -2,8 +2,8 @@ const { app, BrowserWindow, Menu, ipcMain, autoUpdater, dialog } = require('elec
 const logger = require('electron-log')
 const { join } = require('path')
 const updater = require('./updater.js')
-let updaterInstance = null
-
+let updaterInstance = new updater.Updater(app, win, autoUpdater, dialog, logger, showNotification)
+updaterInstance.configUpdater()
 
 if (require('electron-squirrel-startup')) {
     require("./install.js").handleSquirrelEvent(app)
@@ -29,10 +29,7 @@ function createWindow () {
         frame: false
     })
     //Menu.setApplicationMenu(null)
-    win.loadFile('src/client/checkingUpdate.html').then(() => {
-        updaterInstance = new updater.Updater(app, win, autoUpdater, dialog, logger, showNotification)
-        updaterInstance.configUpdater()
-    })
+    win.loadFile('src/client/checkingUpdate.html')
     win.on("close", () => {
         app.quit()
     })
