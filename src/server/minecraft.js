@@ -12,6 +12,7 @@ const msmc = require('msmc')
 class Minecraft {
 
     appdata = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
+    localappdata = process.env.LOCALAPPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support/' : process.env.HOME + "/.config")
     minecraftpath = join(this.appdata, ".altarik")
     launcher = new Client()
     auth = null
@@ -139,7 +140,7 @@ class Minecraft {
         fetch("https://altarik.fr/launcher.json").then(response => {
             if(response.ok) {
                 response.json().then(data => {
-                    let folder = join(process.env.LOCALAPPDATA, "altarik-launcher", "data")
+                    let folder = join(this.localappdata, "altarik-launcher", "data")
                     if(!fs.existsSync(folder))
                         fs.mkdirSync(folder, {recursive: true})
                     let file = join(folder, "launcher.json")
@@ -165,7 +166,7 @@ class Minecraft {
     }
     
     extractModsFromFileSystem() {
-        let filepath = join(process.env.LOCALAPPDATA, "altarik-launcher/data/launcher.json")
+        let filepath = join(this.localappdata, "altarik-launcher/data/launcher.json")
         if(fs.existsSync(filepath)) {
             let content = fs.readFileSync(filepath)
             if(content !== null) {
@@ -292,7 +293,8 @@ class Minecraft {
     async extractJava(chapterId, event) {
         return new Promise(async (resolve, reject) => {
             const runtime = join(this.minecraftpath, "runtime")
-            if(this.modsList[chapterId].java.platform[process.platform][process.arch] !== undefined) {
+            if(this.modsList[chapterId].java.platform[process.platform] !== undefined 
+                && this.modsList[chapterId].java.platform[process.platform][process.arch] !== undefined) {
                 event.sender.send("progress", {type: "java", task: 0, total: 1 })
                 const infos = this.modsList[chapterId].java.platform[process.platform][process.arch]
                 const jre = join(runtime, infos.name)
