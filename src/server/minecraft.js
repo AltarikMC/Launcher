@@ -8,6 +8,9 @@ const constants = require("constants")
 const zip = require('extract-zip')
 const logger = require('electron-log')
 const msmc = require('msmc')
+const decompress = require('decompress')
+const decompressTar = require('decompress-targz')
+
 
 class Minecraft {
 
@@ -267,12 +270,29 @@ class Minecraft {
             zip(zipLocation, { dir: outLocation }).then(() => {
                 resolve()
             }).catch(err => {
-                logger.err(`failed to unzip file`)
+                logger.error(`failed to unzip file`)
                 reject(err)
             })
             
         })
         
+    }
+
+    async extractTar(tarLocation, outLocation=this.microsoftpath) {
+        return new Promise(async (resolve, reject) => {
+            logger.info(`Extracting targz ${tarLocation} file to ${outLocation}`)
+            decompress(tarLocation, outLocation, {
+                plugins: [
+                    decompressTar()
+                ]
+            }).then(() => {
+                resolve()
+            }).catch((e) => {
+                logger.error(`Failed to extract targz file`)
+                reject(e)
+            })
+        })
+        let data
     }
     
     async downloadAndExtractMods(link, path) {
@@ -307,8 +327,9 @@ class Minecraft {
                 if(fs.existsSync(downloadFile)) {
                     let sha1 = await hasha.fromFile(downloadFile, {algorithm: 'sha256'})
                     if(sha1 === infos.sha256sum) {
-                        await this.unzipMods(downloadFile, runtime)
-                        resolve(join(jre, 'bin', 'java.exe'))
+                        await this.extractJavaArchive(downloadFile, runtime)
+                        let filename = process.platform == 'win32' ? 'java.exe' : 'java'
+                        resolve(join(jre, 'bin', filename))
                     } else {
                         logger.warn(`java sha256sum ${sha1} don't correspond to ${infos.sha256sum}`)
                         await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, 'bin', 'java.exe'))).catch(err => reject(err))
@@ -328,7 +349,7 @@ class Minecraft {
             logger.info(`Downloading ${infos.name}`)
             this.downloadMods(infos.link, join(downloadFolder, `${infos.name}.zip`)).then(() => {
                 logger.info(`download completed`)
-                this.unzipMods(join(downloadFolder, `${infos.name}.zip`), runtimeFolder).then(() => {
+                this.extractJavaArchive(join(downloadFolder, `${infos.name}.zip`), runtimeFolder).then(() => {
                     logger.info(`File unzipped`)
                     resolve()
                 }).catch(err => {
@@ -340,6 +361,14 @@ class Minecraft {
                 reject(err)
             })
         })
+    }
+
+    async extractJavaArchive(zipLocation, outLocation) {
+        if(process.platform === 'win32') {
+            await this.unzipMods(zipLocation, outLocation)
+        } else {
+            await this.extractTar(zipLocation, outLocation)
+        }
     }
 
     invalidateData(event) {
