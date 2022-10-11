@@ -21,3 +21,7 @@ app.mount("#vue");
 ipcRenderer.on("update-available", (event, arg) => {
     app.fullscreenText = "Mise à jour disponible, téléchargement..."
 });
+
+ipcRenderer.on("please-download-update", (event, args) => {
+    app.fullscreenText = `Veuillez télécharger la mise à jour en cliquant sur le lien suivant: <a href="${args.url}">${args.url}</a>`
+})
