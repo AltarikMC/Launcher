@@ -19,6 +19,10 @@ module.exports = {
                 setupIcon: path.resolve(__dirname, 'icon.ico'),
                 setupExe: `${pkg.name}-${pkg.version}-win32-x64.exe`
             }
+        },
+        {
+            name: '@electron-forge/maker-zip',
+            platforms: ['linux']
         }
     ],
     publishers: [
