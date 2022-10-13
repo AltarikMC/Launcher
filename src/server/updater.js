@@ -56,25 +56,31 @@ class Updater {
                 win.loadFile('src/client/login.html')
             })
         } else {
-            fetch(feed).then(response => {
-                if(response.status === 200) {
-                    response.json().then(json => {
-                        win.webContents.send("please-download-update", { url: json.url} )
-                    })
-                } else {
-                    if(response.status === 204) {
-                        this.logger.info("update not available")
-                        win.loadFile('src/client/login.html')
-                    } else {
-                        this.displayError(win, showNotification, "Server return " + response.status + " http code")
-                    }
-                    
-                }
-            }).catch(err => {
-                this.displayError(win, showNotification, err)
-            })
+            this.searchUpdateLinux(win, showNotification)
         }
         
+    }
+
+    searchUpdateLinux(win, showNotification) {
+        const url = 'https://api.github.com/repos/AltarikMc/Launcher/releases/latest'
+        fetch(url).then(response => {
+            if(response.status === 200) {
+                response.json().then(json => {
+                    if(json.tag_name !== pkg.version) {
+                        let asset = json.assets.filter(el => el.browser_download_url.inludes(".zip"))
+                        if(asset.length ===1) {
+                            let downloadUrl = asset[0].browser_download_url
+                            win.webContents.send("please-download-update", { url: downloadUrl} )
+                        } else {
+                            this.displayError(win, showNotification, "Can't find right asset in last update")
+                        }
+                    }
+                }).catch(err => this.displayError(win, showNotification, err)
+                )
+            } else {
+                this.displayError(win, showNotification, "Server unavailable")
+            }
+        }).catch(err =>  this.displayError(win, showNotification, err))
     }
 
     displayError(win, showNotification, errorMessage) {
