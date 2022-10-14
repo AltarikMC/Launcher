@@ -42,7 +42,6 @@ class Updater {
         const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${this.app.getVersion()}`
         if(process.platform != 'linux') {
             this.autoUpdater.setFeedURL(feed)
-            this.autoUpdater.checkForUpdates()
             this.autoUpdater.on('error', message => {
                 this.displayError(win, showNotification, message)
             })
@@ -55,6 +54,7 @@ class Updater {
                 this.logger.info("update not available")
                 win.loadFile('src/client/login.html')
             })
+            this.autoUpdater.checkForUpdates()
         } else {
             this.searchUpdateLinux(win, showNotification)
         }
