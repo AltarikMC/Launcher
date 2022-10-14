@@ -1,5 +1,5 @@
 'use strict';
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, shell } = require('electron');
 let app;
 window.addEventListener("DOMContentLoaded", () => {
     const minimizeButton = document.getElementById("minimize-btn")

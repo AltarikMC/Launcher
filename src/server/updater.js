@@ -67,16 +67,19 @@ class Updater {
             if(response.status === 200) {
                 response.json().then(json => {
                     if(json.tag_name !== pkg.version) {
-                        let asset = json.assets.filter(el => el.browser_download_url.inludes(".zip"))
-                        if(asset.length ===1) {
+                        let asset = json.assets.filter(el => el.browser_download_url.includes(".zip"))
+                        if(asset.length === 1) {
                             let downloadUrl = asset[0].browser_download_url
                             win.webContents.send("please-download-update", { url: downloadUrl} )
+                            this.logger.info("update available, please download")
                         } else {
                             this.displayError(win, showNotification, "Can't find right asset in last update")
                         }
+                    } else {
+                        this.logger.info("update not available")
+                        win.loadFile('src/client/login.html')
                     }
-                }).catch(err => this.displayError(win, showNotification, err)
-                )
+                }).catch(err => this.displayError(win, showNotification, err))
             } else {
                 this.displayError(win, showNotification, "Server unavailable")
             }

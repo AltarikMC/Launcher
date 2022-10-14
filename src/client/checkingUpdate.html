@@ -23,7 +23,7 @@
         </div>
         <div id="fullscreen" :style="{ display: displayFullscreen }">
             <div id="fullscreen-content">
-                <p>{{ fullscreenText }}</p>
+                <p>{{ fullscreenText }} <br /><a @click="openLinkExternal" v-if="downloadLink !== null" href="#">{{ downloadLink }}</a></p>
                 <div class="dots-3"></div>
             </div>
         </div>
