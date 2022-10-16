@@ -44,7 +44,7 @@
     "minecraft-launcher-core": "^3.16.16",
     "msmc": "^3.1.3",
     "node-fetch": "^2.6.7",
-    "vue": "^3.2.40"
+    "vue": "^3.2.41"
   },
   "config": {
     "forge": "./config.forge.js"
