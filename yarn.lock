@@ -120,13 +120,13 @@
     fs-extra "^10.0.0"
     which "^2.0.2"
 
-"@electron-forge/maker-squirrel@^6.0.0-beta.69":
-  version "6.0.0-beta.69"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.0-beta.69.tgz#e6b429c92328117db1ca27d11ec6679d326776df"
-  integrity sha512-bu21CZEiMKdrok/UKAxmNB9hdlblNg9mF2ycelNu9cT/5XSlAQIKMO+5yEA3cNyzXWbyGhMTCoYhuJ1JYolB2w==
+"@electron-forge/maker-squirrel@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.0.tgz#364f9e4f733b86cd77577a8ee51021cd22a9a023"
+  integrity sha512-BS0Up+yBPtadcNDkDuzqaRLk3RYSAjon/GxKXENIt/lZLeKCh/mSgpWWFNW3F86Q1BKF02/LNV4l6iKLcjSU0Q==
   dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.69"
-    "@electron-forge/shared-types" "6.0.0-beta.69"
+    "@electron-forge/maker-base" "6.0.0"
+    "@electron-forge/shared-types" "6.0.0"
     fs-extra "^10.0.0"
   optionalDependencies:
     electron-winstaller "^5.0.0"
