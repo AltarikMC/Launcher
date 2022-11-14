@@ -7,17 +7,6 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.17.12.tgz#36c2ed06944e3691ba82735fc4cf62d12d491a23"
   integrity sha512-FLzHmN9V3AJIrWfOpvRlZCeVg/WLdicSnTMsLur6uDj9TT8ymUlG9XxURdW/XvuygK+2CW0poOJABdA4m/YKxA==
 
-"@electron-forge/async-ora@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@electron-forge/async-ora/-/async-ora-6.0.0.tgz#5ca7b9369f07b383b874b76f48062ac9497e0b15"
-  integrity sha512-qRbdJRvpxpmSzoNh0YzsYFR7cKsgMwI4hRbaL8qstYHs4bvEzvtmrLLEUpfGM6rh0a3AAZDC67PbOBT0dhGLLw==
-  dependencies:
-    chalk "^4.0.0"
-    debug "^4.3.1"
-    log-symbols "^4.0.0"
-    ora "^5.0.0"
-    pretty-ms "^7.0.0"
-
 "@electron-forge/cli@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@electron-forge/cli/-/cli-6.0.1.tgz#e9eb825db0f909e8a3276b15cae9db04832096b9"
@@ -87,15 +76,6 @@
     username "^5.1.0"
     yarn-or-npm "^3.0.1"
 
-"@electron-forge/maker-base@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-base/-/maker-base-6.0.0.tgz#9436e459984ec5e0e37f49e3eec2d8efbcadd718"
-  integrity sha512-zT4NQzJ4zjlKwmRtY/HeKcd/eP+R2vtYvpen5z6vuqY12+jubGgRoGyot4VT0nN5p46gcofGW/Y6aPEuND4ORg==
-  dependencies:
-    "@electron-forge/shared-types" "6.0.0"
-    fs-extra "^10.0.0"
-    which "^2.0.2"
-
 "@electron-forge/maker-base@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@electron-forge/maker-base/-/maker-base-6.0.1.tgz#e0ca90aa6bc50288fa50964b68e3cbd147acc4cb"
@@ -116,13 +96,13 @@
   optionalDependencies:
     electron-winstaller "^5.0.0"
 
-"@electron-forge/maker-zip@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0.tgz#bf6981f76fdfdb4b42ef8ba3eb4d99bea2f065ab"
-  integrity sha512-LbGy2dEbQ5EfWauS/sGr5I0tf0BklsZfLpvHrr5DTbeX9ghluUaca5P5t0aoS+YsrWIxOkdU3x1j/ioKkShXCQ==
+"@electron-forge/maker-zip@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.1.tgz#8c17265f3ee0fb455b9bdef2e87d12b1ab7f46c2"
+  integrity sha512-1DozIyERrt18N9HcTpwedsgQAwHljkdhg7Q4t2jzPBmISmbcBPnvV3aCZZDmHjLStj7AUTBQC/hAQH/2JBL25A==
   dependencies:
-    "@electron-forge/maker-base" "6.0.0"
-    "@electron-forge/shared-types" "6.0.0"
+    "@electron-forge/maker-base" "6.0.1"
+    "@electron-forge/shared-types" "6.0.1"
     cross-zip "^4.0.0"
     fs-extra "^10.0.0"
 
@@ -139,17 +119,6 @@
   integrity sha512-p/y2UCJvjcHmXdu0farmz+e6ZbZOrMPPXLO/JiCdZSfTUUnt7nKEmZAiN9KQ9NBM9mGdmwcptbapRbdG5BQUcg==
   dependencies:
     "@electron-forge/shared-types" "6.0.1"
-
-"@electron-forge/shared-types@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.0.0.tgz#43f847a6da5f15f037db207c9843d2e63f8eaff3"
-  integrity sha512-FN+158+EvSzbL/ZGwsLxeUbYOJm8bhHCLbR7SPAmKwn/X2P8pVj4HuhiROkqdiuU4kUDmrOg/LgObODofyvIKw==
-  dependencies:
-    "@electron-forge/async-ora" "6.0.0"
-    "@electron/rebuild" "^3.2.10"
-    electron-packager "^17.1.1"
-    listr2 "^5.0.3"
-    ora "^5.0.0"
 
 "@electron-forge/shared-types@6.0.1":
   version "6.0.1"
@@ -2648,7 +2617,7 @@ optimist@~0.3.5:
   dependencies:
     wordwrap "~0.0.2"
 
-ora@^5.0.0, ora@^5.1.0:
+ora@^5.1.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/ora/-/ora-5.4.1.tgz#1b2678426af4ac4a509008e5e4ac9e9959db9e18"
   integrity sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==
@@ -2760,11 +2729,6 @@ parse-json@^2.2.0:
   integrity sha1-9ID0BDTvgHQfhGkJn43qGPVaTck=
   dependencies:
     error-ex "^1.2.0"
-
-parse-ms@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/parse-ms/-/parse-ms-2.1.0.tgz#348565a753d4391fa524029956b172cb7753097d"
-  integrity sha512-kHt7kzLoS9VBZfUsiKjv43mr91ea+U05EyKkEtqp7vNbHxmaVuEqN7XxeEVnGrMtYOAxGrDElSi96K7EgO1zCA==
 
 parse-passwd@^1.0.0:
   version "1.0.0"
@@ -2886,13 +2850,6 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
-
-pretty-ms@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/pretty-ms/-/pretty-ms-7.0.1.tgz#7d903eaab281f7d8e03c66f867e239dc32fb73e8"
-  integrity sha512-973driJZvxiGOQ5ONsFhOF/DtzPMOMtgC11kCpUrPGMTgqp2q/1gwzCquocrN33is0VZ5GFHXZYMM9l6h67v2Q==
-  dependencies:
-    parse-ms "^2.1.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
