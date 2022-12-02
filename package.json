@@ -30,7 +30,7 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
     "@electron-forge/maker-squirrel": "^6.0.4",
-    "@electron-forge/maker-zip": "^6.0.3",
+    "@electron-forge/maker-zip": "^6.0.4",
     "electron": "^22.0.0"
   },
   "dependencies": {
