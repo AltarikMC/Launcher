@@ -33,7 +33,8 @@ module.exports = {
                     owner: 'AltarikMC',
                     name: 'Launcher'
                 },
-                preRelease: false
+                preRelease: false,
+                draft: true
             }
         }
     ]
