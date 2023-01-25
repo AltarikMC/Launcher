@@ -23,7 +23,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "start": "electron-forge start",
-    "test": "electron . --inspect",
+    "test": "electron-forge start --enable-logging --inspect-electron",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish"
