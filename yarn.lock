@@ -2481,10 +2481,10 @@ ms@^2.0.0, ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-msmc@^3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/msmc/-/msmc-3.1.3.tgz#0d89d01eebbcabac1d4382715c5641f016e23595"
-  integrity sha512-qYTE8XciN/TgxwrCfxH3tJriK6qI6Vn0KLTtAXSKeKX9xa4jkD3Mo9cyhisDReY2LQIUvBa/nEynz1qY9WWwew==
+msmc@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/msmc/-/msmc-3.1.4.tgz#2a60cc22445f5ff44115fbe295aff7938b4088a9"
+  integrity sha512-3UHLlZXtFKRdJ3g6lb0vevC9RpObOE2+oiIS0SWLR2l75I60eXp6mF2XnFoZ7MgSeOmlwcU+lEGuIm3fT9UErg==
   dependencies:
     node-fetch "2.x"
 
