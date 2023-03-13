@@ -44,7 +44,7 @@
     "hasha": "^5.2.2",
     "izitoast": "^1.4.0",
     "minecraft-launcher-core": "^3.16.18",
-    "msmc": "^3.1.4",
+    "msmc": "^4.0.3",
     "node-fetch": "^2.6.9",
     "vue": "^3.2.47"
   },
