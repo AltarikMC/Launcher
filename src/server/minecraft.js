@@ -1,21 +1,21 @@
-const isDev = require('electron-is-dev')
-const { Client, Authenticator } = require('minecraft-launcher-core')
-const fetch = require('node-fetch').default
-const hasha = require('hasha')
-const fs = require('fs')
-const { join } = require('path')
+const isDev = require("electron-is-dev")
+const { Authenticator, Client } = require("minecraft-launcher-core")
+const fetch = require("node-fetch").default
+const hasha = require("hasha")
+const fs = require("fs")
+const { join } = require("path")
 const constants = require("constants")
-const zip = require('extract-zip')
-const logger = require('electron-log')
-const { auth, lst } = require('msmc')
-const decompress = require('decompress')
-const decompressTar = require('decompress-targz')
+const zip = require("extract-zip")
+const logger = require("electron-log")
+const { auth, lst } = require("msmc")
+const decompress = require("decompress")
+const decompressTar = require("decompress-targz")
 
 
 class Minecraft {
 
-    appdata = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")
-    localappdata = process.env.LOCALAPPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support/' : process.env.HOME + "/.config")
+    appdata = process.env.APPDATA || (process.platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.local/share")
+    localappdata = process.env.LOCALAPPDATA || (process.platform === "darwin" ? process.env.HOME + "/Library/Application Support/" : process.env.HOME + "/.config")
     minecraftpath = join(this.appdata, ".altarik")
     launcher = new Client()
     auth = null
@@ -34,7 +34,7 @@ class Minecraft {
         if(isDev || password.trim() !== "") {
             this.auth = Authenticator.getAuth(username, password)
             this.auth.then(v => {
-                win.loadFile('src/client/index.html')
+                win.loadFile("src/client/index.html")
             }).catch(() => {
                 event.sender.send("loginError")
                 logger.error("[MJ login] User haven't purchase the game")
@@ -54,7 +54,7 @@ class Minecraft {
             xboxManager.getMinecraft().then(async token => {
                 if(!token.isDemo()) {
                     this.auth = token.mclc()
-                    win.loadFile('src/client/index.html')
+                    win.loadFile("src/client/index.html")
                 } else {
                     event.sender.send("loginError")
                     logger.error("[MS login] User haven't purchase the game")
@@ -95,24 +95,24 @@ class Minecraft {
                         this.close(event, -1)
                     }
                 })
-                this.launcher.on('debug', (e) => logger.info(`debug: ${e}`));
-                this.launcher.on('data', (e) => logger.info(`data: ${e}`));
-                this.launcher.on('progress', (e) => {
+                this.launcher.on("debug", (e) => logger.info(`debug: ${e}`));
+                this.launcher.on("data", (e) => logger.info(`data: ${e}`));
+                this.launcher.on("progress", (e) => {
                     event.sender.send("progress", e)
                     logger.info(`progress ${e.type} :${e.task} / ${e.total}`)
                 })
-                this.launcher.on('arguments', (e) => {
+                this.launcher.on("arguments", (e) => {
                     event.sender.send("launch", e)
                     logger.info("launching the game")
                     logger.info(e)
                 })
-                this.launcher.on('close', (e) => {
+                this.launcher.on("close", (e) => {
                     this.close(event, e)
                 })
             }).catch((err) => {
                 this.showNotification("Impossible de lancer le jeu", "Erreur inconnue", "error")
                 event.sender.send("close", 1)
-                logger.error('Unable to launch the game')
+                logger.error("Unable to launch the game")
                 logger.error(err)
             })
         }).catch(err => {
@@ -121,9 +121,8 @@ class Minecraft {
             logger.warn("Unable to install java")
             logger.warn(err)
         })
-        
     }
-    
+
     close(event, code) {
         event.sender.send("close", code)
         if(code !== 0) {
@@ -144,24 +143,24 @@ class Minecraft {
                     if(fs.existsSync(file))
                         fs.rmSync(file)
                     fs.writeFileSync(file, JSON.stringify(data))
-                    event.sender.send('modsInformations', this.extractModsInformations(data))
+                    event.sender.send("modsInformations", this.extractModsInformations(data))
                 }).catch(err => {
-                    event.sender.send('modsInformations', this.extractModsFromFileSystem())
+                    event.sender.send("modsInformations", this.extractModsFromFileSystem())
                     logger.warn(err)
                     logger.warn("An error occured while trying to connect to server")
                 })
             } else {
                 logger.warn("Unable to connect to server")
                 logger.warn(err)
-                event.sender.send('modsInformations', this.extractModsFromFileSystem())
+                event.sender.send("modsInformations", this.extractModsFromFileSystem())
             }
         }).catch(err => {
             logger.warn("Unable to connect to server")
             logger.warn(err)
-            event.sender.send('modsInformations', this.extractModsFromFileSystem())
+            event.sender.send("modsInformations", this.extractModsFromFileSystem())
         })
     }
-    
+
     extractModsFromFileSystem() {
         let filepath = join(this.localappdata, "altarik-launcher/data/launcher.json")
         if(fs.existsSync(filepath)) {
@@ -177,14 +176,13 @@ class Minecraft {
         } else {
             return null;
         }
-        
     }
-    
+
     extractModsInformations(json) {
         this.modsList = json.chapters
         return this.modsList
     }
-    
+
     async extractMods(chapterId, event) {
         return new Promise(async (resolve, reject) => {
             const modsFolder = join(this.minecraftpath, "mods")
@@ -204,7 +202,7 @@ class Minecraft {
                         const path = join(modpackFolder, `modpack${j}.zip`)
                         try {
                             fs.accessSync(path, constants.W_OK)
-                            let sha1 = await hasha.fromFile(path, {algorithm: 'sha1'})
+                            let sha1 = await hasha.fromFile(path, {algorithm: "sha1"})
                             if(sha1 === chapter.modspack.sha1sum[j]) {
                                 await this.unzipMods(path).catch(err => {
                                     reject(err)
@@ -227,13 +225,11 @@ class Minecraft {
                     }
                     resolve(chapter)
                     return
-                    
                 }
             }
             reject("didn't found the correct chapter" + chapter)
         })
     }
-    
     downloadMods(link, path) {
         return new Promise((resolve, reject) => {
             fetch(link).then(response => {
@@ -257,7 +253,7 @@ class Minecraft {
             })
         })
     }
-    
+
     async unzipMods(zipLocation, outLocation=this.minecraftpath) {
         return new Promise(async (resolve, reject) => {
             logger.info(`unzipping ${zipLocation} file to ${outLocation}`)
@@ -267,9 +263,9 @@ class Minecraft {
                 logger.error(`failed to unzip file`)
                 reject(err)
             })
-            
+
         })
-        
+
     }
 
     async extractTar(tarLocation, outLocation=this.microsoftpath) {
@@ -286,9 +282,8 @@ class Minecraft {
                 reject(e)
             })
         })
-        let data
     }
-    
+
     async downloadAndExtractMods(link, path) {
         return new Promise(async (resolve, reject) => {
             this.downloadMods(link, path).then(() => {
@@ -300,14 +295,13 @@ class Minecraft {
             }).catch(err => {
                 reject(err)
             })
-            
         })
     }
 
     async extractJava(chapterId, event) {
         return new Promise(async (resolve, reject) => {
             const runtime = join(this.minecraftpath, "runtime")
-            if(this.modsList[chapterId].java.platform[process.platform] !== undefined 
+            if(this.modsList[chapterId].java.platform[process.platform] !== undefined
                 && this.modsList[chapterId].java.platform[process.platform][process.arch] !== undefined) {
                 event.sender.send("progress", {type: "java", task: 0, total: 1 })
                 const infos = this.modsList[chapterId].java.platform[process.platform][process.arch]
@@ -319,17 +313,17 @@ class Minecraft {
                 if(!fs.existsSync(downloadFolder))
                     fs.mkdirSync(downloadFolder, { recursive: true })
                 if(fs.existsSync(downloadFile)) {
-                    let sha1 = await hasha.fromFile(downloadFile, {algorithm: 'sha256'})
+                    let sha1 = await hasha.fromFile(downloadFile, {algorithm: "sha256"})
                     if(sha1 === infos.sha256sum) {
                         await this.extractJavaArchive(downloadFile, runtime)
-                        let filename = process.platform == 'win32' ? 'java.exe' : 'java'
-                        resolve(join(jre, 'bin', filename))
+                        let filename = process.platform == "win32" ? "java.exe" : "java"
+                        resolve(join(jre, "bin", filename))
                     } else {
                         logger.warn(`java sha256sum ${sha1} don't correspond to ${infos.sha256sum}`)
-                        await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, 'bin', 'java.exe'))).catch(err => reject(err))
+                        await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, "bin", "java.exe"))).catch(err => reject(err))
                     }
                 } else {
-                    await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, 'bin', 'java.exe'))).catch(err => reject(err))
+                    await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, "bin", "java.exe"))).catch(err => reject(err))
                 }
                 event.sender.send("progress", {type: "java", task: 1, total: 1 })
             } else {
@@ -347,7 +341,8 @@ class Minecraft {
                     logger.info(`File unzipped`)
                     resolve()
                 }).catch(err => {
-                    logger.info(`Failed to unzip ${join(downloadFolder, `${infos.name}.zip`)}`)
+                    let join_s = join(downloadFolder, `${infos.name}.zip`)
+                    logger.info(`Failed to unzip ${join_s}`)
                     reject(err)
                 })
             }).catch(err => {
@@ -358,7 +353,7 @@ class Minecraft {
     }
 
     async extractJavaArchive(zipLocation, outLocation) {
-        if(process.platform === 'win32') {
+        if(process.platform === "win32") {
             await this.unzipMods(zipLocation, outLocation)
         } else {
             await this.extractTar(zipLocation, outLocation)
@@ -367,9 +362,9 @@ class Minecraft {
 
     invalidateData(event) {
         logger.info("invalidate game data...")
-        const assets = join(this.minecraftpath, 'assets')
-        const librairies = join(this.minecraftpath,'libraries')
-        const natives = join(this.minecraftpath, 'natives')
+        const assets = join(this.minecraftpath, "assets")
+        const librairies = join(this.minecraftpath,"libraries")
+        const natives = join(this.minecraftpath, "natives")
         if(fs.existsSync(assets))
             fs.rmdirSync(assets, { recursive: true })
         if(fs.existsSync(librairies))
