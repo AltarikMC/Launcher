@@ -7,7 +7,7 @@ const { join } = require('path')
 const constants = require("constants")
 const zip = require('extract-zip')
 const logger = require('electron-log')
-const msmc = require('msmc')
+const { auth, lst } = require('msmc')
 const decompress = require('decompress')
 const decompressTar = require('decompress-targz')
 
@@ -49,34 +49,28 @@ class Minecraft {
      * Used to login through a Microsoft account
      */
     microsoftLogin(event, win) {
-        msmc.fastLaunch("electron",
-        (update) => {
-            switch (update.type) {
-                case "Error":
-                    event.sender.send("loginError")
-                    this.showNotification("Une erreur est survenue", update.data, "error")
-                    logger.error("MC-Account error:", update.data);
-                  break;
-              }
-        }).then(result => {
-            if(msmc.errorCheck(result)) {
-                event.sender.send("loginError")
-                logger.error(result.reason)
-                this.showNotification("Erreur de connexion", result.reason, "error")
-            } else {
-                if(!msmc.isDemoUser(result)) {
-                    this.auth = msmc.getMCLC().getAuth(result)
+        const authManager = new auth("select_account")
+        authManager.launch("electron").then(async xboxManager => {
+            xboxManager.getMinecraft().then(async token => {
+                if(!token.isDemo()) {
+                    this.auth = token.mclc()
                     win.loadFile('src/client/index.html')
                 } else {
                     event.sender.send("loginError")
                     logger.error("[MS login] User haven't purchase the game")
                     this.showNotification("Erreur de connexion", "Vous ne possèdez pas de licence Minecraft sur ce compte", "error")
                 }
-            }
-        }).catch(reason => {
+            }).catch(err => {
+                event.sender.send("loginError")
+                logger.error("[MS login] " + lst(err))
+                this.showNotification("Erreur de connexion à Mojang", lst(err), "error")
+            })
+        }).catch(err => {
             event.sender.send("loginError")
-            logger.error(reason)
-            this.showNotification("Erreur de connexion", "Erreur inconnue", "error")
+            if(err != "error.gui.closed") {
+                logger.error("[MS login] " + lst(err))
+                this.showNotification("Une erreur de connexion à Xbox est survenue", lst(err), "error")
+            }
         })
     }
 
