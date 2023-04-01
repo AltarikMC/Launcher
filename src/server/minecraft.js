@@ -7,7 +7,7 @@ const { join } = require("path")
 const constants = require("constants")
 const zip = require("extract-zip")
 const logger = require("electron-log")
-const { auth, lst } = require("msmc")
+const { Auth, lst } = require("msmc")
 const decompress = require("decompress")
 const decompressTar = require("decompress-targz")
 
@@ -49,7 +49,7 @@ class Minecraft {
      * Used to login through a Microsoft account
      */
     microsoftLogin(event, win) {
-        const authManager = new auth("select_account")
+        const authManager = new Auth("select_account")
         authManager.launch("electron").then(async xboxManager => {
             xboxManager.getMinecraft().then(async token => {
                 if(!token.isDemo()) {
