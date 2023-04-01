@@ -2481,10 +2481,10 @@ ms@^2.0.0, ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-msmc@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/msmc/-/msmc-4.0.5.tgz#8451ff18929394cb28dfe680d69b70eebd09b074"
-  integrity sha512-HT3OY8IAphEQqlDV1mS4ccoffIpE6nCWChmIL7Uxuc2iL3HQinb8ULq8q8jfDRrIUobtI5dqVlG3PlrQa/4s7g==
+msmc@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/msmc/-/msmc-4.1.0.tgz#f204bafaa9d37fd5821a6bc7cb4cc14cde282a52"
+  integrity sha512-1LW0GccbQcNChxwFHwIBxVoZCQbA/UfFE/ykU0AXLg7uhO0BhCyBV9a5AbiR+C23N7ECZgxKbtub246RwhiZCA==
   dependencies:
     node-fetch "2.x"
     tslib "^2.4.0"
