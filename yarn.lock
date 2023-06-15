@@ -86,13 +86,22 @@
     fs-extra "^10.0.0"
     which "^2.0.2"
 
-"@electron-forge/maker-squirrel@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.1.1.tgz#34bcaf25f3872d8394826ab9237ad2716111eb06"
-  integrity sha512-YA7EY7He5FGGiwNlcOLSHwtrDFmq1XZ+0sKHy/xLu0Q8JZzo15WQ0vwJJEIAxL8KAtjwfhyV5VAWI6w0elr/jg==
+"@electron-forge/maker-base@6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-base/-/maker-base-6.2.0.tgz#ee76fe5c4c240dad033dd9a50070f626e48d05f2"
+  integrity sha512-GMQjKokarIkq9o1PGbj8brZ9soprGpelvkvp+Kd7kMfIt1RCqbv0dO8BMzvJYB4v0t6Qb8LrZ51XSxYn00cTTw==
   dependencies:
-    "@electron-forge/maker-base" "6.1.1"
-    "@electron-forge/shared-types" "6.1.1"
+    "@electron-forge/shared-types" "6.2.0"
+    fs-extra "^10.0.0"
+    which "^2.0.2"
+
+"@electron-forge/maker-squirrel@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.2.0.tgz#071a60d2da4dc607e511894ebb79f23eb598c540"
+  integrity sha512-pobpeZAzKOFA+qOgaCghe31BoJW650FPqQBMu99kUEIx8vqMbdEtrLROFtkbR6MMVWwHE/ITRhY+n1RHBzCopA==
+  dependencies:
+    "@electron-forge/maker-base" "6.2.0"
+    "@electron-forge/shared-types" "6.2.0"
     fs-extra "^10.0.0"
   optionalDependencies:
     electron-winstaller "^5.0.0"
@@ -141,6 +150,15 @@
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.1.1.tgz#f08cf783bf0a086331784b9f13110b4fade84846"
   integrity sha512-sFQQ2ldMq5mlNv4m7lZOZLf9aOn6MLNc8QVeTzOBQ+psxI3mVTDjb+/Lhs/jU8dm2igVfEqAmlj57Gi+C4u4Vw==
+  dependencies:
+    "@electron/rebuild" "^3.2.10"
+    electron-packager "^17.1.1"
+    listr2 "^5.0.3"
+
+"@electron-forge/shared-types@6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.2.0.tgz#37211dc2da8cb90556fbf81ffe01df80d9ce06a4"
+  integrity sha512-IWCvfQXNvHz8GJELu9oihfOrv74Jj2/c2pP1FJfSdMN2WggbQgI/I8c18TcacyBPK//jlc+DeuyJamocAkgPyQ==
   dependencies:
     "@electron/rebuild" "^3.2.10"
     electron-packager "^17.1.1"
