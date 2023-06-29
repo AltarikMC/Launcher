@@ -45,7 +45,7 @@
     "izitoast": "^1.4.0",
     "minecraft-launcher-core": "^3.16.18",
     "msmc": "^4.1.0",
-    "node-fetch": "^2.6.9",
+    "node-fetch": "^2.6.12",
     "vue": "^3.2.47"
   },
   "config": {
