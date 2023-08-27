@@ -320,10 +320,10 @@ class Minecraft {
                         resolve(join(jre, "bin", filename))
                     } else {
                         logger.warn(`java sha256sum ${sha1} don't correspond to ${infos.sha256sum}`)
-                        await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, "bin", "java.exe"))).catch(err => reject(err))
+                        await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, "bin", process.platform === "win32" ? "java.exe" : "java"))).catch(err => reject(err))
                     }
                 } else {
-                    await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, "bin", "java.exe"))).catch(err => reject(err))
+                    await this.downloadAndExtractJava(infos, downloadFolder, runtime).then(() => resolve(join(jre, "bin", process.platform === "win32" ? "java.exe" : "java"))).catch(err => reject(err))
                 }
                 event.sender.send("progress", {type: "java", task: 1, total: 1 })
             } else {
