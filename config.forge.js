@@ -34,7 +34,8 @@ module.exports = {
                     name: 'Launcher'
                 },
                 preRelease: false,
-                draft: true
+                draft: true,
+                tagPrefix: ''
             }
         }
     ]
