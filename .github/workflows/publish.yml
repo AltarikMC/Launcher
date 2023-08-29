@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: 18.x
         cache: 'yarn'
-        architecture: 'x86'
+        architecture: 'x64'
     - name: Install dependencies
       run: yarn
     - name: Build and publish package
