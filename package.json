@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "homepage": "https://altarik.fr/",
@@ -30,10 +30,11 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.4.1",
-    "@electron-forge/maker-squirrel": "^6.4.1",
-    "@electron-forge/maker-zip": "^6.4.1",
-    "@electron-forge/publisher-github": "^6.4.1",
-    "electron": "^26.1.0"
+    "@electron-forge/maker-squirrel": "^6.4.2",
+    "@electron-forge/maker-zip": "^6.4.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+    "@electron-forge/publisher-github": "^6.4.2",
+    "electron": "^26.2.4"
   },
   "dependencies": {
     "decompress": "^4.2.1",

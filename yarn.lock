@@ -87,27 +87,44 @@
     fs-extra "^10.0.0"
     which "^2.0.2"
 
-"@electron-forge/maker-squirrel@^6.4.1":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.4.1.tgz#6b972d9fb1d79eac3da97a041c05c903a1a6f195"
-  integrity sha512-si2gMiX4pm6IHs3dACMAxLYf5XfhDA7ZabKM6hrvhHsSKHYUysZuJ6KYbBnBE9OI98Q43xoivlzZfPuEL71Z3w==
+"@electron-forge/maker-base@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-base/-/maker-base-6.4.2.tgz#0403f12773f816089f37c42792025162e067defe"
+  integrity sha512-zW3GH+LqDK9nxQmQEFkJPR8RqiX0lVk6a4mXll3ngujN1fPevO4ivUAWmaEVeC1dH/hXbN7s9m0S6a37MigftQ==
   dependencies:
-    "@electron-forge/maker-base" "6.4.1"
-    "@electron-forge/shared-types" "6.4.1"
+    "@electron-forge/shared-types" "6.4.2"
+    fs-extra "^10.0.0"
+    which "^2.0.2"
+
+"@electron-forge/maker-squirrel@^6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.4.2.tgz#92d44fc6cadf6ff23c65dc901c8044d7c8b53f95"
+  integrity sha512-ukK3RcFaBrQXUzR52PsHxfwDq5XKSnj6A1kkXiyHWqgj+HIU97prBScBb5JRtasPvYN+nDdQO2vlInsLaqcx9Q==
+  dependencies:
+    "@electron-forge/maker-base" "6.4.2"
+    "@electron-forge/shared-types" "6.4.2"
     fs-extra "^10.0.0"
   optionalDependencies:
     electron-winstaller "^5.0.0"
 
-"@electron-forge/maker-zip@^6.4.1":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.4.1.tgz#a70eac920a06e4c9548d584b0596bec5d34ed6fb"
-  integrity sha512-ENDNjzhaM5zSVGzuIVnBl6yzLsdDr9R8b6DtLEpTE417rnxd1z16i8Y7GBZSIrEWQYn3HSL2SjDhAzSKQAmXwA==
+"@electron-forge/maker-zip@^6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.4.2.tgz#f8a064bde04bfc73756716ed4d7d62bdd455de28"
+  integrity sha512-k2nfhhnxcYbUS7rCKCisuqEalxtH9l73+lrtfL0aQZiE/BLbDXyNckDIDOPvX0tBEg62nVzUdJonZwOhZVvAMw==
   dependencies:
-    "@electron-forge/maker-base" "6.4.1"
-    "@electron-forge/shared-types" "6.4.1"
+    "@electron-forge/maker-base" "6.4.2"
+    "@electron-forge/shared-types" "6.4.2"
     cross-zip "^4.0.0"
     fs-extra "^10.0.0"
     got "^11.8.5"
+
+"@electron-forge/plugin-auto-unpack-natives@^6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-auto-unpack-natives/-/plugin-auto-unpack-natives-6.4.2.tgz#8c8b0066d352b2b5983c4ca3b47818b7b8f9bc1c"
+  integrity sha512-AXmPQc2nUFuh/xFC+Qsebg/eg3M+5GQV6MOzMvTBZ9N1w49XtZbtvEGAdISnZWERExNRcwH+j+zuSAGtm6Y2Yw==
+  dependencies:
+    "@electron-forge/plugin-base" "6.4.2"
+    "@electron-forge/shared-types" "6.4.2"
 
 "@electron-forge/plugin-base@6.4.1":
   version "6.4.1"
@@ -116,6 +133,13 @@
   dependencies:
     "@electron-forge/shared-types" "6.4.1"
 
+"@electron-forge/plugin-base@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-base/-/plugin-base-6.4.2.tgz#65054f841728688cc31edeb94479e6bd4bc07782"
+  integrity sha512-g6AAtQ7fZ94djBmwcnWasQ8xgaNVNjgaQ00GLK0NkmQ7n0PNbsnlMDuw9vdfTiL6WaLg5nxNSYc9bFJP/rtyeA==
+  dependencies:
+    "@electron-forge/shared-types" "6.4.2"
+
 "@electron-forge/publisher-base@6.4.1":
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/@electron-forge/publisher-base/-/publisher-base-6.4.1.tgz#b5997b1ea61ba177edfc5e824419bef5d51d092e"
@@ -123,13 +147,20 @@
   dependencies:
     "@electron-forge/shared-types" "6.4.1"
 
-"@electron-forge/publisher-github@^6.4.1":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-github/-/publisher-github-6.4.1.tgz#9d099dd568ce8be76d0a67d09e98e95eb050fb5b"
-  integrity sha512-gfk+NXstZol6dL3G5VX/tnXG3Ja+fjnGH21HPbmCKje7B6a7mHqezkn/rS7zxMz9QHybI98RRjlP4q2JudVWYg==
+"@electron-forge/publisher-base@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-base/-/publisher-base-6.4.2.tgz#89a5a85a889bfc96ae760b801a91da39f212f6b5"
+  integrity sha512-Tnf9O8MFzdT1gsb5EDDaQUoslt7gUuUywtsr+lT/fpBlBQbei2fvioTwvZ1Q1cmsKnld7XhRh6unfgdWLTZzgw==
   dependencies:
-    "@electron-forge/publisher-base" "6.4.1"
-    "@electron-forge/shared-types" "6.4.1"
+    "@electron-forge/shared-types" "6.4.2"
+
+"@electron-forge/publisher-github@^6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-github/-/publisher-github-6.4.2.tgz#34ead6fea30a39be83a22aff0cb77dc83c481503"
+  integrity sha512-SUb2JxU8hHx8vbc1UA97lcs3ChyDeiTzx8Q5/DtooC/2sSqD85bct5ewLaANRXK/58cBVpyHMgo4uiq7mlyQWg==
+  dependencies:
+    "@electron-forge/publisher-base" "6.4.2"
+    "@electron-forge/shared-types" "6.4.2"
     "@octokit/core" "^3.2.4"
     "@octokit/plugin-retry" "^3.0.9"
     "@octokit/rest" "^18.0.11"
@@ -142,6 +173,15 @@
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.4.1.tgz#1f36f4a2bab30d856118a727291893c1e12bcd0e"
   integrity sha512-Nr4ZLBzXX7ycqkNYJ+wQ2lCttQfkTN1OPOuY1jEGESNjCqcJ/apZszaLurVb5UwKucpk3/CzRGtg9DH4GIEEkw==
+  dependencies:
+    "@electron/rebuild" "^3.2.10"
+    electron-packager "^17.1.2"
+    listr2 "^5.0.3"
+
+"@electron-forge/shared-types@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.4.2.tgz#ffc25a21d1bc7e6cb8fcf8dc1e1767c6a8c52d02"
+  integrity sha512-DKOUMsdTXZIq8XiqY0Hi3C+dam/JKUnvfBjwcUeyZqPdgEE1qry8xZmmjorXuLrRf1Jq8rhxYGQInSK4af0QYw==
   dependencies:
     "@electron/rebuild" "^3.2.10"
     electron-packager "^17.1.2"
@@ -1309,10 +1349,10 @@ electron-winstaller@^5.0.0:
     lodash.template "^4.2.2"
     temp "^0.9.0"
 
-electron@^26.1.0:
-  version "26.1.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-26.1.0.tgz#d26fefba5a5c68069b07a117d87aee1c4e5d172d"
-  integrity sha512-qEh19H09Pysn3ibms5nZ0haIh5pFoOd7/5Ww7gzmAwDQOulRi8Sa2naeueOyIb1GKpf+6L4ix3iceYRAuA5r5Q==
+electron@^26.2.4:
+  version "26.2.4"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-26.2.4.tgz#36616b2386b083c13ae9188f2d8ccf233c23404a"
+  integrity sha512-weMUSMyDho5E0DPQ3breba3D96IxwNvtYHjMd/4/wNN3BdI5s3+0orNnPVGJFcLhSvKoxuKUqdVonUocBPwlQA==
   dependencies:
     "@electron/get" "^2.0.0"
     "@types/node" "^18.11.18"

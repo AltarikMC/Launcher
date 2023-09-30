@@ -6,8 +6,15 @@ module.exports = {
         packageName: "altarik-launcher",
         name: "Altarik Launcher",
         productName: "altarik-launcher",
-        icon: path.resolve(__dirname, 'icon.ico')
+        icon: path.resolve(__dirname, 'icon.ico'),
+        asar: true,
     },
+    plugins: [
+        {
+            name: '@electron-forge/plugin-auto-unpack-natives',
+            config: {}
+        }
+    ],
     makers: [
         {
             name: "@electron-forge/maker-squirrel",

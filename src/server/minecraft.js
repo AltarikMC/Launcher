@@ -21,12 +21,14 @@ class Minecraft {
     auth = null
     modsList = undefined
     showNotification = undefined
+    modsInformationsEndpoint = "https://launcher.altarik.fr"
 
     setShowNotification(showNotification) {
         this.showNotification = showNotification
     }
 
     /**
+     * @deprecated Mojang removed this method of authentification
      * Used to login through Mojang account
      */
     login(event, win, username, password) {
@@ -133,7 +135,7 @@ class Minecraft {
     }
 
     getModsInformations(event) {
-        fetch("https://altarik.fr/launcher.json").then(response => {
+        fetch(this.modsInformationsEndpoint).then(response => {
             if(response.ok) {
                 response.json().then(data => {
                     let folder = join(this.localappdata, "altarik-launcher", "data")
