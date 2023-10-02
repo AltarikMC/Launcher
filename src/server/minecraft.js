@@ -56,6 +56,7 @@ class Minecraft {
             xboxManager.getMinecraft().then(async token => {
                 if(!token.isDemo()) {
                     this.auth = token.mclc()
+                    logger.info("[MS login] User has been connected successfully to them account")
                     win.loadFile("src/client/index.html")
                 } else {
                     event.sender.send("loginError")
