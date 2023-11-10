@@ -56,6 +56,7 @@ class Minecraft {
             xboxManager.getMinecraft().then(async token => {
                 if(!token.isDemo()) {
                     this.auth = token.mclc()
+                    logger.info("[MS login] User has been connected successfully to them account")
                     win.loadFile("src/client/index.html")
                 } else {
                     event.sender.send("loginError")
@@ -367,12 +368,15 @@ class Minecraft {
         const assets = join(this.minecraftpath, "assets")
         const librairies = join(this.minecraftpath,"libraries")
         const natives = join(this.minecraftpath, "natives")
+        const versions = join(this.minecraftpath, "versions")
         if(fs.existsSync(assets))
-            fs.rmdirSync(assets, { recursive: true })
+            fs.rmSync(assets, { recursive: true })
         if(fs.existsSync(librairies))
-            fs.rmdirSync(librairies, { recursive: true })
+            fs.rmSync(librairies, { recursive: true })
         if(fs.existsSync(natives))
-            fs.rmdirSync(natives, { recursive: true })
+            fs.rmSync(natives, { recursive: true })
+        if(fs.existsSync(versions))
+            fs.rmSync(versions, { recursive: true })
         logger.info("Game data invalidated")
         event.sender.send("invalidated")
     }

@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.0.7",
+  "version": "2.1.0",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "homepage": "https://altarik.fr/",
@@ -29,25 +29,25 @@
     "publish": "electron-forge publish"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.4.1",
+    "@electron-forge/cli": "^6.4.2",
     "@electron-forge/maker-squirrel": "^6.4.2",
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "@electron-forge/publisher-github": "^6.4.2",
-    "electron": "^26.2.4"
+    "electron": "^27.0.4"
   },
   "dependencies": {
     "decompress": "^4.2.1",
     "electron-is-dev": "^2.0.0",
-    "electron-log": "^4.4.8",
+    "electron-log": "^5.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "extract-zip": "^2.0.1",
     "hasha": "^5.2.2",
     "izitoast": "^1.4.0",
-    "minecraft-launcher-core": "^3.17.2",
+    "minecraft-launcher-core": "^3.17.3",
     "msmc": "^4.1.0",
     "node-fetch": "^2.7.0",
-    "vue": "^3.3.4"
+    "vue": "^3.3.8"
   },
   "config": {
     "forge": "./config.forge.js"
