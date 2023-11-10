@@ -34,7 +34,7 @@
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
     "@electron-forge/publisher-github": "^6.4.2",
-    "electron": "^27.0.0"
+    "electron": "^27.0.4"
   },
   "dependencies": {
     "decompress": "^4.2.1",
@@ -47,7 +47,7 @@
     "minecraft-launcher-core": "^3.17.3",
     "msmc": "^4.1.0",
     "node-fetch": "^2.7.0",
-    "vue": "^3.3.4"
+    "vue": "^3.3.8"
   },
   "config": {
     "forge": "./config.forge.js"
