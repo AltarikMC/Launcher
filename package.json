@@ -42,7 +42,7 @@
     "electron-log": "^5.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "extract-zip": "^2.0.1",
-    "hasha": "^5.2.2",
+    "hasha": "^6.0.0",
     "izitoast": "^1.4.0",
     "minecraft-launcher-core": "^3.17.3",
     "msmc": "^4.1.0",
