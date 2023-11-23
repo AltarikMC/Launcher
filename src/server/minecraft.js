@@ -1,18 +1,20 @@
-const isDev = require("electron-is-dev")
-const { Authenticator, Client } = require("minecraft-launcher-core")
-const fetch = require("node-fetch").default
-const hasha = require("hasha")
-const fs = require("fs")
-const { join } = require("path")
-const constants = require("constants")
-const zip = require("extract-zip")
-const logger = require("electron-log")
-const { Auth, lst } = require("msmc")
-const decompress = require("decompress")
-const decompressTar = require("decompress-targz")
+import isDev from "electron-is-dev"
+import mlc from "minecraft-launcher-core"
+import fetch from "node-fetch"
+import { hashFile } from "hasha"
+import fs from "fs"
+import { join } from "path"
+import constants from "constants"
+import zip from "extract-zip"
+import logger from "electron-log"
+import { Auth, lst } from "msmc"
+import decompress from "decompress"
+import decompressTar from "decompress-targz"
+
+const { Authenticator, Client } = mlc
 
 
-class Minecraft {
+export default class Minecraft {
 
     appdata = process.env.APPDATA || (process.platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.local/share")
     localappdata = process.env.LOCALAPPDATA || (process.platform === "darwin" ? process.env.HOME + "/Library/Application Support/" : process.env.HOME + "/.config")
@@ -205,7 +207,7 @@ class Minecraft {
                         const path = join(modpackFolder, `modpack${j}.zip`)
                         try {
                             fs.accessSync(path, constants.W_OK)
-                            let sha1 = await hasha.fromFile(path, {algorithm: "sha1"})
+                            let sha1 = await hashFile(path, {algorithm: "sha1"})
                             if(sha1 === chapter.modspack.sha1sum[j]) {
                                 await this.unzipMods(path).catch(err => {
                                     reject(err)
@@ -316,7 +318,7 @@ class Minecraft {
                 if(!fs.existsSync(downloadFolder))
                     fs.mkdirSync(downloadFolder, { recursive: true })
                 if(fs.existsSync(downloadFile)) {
-                    let sha1 = await hasha.fromFile(downloadFile, {algorithm: "sha256"})
+                    let sha1 = await hashFile(downloadFile, {algorithm: "sha256"})
                     if(sha1 === infos.sha256sum) {
                         await this.extractJavaArchive(downloadFile, runtime)
                         let filename = process.platform == "win32" ? "java.exe" : "java"
@@ -381,5 +383,3 @@ class Minecraft {
         event.sender.send("invalidated")
     }
 }
-
-module.exports = new Minecraft

@@ -1,9 +1,10 @@
-const isDev = require('electron-is-dev')
-const fetch = require('node-fetch').default
-const pkg = require('../../package.json')
+import isDev from 'electron-is-dev'
+import fetch from 'node-fetch'
+import pkg from "../../package.json" assert { type: "json" }
+
 const server = 'https://update.electronjs.org'
 
-class Updater {
+export default class Updater {
 
     constructor(app, autoUpdater, dialog, logger, ipcMain) {
         this.app = app
@@ -94,8 +95,4 @@ class Updater {
         })
     }
 
-}
-
-module.exports = {
-    Updater
 }

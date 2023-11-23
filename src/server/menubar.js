@@ -1,21 +1,9 @@
-let win;
-
-function setWindow(browserWindow) {
-    win = browserWindow;
-}
-
-function minimizeWindow(browserWindow = win) {
+export function minimizeWindow(browserWindow) {
 	if(browserWindow.minimizable) {
         browserWindow.minimize()
 	}
 }
   
-function closeWindow(browserWindow = win) {
+export function closeWindow(browserWindow) {
     browserWindow.close()
-}
-
-module.exports = {
-    setWindow,
-    minimizeWindow,
-    closeWindow
 }

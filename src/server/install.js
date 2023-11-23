@@ -1,4 +1,4 @@
-function handleSquirrelEvent(app) {
+export default function handleSquirrelEvent(app) {
     if (process.argv.length === 1) {
       return false;
     }
@@ -45,7 +45,3 @@ function handleSquirrelEvent(app) {
         return true;
     }
   }
-
-module.exports = {
-    handleSquirrelEvent
-}
