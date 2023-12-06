@@ -4,8 +4,7 @@ module.exports = {
     es2021: true
   },
   extends: [
-    'standard',
-    'plugin:vue/vue3-essential'
+    'standard'
   ],
   overrides: [
     {
@@ -24,9 +23,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: [
-    'vue'
-  ],
+  plugins: [],
   rules: {
   }
 }
