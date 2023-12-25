@@ -1548,10 +1548,10 @@ electron-is-dev@^2.0.0:
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-2.0.0.tgz#833487a069b8dad21425c67a19847d9064ab19bd"
   integrity sha512-3X99K852Yoqu9AcW50qz3ibYBWY79/pBhlMCab8ToEWS48R0T9tyxRiQhwylE7zQdXrMnx2JKqUJyMPmt5FBqA==
 
-electron-log@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-5.0.0.tgz#b5fab83500fce1c61ec7493701f5e228b752d2e2"
-  integrity sha512-vB3akupmQvA8jAyNL9rULZtf6WoP8vsabjXsRtiqXS6/D37SwN/4LEyj4JD+9Bv6xoTcx/LrVnsIKEEWdq5ClQ==
+electron-log@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-5.0.2.tgz#6dae26cb7fce9feaa4605d575e02fee75da7b085"
+  integrity sha512-uzUXpUGZ5lJeCEIn4Hrxt6zQWiURu+EbFyTul0Y81huc6UrvWXIOMx4WxNdaGJYWPk9YLWrz2dQf3894MoZKXw==
 
 electron-squirrel-startup@^1.0.0:
   version "1.0.0"
