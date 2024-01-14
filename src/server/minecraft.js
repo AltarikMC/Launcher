@@ -184,11 +184,11 @@ export default class Minecraft {
   }
 
   async extractMods (chapterId, event) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const modsFolder = join(this.minecraftpath, 'mods')
-      const shaderFolder = join(this.minecraftpath, 'shaderpacks')
+      // const shaderFolder = join(this.minecraftpath, 'shaderpacks')
       if (fs.existsSync(modsFolder)) { fs.rmSync(modsFolder, { recursive: true }) }
-      if (fs.existsSync(shaderFolder)) { fs.rmSync(shaderFolder, { recursive: true }) }
+      // if (fs.existsSync(shaderFolder)) { fs.rmSync(shaderFolder, { recursive: true }) }
       for (const i in this.modsList) {
         if (Number(i) === chapterId) {
           const chapter = this.modsList[i]
@@ -199,25 +199,25 @@ export default class Minecraft {
             const path = join(modpackFolder, `modpack${j}.zip`)
             try {
               fs.accessSync(path, fs.W_OK)
-              const sha1 = await hashFile(path, { algorithm: 'sha1' })
-              if (sha1 === chapter.modspack.sha1sum[j]) {
-                await this.unzipMods(path).catch(err => {
-                  reject(err)
-                })
-              } else {
-                logger.warn(`sha1sum ${sha1} don't correspond to ${chapter.modspack.sha1sum[j]} of mods ${path}`)
-                await this.downloadAndExtractMods(chapter.modspack.mods[j], path).catch(err => {
-                  reject(err)
-                })
-              }
+              hashFile(path, { algorithm: 'sha1' }).then(sha1 => {
+                if (sha1 === chapter.modspack.sha1sum[j]) {
+                  this.unzipMods(path).catch(err => {
+                    reject(err)
+                  })
+                } else {
+                  logger.warn(`sha1sum ${sha1} don't correspond to ${chapter.modspack.sha1sum[j]} of mods ${path}`)
+                  this.downloadAndExtractMods(chapter.modspack.mods[j], path).catch(err => {
+                    reject(err)
+                  })
+                }
+              }).catch(err => {
+                reject(new Error('Can obtain md5 hash of file ' + path + ': ' + err))
+              })
               event.sender.send('progress', { type: 'mods', task: Number(j) + 1, total: chapter.modspack.mods.length })
             } catch (err) {
-              try {
-                await this.downloadAndExtractMods(chapter.modspack.mods[j], path)
-              } catch (e) {
-                reject(new Error({ err, e }))
-                return
-              }
+              this.downloadAndExtractMods(chapter.modspack.mods[j], path).catch(err => {
+                reject(err)
+              })
             }
           }
           resolve(chapter)
