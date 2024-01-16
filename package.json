@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "type": "module",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "decompress": "^4.2.1",
-    "electron-is-dev": "^2.0.0",
+    "electron-is-dev": "^3.0.1",
     "electron-log": "^5.0.3",
     "electron-squirrel-startup": "^1.0.0",
     "extract-zip": "^2.0.1",

@@ -69,6 +69,8 @@ export default class Minecraft {
       })
     }).catch(err => {
       event.sender.send('loginError')
+      logger.error('[MS login]' + lst(err))
+      this.showNotification('Une erreur de connexion à Xbox est survenue', lst(err), 'error')
       if (err !== 'error.gui.closed') {
         logger.error('[MS login] ' + lst(err))
         this.showNotification('Une erreur de connexion à Xbox est survenue', lst(err), 'error')
