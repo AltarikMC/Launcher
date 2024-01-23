@@ -63,7 +63,7 @@ ipcMain.on('checking-update', () => {
 
 function main () {
   if (electronStartup) {
-    install.handleSquirrelEvent(app)
+    install(app)
     app.quit()
     return
   }
