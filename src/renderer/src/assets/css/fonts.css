@@ -32,3 +32,8 @@
     font-family: "French-Press";
     src: url("../fonts/Frenchpress.otf") format("OpenType");
 }
+
+.material-icons{
+	position: relative;
+    top: 2px;
+}

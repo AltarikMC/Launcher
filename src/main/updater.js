@@ -1,4 +1,4 @@
-import isDev from 'electron-is-dev'
+import { is } from '@electron-toolkit/utils'
 import fetch from 'node-fetch'
 import pkg from '../../package.json' assert {type: 'json'}
 
@@ -19,7 +19,7 @@ export default class Updater {
     this.logger.info(`Node version: ${process.versions.node}`)
     this.logger.info(`platform: ${process.platform}`)
     this.logger.info(`arch: ${process.arch}`)
-    if (isDev) {
+    if (is.dev) {
       this.logger.info(`developpement version ${this.app.getVersion()}`)
       return
     }
@@ -33,7 +33,7 @@ export default class Updater {
   }
 
   checkForUpdates (win, showNotification) {
-    if (isDev) {
+    if (is.dev) {
       win.loadFile('src/client/login.html')
       return
     }
