@@ -1,10 +1,10 @@
+import ChildProcess from 'child_process'
+import path from 'path'
+
 export default function handleSquirrelEvent (app) {
   if (process.argv.length === 1) {
     return false
   }
-
-  const ChildProcess = require('child_process')
-  const path = require('path')
 
   const appFolder = path.resolve(process.execPath, '..')
   const rootAtomFolder = path.resolve(appFolder, '..')
