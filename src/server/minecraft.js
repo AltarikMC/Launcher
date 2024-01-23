@@ -64,16 +64,14 @@ export default class Minecraft {
         }
       }).catch(err => {
         event.sender.send('loginError')
+        this.showNotification('Erreur de connexion à Mojang', err, 'error')
         logger.error('[MS login] ' + lst(err))
-        this.showNotification('Erreur de connexion à Mojang', lst(err), 'error')
       })
     }).catch(err => {
       event.sender.send('loginError')
-      logger.error('[MS login]' + lst(err))
-      this.showNotification('Une erreur de connexion à Xbox est survenue', lst(err), 'error')
       if (err !== 'error.gui.closed') {
+        this.showNotification('Une erreur de connexion à Xbox est survenue', err, 'error')
         logger.error('[MS login] ' + lst(err))
-        this.showNotification('Une erreur de connexion à Xbox est survenue', lst(err), 'error')
       }
     })
   }
