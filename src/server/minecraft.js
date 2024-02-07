@@ -302,7 +302,7 @@ export default class Minecraft {
         const infos = this.modsList[chapterId].java.platform[process.platform][process.arch]
         const jre = join(runtime, infos.name)
         const downloadFolder = join(runtime, 'download')
-        const downloadFile = join(downloadFolder, `${infos.name}.zip`)
+        const downloadFile = join(downloadFolder, `${infos.name}${process.platform === 'win32' ? '.zip' : '.tar.gz'}`)
         if (fs.existsSync(jre)) { fs.rmSync(jre, { recursive: true }) }
         if (!fs.existsSync(downloadFolder)) { fs.mkdirSync(downloadFolder, { recursive: true }) }
         if (fs.existsSync(downloadFile)) {
@@ -334,18 +334,18 @@ export default class Minecraft {
   async downloadAndExtractJava (infos, downloadFolder, runtimeFolder) {
     return new Promise((resolve, reject) => {
       logger.info(`Downloading ${infos.name}`)
-      this.downloadMods(infos.link, join(downloadFolder, `${infos.name}.zip`)).then(() => {
+      this.downloadMods(infos.link, join(downloadFolder, `${infos.name}${process.platform === 'win32' ? '.zip' : '.tar.gz'}`)).then(() => {
         logger.info('download completed')
-        this.extractJavaArchive(join(downloadFolder, `${infos.name}.zip`), runtimeFolder).then(() => {
+        this.extractJavaArchive(join(downloadFolder, `${infos.name}${process.platform === 'win32' ? '.zip' : '.tar.gz'}`), runtimeFolder).then(() => {
           logger.info('File unzipped')
           resolve()
         }).catch(err => {
-          const joinS = join(downloadFolder, `${infos.name}.zip`)
-          logger.info(`Failed to unzip ${joinS}`)
+          const joinS = join(downloadFolder, `${infos.name}${process.platform === 'win32' ? '.zip' : '.tar.gz'}`)
+          logger.error(`Failed to unzip ${joinS}`)
           reject(err)
         })
       }).catch(err => {
-        logger.err(`Failed to download ${infos.link} to ${infos.name}.zip`)
+        logger.err(`Failed to download ${infos.link} to ${infos.name}${process.platform === 'win32' ? '.zip' : '.tar.gz'}`)
         reject(err)
       })
     })
