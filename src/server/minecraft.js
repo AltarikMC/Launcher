@@ -189,42 +189,50 @@ export default class Minecraft {
       // const shaderFolder = join(this.minecraftpath, 'shaderpacks')
       if (fs.existsSync(modsFolder)) { fs.rmSync(modsFolder, { recursive: true }) }
       // if (fs.existsSync(shaderFolder)) { fs.rmSync(shaderFolder, { recursive: true }) }
+      let chapterFound = false
       for (const i in this.modsList) {
         if (Number(i) === chapterId) {
+          chapterFound = true
           const chapter = this.modsList[i]
+          const modsList = []
           for (const j in chapter.modspack.mods) {
-            event.sender.send('progress', { type: 'mods', task: 0, total: chapter.modspack.mods.length })
-            const modpackFolder = join(this.minecraftpath, 'modpack', chapter.title)
-            if (!fs.existsSync(modpackFolder)) { fs.mkdirSync(modpackFolder, { recursive: true }) }
-            const path = join(modpackFolder, `modpack${j}.zip`)
-            try {
-              fs.accessSync(path, fs.W_OK)
-              hashFile(path, { algorithm: 'sha1' }).then(sha1 => {
-                if (sha1 === chapter.modspack.sha1sum[j]) {
-                  this.unzipMods(path).catch(err => {
-                    reject(err)
-                  })
-                } else {
-                  logger.warn(`sha1sum ${sha1} don't correspond to ${chapter.modspack.sha1sum[j]} of mods ${path}`)
-                  this.downloadAndExtractMods(chapter.modspack.mods[j], path).catch(err => {
-                    reject(err)
-                  })
-                }
-              }).catch(err => {
-                reject(new Error('Can obtain md5 hash of file ' + path + ': ' + err))
-              })
-              event.sender.send('progress', { type: 'mods', task: Number(j) + 1, total: chapter.modspack.mods.length })
-            } catch (err) {
-              this.downloadAndExtractMods(chapter.modspack.mods[j], path).catch(err => {
-                reject(err)
-              })
-            }
+            modsList.push(new Promise((resolve, reject) => {
+              event.sender.send('progress', { type: 'mods', task: 0, total: chapter.modspack.mods.length })
+              const modpackFolder = join(this.minecraftpath, 'modpack', chapter.title)
+              if (!fs.existsSync(modpackFolder)) { fs.mkdirSync(modpackFolder, { recursive: true }) }
+              const path = join(modpackFolder, `modpack${j}.zip`)
+              try {
+                fs.accessSync(path, fs.W_OK)
+                hashFile(path, { algorithm: 'sha1' }).then(sha1 => {
+                  if (sha1 === chapter.modspack.sha1sum[j]) {
+                    this.unzipMods(path)
+                      .then(() => resolve())
+                      .catch(err => reject(err))
+                  } else {
+                    logger.warn(`sha1sum ${sha1} don't correspond to ${chapter.modspack.sha1sum[j]} of mods ${path}`)
+                    this.downloadAndExtractMods(chapter.modspack.mods[j], path).then(() => resolve()).catch(err => reject(err))
+                  }
+                }).catch(err => {
+                  reject(new Error('Can obtain md5 hash of file ' + path + ': ' + err))
+                })
+                event.sender.send('progress', { type: 'mods', task: Number(j) + 1, total: chapter.modspack.mods.length })
+              } catch (err) {
+                this.downloadAndExtractMods(chapter.modspack.mods[j], path).then(() => resolve()).catch(err => {
+                  reject(err)
+                })
+              }
+            }))
           }
-          resolve(chapter)
-          return
+          Promise.all(modsList).then(() => {
+            resolve(chapter)
+          }).catch(err => {
+            reject(err)
+          })
         }
       }
-      reject(new Error("didn't found the correct chapter" + chapterId))
+      if (chapterFound === false) {
+        reject(new Error("didn't found the correct chapter" + chapterId))
+      }
     })
   }
 
