@@ -6,7 +6,7 @@ import fs from 'fs'
 import { join } from 'path'
 import zip from 'extract-zip'
 import logger from 'electron-log'
-import { Auth, lst } from 'msmc'
+import { Auth } from 'msmc'
 import decompress from 'decompress'
 import decompressTar from 'decompress-targz'
 
@@ -65,13 +65,13 @@ export default class Minecraft {
       }).catch(err => {
         event.sender.send('loginError')
         this.showNotification('Erreur de connexion à Mojang', err, 'error')
-        logger.error('[MS login] ' + lst(err))
+        logger.error('[MS login] ' + err)
       })
     }).catch(err => {
       event.sender.send('loginError')
       if (err !== 'error.gui.closed') {
         this.showNotification('Une erreur de connexion à Xbox est survenue', err, 'error')
-        logger.error('[MS login] ' + lst(err))
+        logger.error('[MS login] ' + err)
       }
     })
   }
