@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "type": "module",
