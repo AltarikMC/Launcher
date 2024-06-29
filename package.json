@@ -57,6 +57,5 @@
   },
   "config": {
     "forge": "./config.forge.cjs"
-  },
-  "packageManager": "yarn@4.3.1"
+  }
 }
