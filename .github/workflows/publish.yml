@@ -24,7 +24,7 @@ jobs:
         cache: 'yarn'
         architecture: 'x64'
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: yarn install
     - name: Build and publish package
       run: yarn run publish
       env:
