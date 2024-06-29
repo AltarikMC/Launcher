@@ -1020,7 +1020,7 @@ __metadata:
     hasha: "npm:^6.0.0"
     izitoast: "npm:^1.4.0"
     minecraft-launcher-core: "npm:^3.18.1"
-    msmc: "npm:^4.1.0"
+    msmc: "npm:^5.0.5"
     node-fetch: "npm:^3.3.2"
     vue: "npm:^3.4.31"
   languageName: unknown
@@ -4217,13 +4217,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msmc@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "msmc@npm:4.1.0"
+"msmc@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "msmc@npm:5.0.5"
   dependencies:
     node-fetch: "npm:2.x"
-    tslib: "npm:^2.4.0"
-  checksum: 10c0/a930ab204b28cdc261d93296049a66b913e44ed4613d2e6e763c1399bc15ba52f6f7650f98559d9f8499523770f2fcfbbb818686e6a94accdd1bcf46bc1e7ad9
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/ba4df9543a98c4af48d50553253eef4ffa5bff9a5eb3ab19fc7e7a75c85f05dd4fccf44c59ac52bdd8584788ac06063599323a65052fb1a9bc729519b54d1d3a
   languageName: node
   linkType: hard
 
@@ -5782,7 +5782,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.4.0":
+"tslib@npm:^2.6.2":
   version: 2.6.3
   resolution: "tslib@npm:2.6.3"
   checksum: 10c0/2598aef53d9dbe711af75522464b2104724d6467b26a60f2bdac8297d2b5f1f6b86a71f61717384aa8fd897240467aaa7bcc36a0700a0faf751293d1331db39a
