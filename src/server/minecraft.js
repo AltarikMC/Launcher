@@ -145,37 +145,21 @@ export default class Minecraft {
           fs.writeFileSync(file, JSON.stringify(data))
           event.sender.send('modsInformations', this.extractModsInformations(data))
         }).catch(err => {
-          event.sender.send('modsInformations', this.extractModsFromFileSystem())
+          event.sender.send('modsInformations', null)
           logger.warn(err)
           logger.warn('An error occured while trying to connect to server')
         })
       } else {
         logger.warn('Unable to connect to server')
         logger.warn(response.status)
-        event.sender.send('modsInformations', this.extractModsFromFileSystem())
+        logger.warn(this.modsInformationsEndpoint)
+        event.sender.send('modsInformations', null)
       }
     }).catch(err => {
       logger.warn('Unable to connect to server')
       logger.warn(err)
-      event.sender.send('modsInformations', this.extractModsFromFileSystem())
+      event.sender.send('modsInformations', null)
     })
-  }
-
-  extractModsFromFileSystem () {
-    const filepath = join(this.localappdata, 'altarik-launcher/data/launcher.json')
-    if (fs.existsSync(filepath)) {
-      const content = fs.readFileSync(filepath)
-      if (content !== null) {
-        this.showNotification('Impossible de récupérer certaines informations en ligne', 'utilisation des dernières données récupérées', 'warning')
-        return this.extractModsInformations(JSON.parse(content))
-      } else {
-        this.showNotification('Impossible de récupérer certaines informations en ligne', 'Veuillez réessayez en cliquant sur le bouton', 'warning')
-        logger.error('Unable to get chapters informations from server or filesystem')
-        return null
-      }
-    } else {
-      return null
-    }
   }
 
   extractModsInformations (json) {

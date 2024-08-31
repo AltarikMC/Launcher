@@ -71,7 +71,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
         </div>
         <div id="content">
             <div id="sidebar">
-                <h2>Chapitres</h2>
+                <h2>Chapitres <i v-if="modsInformations.length !== 0 || modsInformationsLoaded === false" v-on:click="reloadChapters()" class="reload-chapter material-icons">sync</i></h2>
                 <div id="sidebar-content" @change="modsInformations">
                     <div v-if="modsInformationsLoaded === false">Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</div>
                     <div v-for="(item, index) in modsInformations" v-else-if="modsInformations.length !== 0" v-on:click="changeSelectedChapter(index)" :class="{ selected: isSelected(index) }">
