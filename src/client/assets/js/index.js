@@ -37,7 +37,7 @@ app = vue.createApp({
       position: 'topRight',
       resetOnHover: true
     })
-    setInterval(() => {
+    setTimeout(() => {
       ipcRenderer.send('pageReady')
     }, 500)
   },
@@ -98,10 +98,19 @@ app = vue.createApp({
       this.displayCredits = 'block'
     },
     updateModsInformations (content) {
-      this.modsInformations = content
+      if(content === null) {
+        this.modsInformations = []
+      } else {
+        this.modsInformations = content
+      }
     },
     getModsInformations () {
       return this.modsInformations
+    },
+    reloadChapters() {
+      this.updateModsInformations(null)
+      this.modsInformationsLoaded = true
+      ipcRenderer.send('pageReady')
     },
     showInfo (title, body) {
       iziToast.info({

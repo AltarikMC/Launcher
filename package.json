@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.1.8",
+  "version": "2.2.0",
   "description": "Altarik Launcher",
   "main": "src/server/main.js",
   "type": "module",
@@ -35,17 +35,17 @@
     "@electron-forge/maker-zip": "^7.4.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/publisher-github": "^7.4.0",
-    "electron": "31.1.0",
-    "eslint": "^9.6.0",
+    "electron": "32.0.1",
+    "eslint": "^9.9.1",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^17.9.0",
-    "eslint-plugin-promise": "^6.2.0"
+    "eslint-plugin-promise": "^6.6.0"
   },
   "dependencies": {
     "decompress": "^4.2.1",
     "electron-is-dev": "^3.0.1",
-    "electron-log": "^5.1.5",
+    "electron-log": "^5.1.7",
     "electron-squirrel-startup": "^1.0.1",
     "extract-zip": "^2.0.1",
     "hasha": "^6.0.0",
