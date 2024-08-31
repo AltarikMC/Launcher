@@ -20,7 +20,7 @@ export default class Minecraft {
   auth = null
   modsList = undefined
   showNotification = undefined
-  modsInformationsEndpoint = 'https://launcher.altarik.fr'
+  modsInformationsEndpoint = 'https://launcher.altarik.fr/launcher.json'
 
   setShowNotification (showNotification) {
     this.showNotification = showNotification
