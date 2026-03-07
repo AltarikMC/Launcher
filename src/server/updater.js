@@ -1,6 +1,6 @@
 import isDev from 'electron-is-dev'
 import fetch from 'node-fetch'
-import pkg from '../../package.json' assert {type: 'json'}
+import pkg from '../../package.json' with {type: 'json'}
 
 const server = 'https://update.electronjs.org'
 

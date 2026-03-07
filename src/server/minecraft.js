@@ -4,11 +4,11 @@ import fetch from 'node-fetch'
 import { hashFile } from 'hasha'
 import fs from 'fs'
 import { join } from 'path'
-import zip from 'extract-zip'
 import logger from 'electron-log'
 import { Auth } from 'msmc'
 import decompress from 'decompress'
 import decompressTar from 'decompress-targz'
+import decompressUnzip from 'decompress-unzip'
 
 const { Authenticator, Client } = mlc
 
@@ -245,12 +245,19 @@ export default class Minecraft {
 
   async unzipMods (zipLocation, outLocation = this.minecraftpath) {
     return new Promise((resolve, reject) => {
-      logger.info(`unzipping ${zipLocation} file to ${outLocation}`)
-      zip(zipLocation, { dir: outLocation }).then(() => {
+      logger.info(`Extracting zip ${zipLocation} file to ${outLocation}`)
+      decompress(zipLocation, outLocation, {
+        plugins: [
+          decompressUnzip()
+        ], map: (file) => {
+          file.mode = 0o755;
+          return file;
+        }
+      }).then(() => {
         resolve()
-      }).catch(err => {
-        logger.error('failed to unzip file')
-        reject(err)
+      }).catch((e) => {
+        logger.error('Failed to extract zip file')
+        reject(e)
       })
     })
   }
@@ -295,7 +302,7 @@ export default class Minecraft {
         const jre = join(runtime, infos.name)
         const downloadFolder = join(runtime, 'download')
         const downloadFile = join(downloadFolder, `${infos.name}${process.platform === 'win32' ? '.zip' : '.tar.gz'}`)
-        if (fs.existsSync(jre)) { fs.rmSync(jre, { recursive: true }) }
+        if (fs.existsSync(jre)) { fs.rmSync(jre, { recursive: true, force: true }) }
         if (!fs.existsSync(downloadFolder)) { fs.mkdirSync(downloadFolder, { recursive: true }) }
         if (fs.existsSync(downloadFile)) {
           hashFile(downloadFile, { algorithm: 'sha256' }).then(sha1 => {
