@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const os = require('os')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
 const vue = require('vue/dist/vue.cjs.js')
@@ -98,7 +99,7 @@ app = vue.createApp({
       this.displayCredits = 'block'
     },
     updateModsInformations (content) {
-      if(content === null) {
+      if (content === null) {
         this.modsInformations = []
       } else {
         this.modsInformations = content
@@ -107,7 +108,7 @@ app = vue.createApp({
     getModsInformations () {
       return this.modsInformations
     },
-    reloadChapters() {
+    reloadChapters () {
       this.updateModsInformations(null)
       this.modsInformationsLoaded = true
       ipcRenderer.send('pageReady')
@@ -183,4 +184,4 @@ ipcRenderer.on('modsInformations', (_e, args) => {
   root.updateModsInformations(args)
 })
 
-ipcRenderer.on('nick', (_e, args) => root.nick = args.name)
+ipcRenderer.on('nick', (_e, args) => (root.nick = args.name))

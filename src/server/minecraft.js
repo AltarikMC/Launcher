@@ -249,9 +249,10 @@ export default class Minecraft {
       decompress(zipLocation, outLocation, {
         plugins: [
           decompressUnzip()
-        ], map: (file) => {
-          file.mode = 0o755;
-          return file;
+        ],
+        map: (file) => {
+          file.mode = 0o755
+          return file
         }
       }).then(() => {
         resolve()

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const vue = require('vue/dist/vue.cjs.js')
 app = vue.createApp({
   data () {
