@@ -1,6 +1,9 @@
-/* eslint-disable no-undef */
 const vue = require('vue/dist/vue.cjs.js')
-app = vue.createApp({
+const path = require('path')
+const { setApp, ipcRenderer } = require(path.join(__dirname, 'assets/js/preload.js'))
+const iziToast = require('izitoast')
+
+const app = vue.createApp({
   data () {
     return {
       login: 'Connexion',
@@ -73,6 +76,7 @@ app = vue.createApp({
     }
   }
 })
+setApp(app)
 
 app.mount('#vue')
 

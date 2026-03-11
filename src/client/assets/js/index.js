@@ -1,9 +1,11 @@
-/* eslint-disable no-undef */
 const os = require('os')
 const totalMem = os.totalmem() / (1.049 * Math.pow(10, 6))
 const vue = require('vue/dist/vue.cjs.js')
+const path = require('path')
+const { setApp, ipcRenderer, shell } = require(path.join(__dirname, 'assets/js/preload.js'))
+const iziToast = require('izitoast')
 
-app = vue.createApp({
+const app = vue.createApp({
   data () {
     return {
       minMemValue: localStorage.getItem('minMem') != null ? localStorage.getItem('minMem') : 1024,
@@ -146,6 +148,7 @@ app = vue.createApp({
     }
   }
 })
+setApp(app)
 
 const root = app.mount('#vue')
 

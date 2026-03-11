@@ -1,7 +1,9 @@
 'use strict'
-// eslint-disable-next-line no-unused-vars
+
 const { ipcRenderer, shell } = require('electron')
+
 let app
+
 window.addEventListener('DOMContentLoaded', () => {
   const minimizeButton = document.getElementById('minimize-btn')
   const closeButton = document.getElementById('close-btn')
@@ -28,3 +30,9 @@ ipcRenderer.on('notification', (_e, args) => {
       app._component.methods.showInfo(args.title, args.body)
   }
 })
+
+const setApp = (vueApp) => {
+  app = vueApp
+}
+
+export { setApp, ipcRenderer, shell }

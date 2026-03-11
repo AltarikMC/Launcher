@@ -1,6 +1,7 @@
-/* eslint-disable no-undef */
 const vue = require('vue/dist/vue.cjs.js')
-app = vue.createApp({
+const path = require('path')
+const { setApp, ipcRenderer, shell } = require(path.join(__dirname, 'assets/js/preload.js'))
+const app = vue.createApp({
   data () {
     return {
       displayFullscreen: 'block',
@@ -20,6 +21,7 @@ app = vue.createApp({
     }
   }
 })
+setApp(app)
 
 const root = app.mount('#vue')
 
