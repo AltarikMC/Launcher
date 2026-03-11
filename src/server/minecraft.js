@@ -13,7 +13,7 @@ import decompressUnzip from 'decompress-unzip'
 const { Authenticator, Client } = mlc
 
 export default class Minecraft {
-  appdata = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share')
+  appdata = fs.realpathSync(process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share'))
   localappdata = process.env.LOCALAPPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support/' : process.env.HOME + '/.config')
   minecraftpath = join(this.appdata, '.altarik')
   launcher = new Client()
