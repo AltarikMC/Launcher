@@ -1,4 +1,5 @@
 'use strict'
+// eslint-disable-next-line no-unused-vars
 const { ipcRenderer, shell } = require('electron')
 let app
 window.addEventListener('DOMContentLoaded', () => {
