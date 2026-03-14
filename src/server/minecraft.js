@@ -20,7 +20,7 @@ export default class Minecraft {
   modsList = undefined
   modsInformationsEndpoint = 'https://launcher.altarik.fr/launcher.json'
 
-  getSAppData () {
+  getAppData () {
     const base = process.env.APPDATA || (process.platform === 'darwin'
       ? process.env.HOME + '/Library/Preferences'
       : process.env.HOME + '/.local/share')
