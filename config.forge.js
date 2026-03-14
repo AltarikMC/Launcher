@@ -9,10 +9,34 @@ module.exports = {
     icon: path.resolve(__dirname, 'icon.ico'),
     asar: true,
   },
+  rebuildConfig: {},
   plugins: [
     {
       name: '@electron-forge/plugin-auto-unpack-natives',
       config: {}
+    },
+    {
+      name: '@electron-forge/plugin-vite',
+      config: {
+        build: [
+          {
+            entry: 'src/server/main.js',
+            target: 'main',
+            config: 'vite.main.config.mjs'
+          },
+          {
+            entry: 'src/client/assets/js/preload.js',
+            config: 'vite.preload.config.mjs',
+            target: 'preload',
+          },
+        ],
+        renderer: [
+          {
+            name: 'main_window',
+            config: 'vite.renderer.config.mjs'
+          }
+        ]
+      }
     }
   ],
   makers: [

@@ -3,8 +3,7 @@
   "author": "Altarik",
   "version": "2.2.1",
   "description": "Altarik Launcher",
-  "main": "src/server/main.js",
-  "type": "module",
+  "main": ".vite/build/main.js",
   "homepage": "https://altarik.fr/",
   "private": true,
   "repository": "AltarikMC/Launcher",
@@ -35,28 +34,30 @@
     "@electron-forge/maker-squirrel": "^7.11.1",
     "@electron-forge/maker-zip": "^7.11.1",
     "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
+    "@electron-forge/plugin-vite": "7.11.1",
     "@electron-forge/publisher-github": "^7.11.1",
+    "@vitejs/plugin-vue": "^6.0.5",
     "electron": "40.8.0",
     "eslint": "^9.9.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-n": "^17.9.0",
     "eslint-plugin-promise": "^7.2.1",
     "globals": "^17.4.0",
-    "neostandard": "^0.13.0"
+    "neostandard": "^0.13.0",
+    "vite": "^8.0.0"
   },
   "dependencies": {
     "decompress": "^4.2.1",
     "electron-is-dev": "^3.0.1",
     "electron-log": "^5.4.3",
     "electron-squirrel-startup": "^1.0.1",
-    "hasha": "^7.0.0",
-    "izitoast": "^1.4.0",
     "minecraft-launcher-core": "^3.18.2",
     "msmc": "^5.0.5",
     "node-fetch": "^3.3.2",
-    "vue": "^3.5.30"
+    "vue": "^3.5.30",
+    "vue3-toastify": "^0.2.9"
   },
   "config": {
-    "forge": "./config.forge.cjs"
+    "forge": "./config.forge.js"
   }
 }

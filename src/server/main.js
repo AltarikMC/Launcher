@@ -1,23 +1,24 @@
 import { app, BrowserWindow, Menu, ipcMain, autoUpdater, dialog } from 'electron'
 import isDev from 'electron-is-dev'
 import logger from 'electron-log'
-import { join, dirname } from 'path'
+import { join } from 'path'
+import { totalmem } from 'os'
 import Updater from './updater.js'
 import electronStartup from 'electron-squirrel-startup'
 import install from './install.js'
 import Mc from './minecraft.js'
 import { minimizeWindow, closeWindow } from './menubar.js'
-import { fileURLToPath } from 'url'
+// import { fileURLToPath } from 'url'
 
-const updaterInstance = new Updater(app, autoUpdater, dialog, logger, showNotification)
+const updaterInstance = new Updater(app, autoUpdater, dialog, logger)
 updaterInstance.configUpdater()
 
 const minecraft = new Mc()
-minecraft.showNotification = showNotification
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const iconPath = join(__dirname, 'icon.ico')
+console.log('__filename: ' + __dirname)
+// const __dirname = dirname(__filename)
+
+// const iconPath = join(__dirname, 'icon.ico')
 
 let win = null
 
@@ -26,39 +27,40 @@ function createWindow () {
     width: 1000,
     height: 600,
     resizable: false,
-    icon: iconPath,
+    // icon: iconPath,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      sandbox: false,
+      preload: join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true
     },
     frame: false
   })
   if (!isDev) {
     Menu.setApplicationMenu(null)
   }
+  // eslint-disable-next-line no-undef
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    // eslint-disable-next-line no-undef
+    win.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
+  } else {
+    // eslint-disable-next-line no-undef
+    win.loadFile(join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
+  }
+  win.webContents.send('pc-configuration', { totalMem: totalmem() })
 
-  win.loadFile('src/client/checkingUpdate.html')
   win.on('close', () => {
     app.quit()
   })
 }
-
-function showNotification (title, body = '', clazz = 'info') {
-  win.webContents.send('notification', { title, body, class: clazz })
-}
-
-ipcMain.on('disconnect', () => {
-  minecraft.auth = null
-  win.loadFile('src/client/login.html').then(() => showNotification('Déconnecté', 'Vous avez été déconnecté de votre compte', 'success'))
-})
 
 ipcMain.on('pageReady', (event) => {
   event.sender.send('nick', { name: minecraft.auth.name })
   minecraft.getModsInformations(event)
 })
 
-ipcMain.on('checking-update', () => {
-  updaterInstance.checkForUpdates(win, showNotification)
+ipcMain.on('checking-update', (event) => {
+  updaterInstance.checkForUpdates(event)
 })
 
 function main () {
@@ -97,7 +99,7 @@ function main () {
   })
 
   ipcMain.on('microsoft-login', (event) => {
-    minecraft.microsoftLogin(event, win)
+    minecraft.microsoftLogin(event)
   })
 
   ipcMain.on('invalidateData', event => {
