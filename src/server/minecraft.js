@@ -45,19 +45,21 @@ export default class Minecraft {
           // win.loadFile('src/client/index.html')
           event.sender.send('loginSuccess')
         } else {
-          event.sender.send('loginError')
+          event.sender.send('loginError', { title: 'Erreur de connexion', body: 'Vous ne possèdez pas de licence Minecraft sur ce compte' })
           logger.error("[MS login] User haven't purchase the game")
-          this.showNotification('Erreur de connexion', 'Vous ne possèdez pas de licence Minecraft sur ce compte', 'error')
+          // this.showNotification('Erreur de connexion', 'Vous ne possèdez pas de licence Minecraft sur ce compte', 'error')
         }
       }).catch(err => {
-        event.sender.send('loginError')
-        this.showNotification('Erreur de connexion à Mojang', err, 'error')
+        event.sender.send('loginError', { title: 'Erreur de connexion à Mojang', body: err })
+        // this.showNotification('Erreur de connexion à Mojang', err, 'error')
         logger.error('[MS login] ' + err)
       })
     }).catch(err => {
       event.sender.send('loginError')
       if (err !== 'error.gui.closed') {
-        this.showNotification('Une erreur de connexion à Xbox est survenue', err, 'error')
+        event.sender.send('loginError', { title: 'Une erreur de connexion à Xbox est survenue', body: err })
+
+        // this.showNotification('Une erreur de connexion à Xbox est survenue', err, 'error')
         logger.error('[MS login] ' + err)
       }
     })
@@ -99,13 +101,15 @@ export default class Minecraft {
           this.close(event, e)
         })
       }).catch((err) => {
-        this.showNotification('Impossible de lancer le jeu', 'Erreur inconnue', 'error')
+        event.sender.send('launchError', { title: 'Impossible de lancer le jeu', body: 'Erreur inconnue' })
+        // this.showNotification('Impossible de lancer le jeu', 'Erreur inconnue', 'error')
         event.sender.send('close', 1)
         logger.error('Unable to launch the game')
         logger.error(err)
       })
     }).catch(err => {
-      this.showNotification('Impossible de lancer le jeu', "Impossible d'installer Java pour votre configuration", 'error')
+      event.sender.send('launchError', { title: 'Impossible de lancer le jeu', body: 'Impossible d\'installer Java pour votre configuration' })
+      // this.showNotification('Impossible de lancer le jeu', "Impossible d'installer Java pour votre configuration", 'error')
       event.sender.send('close', 1)
       logger.warn('Unable to install java')
       logger.warn(err)
@@ -117,7 +121,8 @@ export default class Minecraft {
     if (code !== 0) {
       logger.warn("Minecraft didn't close properly")
       logger.warn(code)
-      this.showNotification('Une erreur est survenue', "Minecraft ne s'est pas fermé correctement", 'error')
+      event.sender.send('launchError', { title: 'Une erreur est survenue', body: '"Minecraft ne s\'est pas fermé correctement' })
+      // this.showNotification('Une erreur est survenue', "Minecraft ne s'est pas fermé correctement", 'error')
     }
   }
 

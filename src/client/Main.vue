@@ -6,6 +6,7 @@ const setPage = inject("setPage")
 
 const showSuccess = inject("showSuccess")
 const showInfo = inject("showInfo")
+const showError = inject("showError")
 
 const props = defineProps(['totalmem'])
 
@@ -161,6 +162,10 @@ window.electronAPI.ipc.on('close', (_e) => {
   progressbarWidth.value = 0
   launchBtnDisable.value = false
   gameLaunching.value = false
+})
+
+window.electronAPI.ipc.on('launchError', (e) => {
+    showError(e.title, e.body)
 })
 </script>
 <template>
