@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Altarik Launcher",
   "main": ".vite/build/main.js",
   "homepage": "https://altarik.fr/",
