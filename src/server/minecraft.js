@@ -1,8 +1,7 @@
-import isDev from 'electron-is-dev'
 import mlc from 'minecraft-launcher-core'
 import fetch from 'node-fetch'
-import { hashFile } from 'hasha'
 import fs from 'fs'
+import crypto from 'crypto'
 import { join } from 'path'
 import logger from 'electron-log'
 import { Auth } from 'msmc'
@@ -10,53 +9,41 @@ import decompress from 'decompress'
 import decompressTar from 'decompress-targz'
 import decompressUnzip from 'decompress-unzip'
 
-const { Authenticator, Client } = mlc
+const { Client } = mlc
 
 export default class Minecraft {
-  appdata = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share')
+  appdata = this.getAppData()
   localappdata = process.env.LOCALAPPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support/' : process.env.HOME + '/.config')
   minecraftpath = join(this.appdata, '.altarik')
   launcher = new Client()
   auth = null
   modsList = undefined
-  showNotification = undefined
   modsInformationsEndpoint = 'https://launcher.altarik.fr/launcher.json'
 
-  setShowNotification (showNotification) {
-    this.showNotification = showNotification
-  }
+  getSAppData () {
+    const base = process.env.APPDATA || (process.platform === 'darwin'
+      ? process.env.HOME + '/Library/Preferences'
+      : process.env.HOME + '/.local/share')
 
-  /**
-     * @deprecated Mojang removed this method of authentification
-     * Used to login through Mojang account
-     */
-  login (event, win, username, password) {
-    this.auth = null
-    if (isDev || password.trim() !== '') {
-      this.auth = Authenticator.getAuth(username, password)
-      this.auth.then(v => {
-        win.loadFile('src/client/index.html')
-      }).catch(() => {
-        event.sender.send('loginError')
-        logger.error("[MJ login] User haven't purchase the game")
-        this.showNotification('Erreur de connexion', 'Vous ne possèdez pas de licence Minecraft sur ce compte', 'error')
-      })
-    } else {
-      this.showNotification('Erreur de connexion', 'Veuillez renseignez un mot de passe', 'warning')
+    try {
+      return fs.realpathSync(base)
+    } catch (e) {
+      return base
     }
   }
 
   /**
      * Used to login through a Microsoft account
      */
-  microsoftLogin (event, win) {
+  microsoftLogin (event) {
     const authManager = new Auth('select_account')
     authManager.launch('electron').then(async xboxManager => {
       xboxManager.getMinecraft().then(async token => {
         if (!token.isDemo()) {
           this.auth = token.mclc()
           logger.info('[MS login] User has been connected successfully to them account')
-          win.loadFile('src/client/index.html')
+          // win.loadFile('src/client/index.html')
+          event.sender.send('loginSuccess')
         } else {
           event.sender.send('loginError')
           logger.error("[MS login] User haven't purchase the game")
@@ -187,7 +174,8 @@ export default class Minecraft {
               const path = join(modpackFolder, `modpack${j}.zip`)
               try {
                 fs.accessSync(path, fs.W_OK)
-                hashFile(path, { algorithm: 'sha1' }).then(sha1 => {
+
+                this.hashFile(path, { algorithm: 'sha1' }).then(sha1 => {
                   if (sha1 === chapter.modspack.sha1sum[j]) {
                     this.unzipMods(path)
                       .then(() => resolve())
@@ -220,6 +208,17 @@ export default class Minecraft {
     })
   }
 
+  hashFile (filePath, { algorithm = 'sha512' } = {}) {
+    return new Promise((resolve, reject) => {
+      const hash = crypto.createHash(algorithm)
+      const stream = fs.createReadStream(filePath)
+
+      stream.on('data', (chunk) => hash.update(chunk))
+      stream.on('end', () => resolve(hash.digest('hex')))
+      stream.on('error', reject)
+    })
+  }
+
   downloadMods (link, path) {
     return new Promise((resolve, reject) => {
       fetch(link).then(response => {
@@ -249,9 +248,10 @@ export default class Minecraft {
       decompress(zipLocation, outLocation, {
         plugins: [
           decompressUnzip()
-        ], map: (file) => {
-          file.mode = 0o755;
-          return file;
+        ],
+        map: (file) => {
+          file.mode = 0o755
+          return file
         }
       }).then(() => {
         resolve()
@@ -305,7 +305,7 @@ export default class Minecraft {
         if (fs.existsSync(jre)) { fs.rmSync(jre, { recursive: true, force: true }) }
         if (!fs.existsSync(downloadFolder)) { fs.mkdirSync(downloadFolder, { recursive: true }) }
         if (fs.existsSync(downloadFile)) {
-          hashFile(downloadFile, { algorithm: 'sha256' }).then(sha1 => {
+          this.hashFile(downloadFile, { algorithm: 'sha256' }).then(sha1 => {
             if (sha1 === infos.sha256sum) {
               this.extractJavaArchive(downloadFile, runtime).then(() => {
                 const filename = process.platform === 'win32' ? 'java.exe' : 'java'

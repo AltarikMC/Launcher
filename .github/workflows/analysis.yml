@@ -1,0 +1,31 @@
+name: "Code quality analysis"
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev, 'dependabot/**' ]
+ # schedule:
+ #   - cron: '00 3 * * 6'
+
+jobs:
+  eslint:
+    name: analyse with eslint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Enable Corepack before setting up Node
+        run: corepack enable
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'yarn'
+          architecture: 'x64'
+      - name: Install dependencies
+        run: yarn install
+      - name: Run eslint
+        run: yarn run lint

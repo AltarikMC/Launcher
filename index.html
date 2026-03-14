@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <style>
+* {
+    box-sizing: border-box;
+}
+html{
+    height: 100%;
+}
+body{
+	margin:0;
+    height:100%;
+    
+}
+#app {
+    height:100%;
+    margin:0;
+    background-color: rgb(48, 48, 48);
+    background-image: url("./src/client/assets/images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: "Roboto", sans-serif;
+}
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/renderer.js"></script>
+  </body>
+</html>

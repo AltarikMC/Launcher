@@ -1,22 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
-html{
-	height: 100%;
-}
-
-body{
-	background-color: black;
-	background-image: url("../images/background.jpg");
-	background-size: cover;
-    background-repeat: no-repeat;
-	margin:0;
-	height:100%;
-	font-family: "Roboto", sans-serif;
-	color: black;
-}
-
 .dots-3 {
     width: 60px;
     aspect-ratio: 2;

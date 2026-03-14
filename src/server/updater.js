@@ -5,12 +5,11 @@ import pkg from '../../package.json' with {type: 'json'}
 const server = 'https://update.electronjs.org'
 
 export default class Updater {
-  constructor (app, autoUpdater, dialog, logger, ipcMain) {
+  constructor (app, autoUpdater, dialog, logger) {
     this.app = app
     this.autoUpdater = autoUpdater
     this.dialog = dialog
     this.logger = logger
-    this.ipcMain = ipcMain
   }
 
   configUpdater () {
@@ -32,34 +31,39 @@ export default class Updater {
     })
   }
 
-  checkForUpdates (win, showNotification) {
+  checkForUpdates (event) {
     if (isDev) {
-      win.loadFile('src/client/login.html')
+      event.sender.send('updater', { status: 'success' })
+      // win.loadFile('src/client/login.html')
       return
     }
-    this.logger.info('Checking for update...')
     const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${this.app.getVersion()}`
     if (process.platform !== 'linux') {
       this.autoUpdater.setFeedURL(feed)
       this.autoUpdater.on('error', message => {
-        this.displayError(win, showNotification, message)
+        this.logger.error('An error occurred when trying to check for update', message)
+        event.sender.send('updater', { status: 'error', message })
+        // this.displayError(showNotification, message)
       })
 
       this.autoUpdater.on('update-available', () => {
         this.logger.info('update available, downloading...')
-        win.webContents.send('update-available')
+        event.sender.send('updater', { status: 'info', message: 'update-available' })
+        // event.sender.webContents.send('update-available')
       })
       this.autoUpdater.on('update-not-available', () => {
         this.logger.info('update not available')
-        win.loadFile('src/client/login.html')
+        event.sender.send('updater', { status: 'success', message: 'no-update' })
+        // event.sender.loadFile('src/client/login.html')
       })
+      this.logger.info('Checking for update...')
       this.autoUpdater.checkForUpdates()
     } else {
-      this.searchUpdateLinux(win, showNotification)
+      this.searchUpdateLinux(event)
     }
   }
 
-  searchUpdateLinux (win, showNotification) {
+  searchUpdateLinux (ipcEvent) {
     const url = 'https://api.github.com/repos/AltarikMc/Launcher/releases/latest'
     fetch(url).then(response => {
       if (response.status === 200) {
@@ -68,27 +72,22 @@ export default class Updater {
             const asset = json.assets.filter(el => el.browser_download_url.includes('.zip'))
             if (asset.length === 1) {
               const downloadUrl = asset[0].browser_download_url
-              win.webContents.send('please-download-update', { url: downloadUrl })
+              // win.webContents.send('please-download-update', { url: downloadUrl })
+              ipcEvent.sender.webContents.send('updater', { status: 'info', message: 'please-download-update', content: downloadUrl })
               this.logger.info('update available, please download')
             } else {
-              this.displayError(win, showNotification, "Can't find right asset in last update")
+              ipcEvent.sender.webContents.send('updater', { status: 'error', message: 'Can\'t find right asset in last update' })
             }
           } else {
             this.logger.info('update not available')
-            win.loadFile('src/client/login.html')
+            ipcEvent.sender.webContents.send('updater', { status: 'success', message: 'no-update' })
+            // win.loadFile('src/client/login.html')
           }
-        }).catch(err => this.displayError(win, showNotification, err))
+        }).catch(err => ipcEvent.sender.webContents.send('updater', { status: 'error', message: err }))
       } else {
-        this.displayError(win, showNotification, 'Server unavailable')
+        ipcEvent.sender.webContents.send('updater', { status: 'error', message: 'Server unavailable' })
+        // this.displayError(win, showNotification, 'Server unavailable')
       }
-    }).catch(err => this.displayError(win, showNotification, err))
-  }
-
-  displayError (win, showNotification, errorMessage) {
-    this.logger.error('There was a problem updating the application')
-    this.logger.error(errorMessage)
-    win.loadFile('src/client/login.html').then(() => {
-      showNotification('Une erreur est survenue lors de la vérification de la mise à jour', 'Veuillez vérifier votre connexion internet et réessayer', 'error')
-    })
+    }).catch(err => ipcEvent.sender.webContents.send('updater', { status: 'error', message: err }))
   }
 }
