@@ -17,8 +17,9 @@ function microsoftButton (e) {
 }
 
 onMounted(() => {
-    window.electronAPI.ipc.on('loginError', () => {
+    window.electronAPI.ipc.on('loginError', (e) => {
         form_disabled.value = false
+        showWarning(e.title, e.body)
     })
     window.electronAPI.ipc.on('loginSuccess', () => {
         setPage("main")
