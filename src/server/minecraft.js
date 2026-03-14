@@ -12,13 +12,25 @@ import decompressUnzip from 'decompress-unzip'
 const { Client } = mlc
 
 export default class Minecraft {
-  appdata = fs.realpathSync(process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + '/.local/share'))
+  appdata = this.getAppData()
   localappdata = process.env.LOCALAPPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support/' : process.env.HOME + '/.config')
   minecraftpath = join(this.appdata, '.altarik')
   launcher = new Client()
   auth = null
   modsList = undefined
   modsInformationsEndpoint = 'https://launcher.altarik.fr/launcher.json'
+
+  getSAppData () {
+    const base = process.env.APPDATA || (process.platform === 'darwin'
+      ? process.env.HOME + '/Library/Preferences'
+      : process.env.HOME + '/.local/share')
+
+    try {
+      return fs.realpathSync(base)
+    } catch (e) {
+      return base
+    }
+  }
 
   /**
      * Used to login through a Microsoft account
