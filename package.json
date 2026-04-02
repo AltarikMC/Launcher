@@ -37,7 +37,7 @@
     "@electron-forge/plugin-vite": "7.11.1",
     "@electron-forge/publisher-github": "^7.11.1",
     "@vitejs/plugin-vue": "^6.0.5",
-    "electron": "40.8.0",
+    "electron": "41.1.1",
     "eslint": "^9.9.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-n": "^17.9.0",
