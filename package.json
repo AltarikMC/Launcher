@@ -1,7 +1,7 @@
 {
   "name": "altarik-launcher",
   "author": "Altarik",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Altarik Launcher",
   "main": ".vite/build/main.js",
   "homepage": "https://altarik.fr/",
@@ -44,7 +44,7 @@
     "eslint-plugin-promise": "^7.2.1",
     "globals": "^17.4.0",
     "neostandard": "^0.13.0",
-    "vite": "^8.0.0"
+    "vite": "^8.0.3"
   },
   "dependencies": {
     "decompress": "^4.2.1",
@@ -54,7 +54,7 @@
     "minecraft-launcher-core": "^3.18.2",
     "msmc": "^5.0.5",
     "node-fetch": "^3.3.2",
-    "vue": "^3.5.30",
+    "vue": "^3.5.31",
     "vue3-toastify": "^0.2.9"
   },
   "config": {
