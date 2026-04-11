@@ -73,21 +73,21 @@ export default class Updater {
             if (asset.length === 1) {
               const downloadUrl = asset[0].browser_download_url
               // win.webContents.send('please-download-update', { url: downloadUrl })
-              ipcEvent.sender.webContents.send('updater', { status: 'info', message: 'please-download-update', content: downloadUrl })
+              ipcEvent.sender.send('updater', { status: 'info', message: 'please-download-update', content: downloadUrl })
               this.logger.info('update available, please download')
             } else {
-              ipcEvent.sender.webContents.send('updater', { status: 'error', message: 'Can\'t find right asset in last update' })
+              ipcEvent.sender.send('updater', { status: 'error', message: 'Can\'t find right asset in last update' })
             }
           } else {
             this.logger.info('update not available')
-            ipcEvent.sender.webContents.send('updater', { status: 'success', message: 'no-update' })
+            ipcEvent.sender.send('updater', { status: 'success', message: 'no-update' })
             // win.loadFile('src/client/login.html')
           }
-        }).catch(err => ipcEvent.sender.webContents.send('updater', { status: 'error', message: err }))
+        }).catch(err => ipcEvent.sender.send('updater', { status: 'error', message: err }))
       } else {
-        ipcEvent.sender.webContents.send('updater', { status: 'error', message: 'Server unavailable' })
+        ipcEvent.sender.send('updater', { status: 'error', message: 'Server unavailable' })
         // this.displayError(win, showNotification, 'Server unavailable')
       }
-    }).catch(err => ipcEvent.sender.webContents.send('updater', { status: 'error', message: err }))
+    }).catch(err => ipcEvent.sender.send('updater', { status: 'error', message: err }))
   }
 }
