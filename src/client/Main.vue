@@ -1,8 +1,11 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue'
 import './assets/css/index.css'
+import Dividers from './components/Dividers.vue'
+import QuantityInput from './components/QuantityInput.vue'
+import Button from './components/Button.vue'
 
-const setPage = inject("setPage")
+const emit = defineEmits(['setPage'])
 
 const showSuccess = inject("showSuccess")
 const showInfo = inject("showInfo")
@@ -14,7 +17,7 @@ const minMemValue = ref(localStorage.getItem('minMem') != null ? localStorage.ge
 const maxMemValue = ref(localStorage.getItem('maxMem') != null ? localStorage.getItem('maxMem') : 2048)
 const memStep = ref(128)
 const memMax = ref(props.totalmem / (1.049 * Math.pow(10, 6)))
-const invalidateButtonText = ref('Supprimer et retélécharger les bibliothèques')
+const invalidateButtonText = ref('Nettoyer l\'installation')
 const invalidateButtonDisabled = ref(false)
 const displayFullscreen = ref('none')
 const displaySettings = ref('none')
@@ -71,22 +74,22 @@ function launchBtnClick () {
     fullprogressbarHidden.value = false
     loadingMessageHidden.value = false
     if (Number(minMemValue.value) <= Number(maxMemValue.value)) {
-    window.electronAPI.ipc.send('launch', {
-        minMem: minMemValue.value + 'M',
-        maxMem: maxMemValue.value + 'M',
-        chapter: selectedChapter.value
-    })
-    launchBtnDisable.value = true
-    localStorage.setItem('minMem', minMemValue.value)
-    localStorage.setItem('maxMem', maxMemValue.value)
-    gameLaunching.value = true
+        window.electronAPI.ipc.send('launch', {
+            minMem: minMemValue.value + 'M',
+            maxMem: maxMemValue.value + 'M',
+            chapter: selectedChapter.value
+        })
+        launchBtnDisable.value = true
+        localStorage.setItem('minMem', minMemValue.value)
+        localStorage.setItem('maxMem', maxMemValue.value)
+        gameLaunching.value = true
     } else {
-    showError('Erreur de lancement', 'La mémoire minimale doit être inférieure ou égale à la mémoire maximale.')
+        showError('Erreur de lancement', 'La mémoire minimale doit être inférieure ou égale à la mémoire maximale.')
     }
 }
 
 function disconnectBtn () {
-    setPage('login')
+    emit('setPage', 'login')
     showSuccess('Déconnecté', 'Vous avez été déconnecté de votre compte')
     // window.electronAPI.ipc.send('disconnect')
 }
@@ -107,16 +110,14 @@ function web () {
     window.electronAPI.shell.openExternal('https://altarik.fr')
 }
 
+function sourceCode() {
+    window.electronAPI.shell.openExternal('https://github.com/AltarikMC/Launcher')
+}
+
 function closeFullscreen () {
     displayFullscreen.value = 'none'
     displaySettings.value = 'none'
     displayCredits.value = 'none'
-}
-
-function credits () {
-    displayFullscreen.value = 'block'
-    displaySettings.value = 'none'
-    displayCredits.value = 'block'
 }
 
 function invalidateData () {
@@ -140,7 +141,7 @@ window.electronAPI.ipc.on('modsInformations', (e) => {
 
 window.electronAPI.ipc.on('invalidated', () => {
   invalidateButtonDisabled.value = false
-  invalidateButtonText.value = 'Supprimer et retélécharger les bibliothèques'
+  invalidateButtonText.value = 'Nettoyer l\'installation'
   showSuccess('Opération terminée', 'Les données du jeu ont été supprimé avec succès')
 })
 
@@ -171,58 +172,36 @@ window.electronAPI.ipc.on('launchError', (e) => {
 <template>
     <div id="fullscreen" :style="{ display: displayFullscreen }">
         <div @click="closeFullscreen" id="close"><i class="material-icons">close</i></div>
-        <div id="settings" :style="{ display: displaySettings }">
-                <h2>Paramètres</h2>
-                <span href="" id="disconnect-btn" @click="disconnectBtn">Se déconnecter</span>
-                <h4>Allocation mémoire</h4>
-                <label for="minMem">mémoire minimale : <span id="outputMinMem">{{ minMemValue }}</span></label><br />
-                <input type="number" min="1024" :max="memMax" :step="memStep" v-model="minMemValue" class="slider" id="minMem"><br />
-                <label for="maxMem">mémoire maximale : <span id="outputMaxMem">{{ maxMemValue }}</span></label><br />
-                <input type="number" min="1024" :max="memMax" :step="memStep" v-model="maxMemValue" class="slider" id="maxMem"><br />
-                <h4>Au secours, mon jeu ne démarre pas</h4>
-                <button @click="invalidateData" :disabled="invalidateButtonDisabled">{{ invalidateButtonText }}</button><br />
-                <span @click="credits">Voir crédits</span>
-        </div>
-        <div id="credits" :style="{ display: displayCredits }">
-            <div class="content">
-                <p>BSD 3-Clause License</p>
-
-<p>Copyright (c) 2021, Altarik<br />
-All rights reserved.</p>
-
-<p>Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:</p>
-
-<ol>
-    <li>Redistributions of source code must retain the above copyright notice, this
-        list of conditions and the following disclaimer.</li>
-    <li>Redistributions in binary form must reproduce the above copyright notice,
-        this list of conditions and the following disclaimer in the documentation
-        and/or other materials provided with the distribution.</li>
-    <li>Neither the name of the copyright holder nor the names of its
-        contributors may be used to endorse or promote products derived from
-        this software without specific prior written permission.</li>
-</ol>
-
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-            </div>
+        <div id="settings" class="py-8" :style="{ display: displaySettings }">
+            <h1 class="text-center m-5 text-2xl">Paramètres</h1>
+            <Dividers title="Connectivité" />
+            <p class="justify-center flex">
+                <Button :callback="disconnectBtn" text="Se déconnecter" />
+            </p>
+            <Dividers title="Allocation mémoire" />
+            <p>
+                <label for="minMem">Mémoire minimale : <span>{{ minMemValue }} Mo</span></label>
+                <QuantityInput v-model="minMemValue" id="minMem" min="1024" :max="memMax" :step="memStep" />
+                <label for="maxMem">Mémoire maximale : <span>{{ maxMemValue }} Mo</span></label>
+                <QuantityInput v-model="maxMemValue" id="minMem" min="1024" :max="memMax" :step="memStep" />
+            </p>
+            <Dividers title="Dépannage" />
+            <p class="justify-center flex">
+                <Button :callback="invalidateData" :text="invalidateButtonText" :disabled="invalidateButtonDisabled" />
+            </p>
+            <Dividers title="Autre" />
+            <p class="justify-center flex">
+                <Button :callback="sourceCode" text="Code source" />
+            </p>
+            
         </div>
     </div>
     <div id="content" class="main">
         <div id="sidebar">
-            <h2>Chapitres <i v-if="modsInformations.length !== 0 || modsInformationsLoaded === false" v-on:click="reloadChapters()" class="reload-chapter material-icons">sync</i></h2>
+            <h2>Chapitres <i v-if="modsInformations.length !== 0 || modsInformationsLoaded === false" @click="reloadChapters()" class="reload-chapter material-icons">sync</i></h2>
             <div id="sidebar-content" @change="modsInformations">
                 <div v-if="modsInformationsLoaded === false">Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</div>
-                <div v-for="(item, index) in modsInformations" v-else-if="modsInformations.length !== 0" v-on:click="changeSelectedChapter(index)" :class="{ selected: isSelected(index) }">
+                <div v-for="(item, index) in modsInformations" v-else-if="modsInformations.length !== 0" @click="changeSelectedChapter(index)" :class="{ selected: isSelected(index) }">
                     <h3>{{ item.title }}</h3>
                     <p>{{ item.description}}</p>
                 </div>

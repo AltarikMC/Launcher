@@ -159,19 +159,6 @@ h3 {
 	max-height: inherit;
 }
 
-#settings > h2 {
-	text-align: center;
-	margin-block-end: 2em;
-}
-
-#disconnect-btn {
-	text-decoration: underline;
-	cursor: pointer;
-	color: black;
-}
-
-
-
 #sidebar h2,
 #sidebar-content h3 {
 	margin: 0;
@@ -198,10 +185,3 @@ h3 {
 	border-width:0;
 	border-top: 1px solid black;
 }
-
-/* .slider {
-	min-width: 60%;
-	position:relative;
-	left:50%;
-	transform: translateX(-50%);
-} */

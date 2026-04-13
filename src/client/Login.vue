@@ -2,11 +2,12 @@
 import { ref, inject, onMounted } from 'vue'
 import './assets/css/login.css'
 
+const emit = defineEmits(['setPage'])
+
 const form_disabled = ref(false)
 const microsoft_button = ref('Connexion avec un compte Microsoft')
 
 const showWarning = inject("showWarning")
-const setPage = inject("setPage")
 
 function microsoftButton (e) {
     e.preventDefault()
@@ -22,7 +23,7 @@ onMounted(() => {
         showWarning(e.title, e.body)
     })
     window.electronAPI.ipc.on('loginSuccess', () => {
-        setPage("main")
+        emit('setPage', 'main')
     })
 })
 
