@@ -47,6 +47,8 @@
     "vite": "^8.0.3"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/vite": "^4.2.2",
     "decompress": "^4.2.1",
     "electron-is-dev": "^3.0.1",
     "electron-log": "^5.4.3",
@@ -54,6 +56,7 @@
     "minecraft-launcher-core": "^3.18.2",
     "msmc": "^5.0.5",
     "node-fetch": "^3.3.2",
+    "tailwindcss": "^4.2.2",
     "vue": "^3.5.31",
     "vue3-toastify": "^0.2.9"
   },

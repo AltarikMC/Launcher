@@ -4,9 +4,9 @@ import Updater from './Updater.vue'
 import Login from './Login.vue'
 import Main from './Main.vue'
 import { toast } from 'vue3-toastify';
-import './assets/css/menubar.css'
 import './assets/css/fonts.css'
 import 'vue3-toastify/dist/index.css';
+import './assets/css/app.css'
 
 const page = ref("updater")
 const totalmem = ref(0)
@@ -69,7 +69,6 @@ onMounted(() => {
   })
 })
 
-provide("setPage", setPage)
 provide("showInfo", showInfo)
 provide("showError", showError)
 provide("showWarning", showWarning)
@@ -87,9 +86,9 @@ provide("showSuccess", showSuccess)
         <li id="minimize-btn" @click="minimize"><i class="material-icons">minimize</i></li><!--<li id="max-unmax-btn"><i class="material-icons">crop_square</i></li>--><li id="close-btn" @click="close"><i class="material-icons">close</i></li>
     </ul>
 </div>
-<Updater v-if="page === 'updater'"/>
-<Login v-if="page === 'login'" />
-<Main v-if="page === 'main'" totalmem="totalmem" />
+<Updater @set-page="setPage" v-if="page === 'updater'"/>
+<Login @set-page="setPage" v-if="page === 'login'" />
+<Main @set-page="setPage" v-if="page === 'main'" totalmem="totalmem" />
 </template>
 
 

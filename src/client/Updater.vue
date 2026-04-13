@@ -2,7 +2,7 @@
 import './assets/css/checkingUpdate.css'
 import { ref, onMounted, inject } from 'vue'
 
-const setPage = inject("setPage")
+const emit = defineEmits(['setPage'])
 
 const showError = inject("showError")
 
@@ -26,7 +26,8 @@ window.electronAPI.ipc.on('updater', (event) => {
     console.log(event)
     let event_type = event.status
     if(event_type === 'success' || event_type === 'error') {
-        setPage("login")
+        // setPage("login")
+        emit('setPage', 'login')
     }
     if(event_type === 'error') {
         showError(event.message)
