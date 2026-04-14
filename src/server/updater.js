@@ -34,7 +34,6 @@ export default class Updater {
   checkForUpdates (event) {
     if (isDev) {
       event.sender.send('updater', { status: 'success' })
-      // win.loadFile('src/client/login.html')
       return
     }
     const feed = `${server}/${pkg.repository}/${process.platform}-${process.arch}/${this.app.getVersion()}`
@@ -42,19 +41,16 @@ export default class Updater {
       this.autoUpdater.setFeedURL(feed)
       this.autoUpdater.on('error', message => {
         this.logger.error('An error occurred when trying to check for update', message)
-        event.sender.send('updater', { status: 'error', message })
-        // this.displayError(showNotification, message)
+        event.sender.send('updater', { status: 'error', message: 'Unable to check update', body: message })
       })
 
       this.autoUpdater.on('update-available', () => {
         this.logger.info('update available, downloading...')
         event.sender.send('updater', { status: 'info', message: 'update-available' })
-        // event.sender.webContents.send('update-available')
       })
       this.autoUpdater.on('update-not-available', () => {
         this.logger.info('update not available')
         event.sender.send('updater', { status: 'success', message: 'no-update' })
-        // event.sender.loadFile('src/client/login.html')
       })
       this.logger.info('Checking for update...')
       this.autoUpdater.checkForUpdates()
@@ -72,7 +68,6 @@ export default class Updater {
             const asset = json.assets.filter(el => el.browser_download_url.includes('.zip'))
             if (asset.length === 1) {
               const downloadUrl = asset[0].browser_download_url
-              // win.webContents.send('please-download-update', { url: downloadUrl })
               ipcEvent.sender.send('updater', { status: 'info', message: 'please-download-update', content: downloadUrl })
               this.logger.info('update available, please download')
             } else {
@@ -81,12 +76,10 @@ export default class Updater {
           } else {
             this.logger.info('update not available')
             ipcEvent.sender.send('updater', { status: 'success', message: 'no-update' })
-            // win.loadFile('src/client/login.html')
           }
         }).catch(err => ipcEvent.sender.send('updater', { status: 'error', message: err }))
       } else {
         ipcEvent.sender.send('updater', { status: 'error', message: 'Server unavailable' })
-        // this.displayError(win, showNotification, 'Server unavailable')
       }
     }).catch(err => ipcEvent.sender.send('updater', { status: 'error', message: err }))
   }

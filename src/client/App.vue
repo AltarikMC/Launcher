@@ -27,7 +27,6 @@ function showInfo(title, body) {
   toast.info({
     title,
     content: body,
-    // color: 'blue'
   })
 }
 
@@ -35,7 +34,6 @@ function showSuccess(title, body) {
   toast.success({
     title,
     content: body,
-    // color: 'green'
   })
 }
 
@@ -43,7 +41,6 @@ function showWarning(title, body) {
   toast.warning({
     title,
     content: body,
-    // color: 'yellow'
   })
 }
 
@@ -51,18 +48,10 @@ function showError(title, body) {
   toast.error({
     title,
     content: body,
-    // color: 'red'
   })
 }
 
 onMounted(() => {
-  // iziToast.settings({
-  //   close: false,
-  //   closeOnClick: true,
-  //   timeout: 5000,
-  //   position: 'topRight',
-  //   resetOnHover: true
-  // })
 
   window.electronAPI.ipc.on('pc-configuration', (e) => {
     totalmem.value = e.totalMem
