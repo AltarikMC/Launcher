@@ -17,65 +17,21 @@
 	font-size: 26px;
 }
 
-#media {
-	position: absolute;
-	top: 475px;
-	left:20px;
-	width: 322px;
-	display: flex;
-}
-
 #media > div {
 	background-image: url("../images/buttons.png");
 	background-size: 100%;
 	background-repeat: no-repeat;
+	background-position: center;
 	padding: 9px;
 	flex: 33%;
 	cursor: pointer;
 }
 
-#media img {
-	width: 89px;
-	height: 89px;
-}
-
-#main{
-	width: 100%;
-	height:100%;
-}
-
-#main-img {
-	height:100%;
-	width:100%;
-}
-
-h3 {
-	margin-block-end: 0.5em;
-}
-
-#launch-text {
-	font-family: "French-Press", sans-serif;
-	font-size: 52px;
-	font-weight: bold;
-}
-
 #launch-btn {
-	background-color: transparent;
-	position: absolute;
-	bottom: 20px;
-	right: 25px;
 	background-image: url("../images/play_button.png");
 	background-repeat: no-repeat;
 	background-size: 100%;
-	width:312px;
-	height:122px;
-	padding:10px;
-	text-align: center;
-	border-width: 0;
-}
-
-.hidden{
-	display:none;
+	background-position: center top;
 }
 
 #fullprogressbar{
@@ -86,61 +42,7 @@ h3 {
 	background-color:gray;
 }
 
-#progressbar{
-	background-color: green;
-	height:100%;
-	width:0;
-}
-
-#loading-message{
-	width:100%;
-	position:relative;
-	margin: 0 auto;
-	height:28px;
-	font-family: "French-Press", sans-serif;
-	font-size: 24px;
-	color:white;
-}
-
-#account {
-	width:312px;
-	height: 105px;
-	background-image: url('../images/nickname_scroll.png');
-	background-repeat: no-repeat;
-	background-size: 100%;
-	position: absolute;
-	right: 25px;
-	top: 50px;
-	padding: 0 30px;
-}
-
-#nick {
-	font-family: "French-Press", sans-serif;
-	font-size: 28px;
-	position: relative;
-	top:45%;
-	transform: translateY(-45%);
-}
-
-#fullscreen {
-	position:absolute;
-	top: 28px;
-	left: 0;
-	width: 100%;
-	height: calc(100% - 28px);
-	background-color: rgba(0, 0, 0, 0.6);
-	z-index: 10;
-}
-
-#close {
-	position: absolute;
-	top: 28px;
-	left: 5px;
-	color: white;
-	cursor: pointer;
-}
-
-#settings, #credits {
+#settings {
 	position: relative;
 	top: 50%;
 	left: 50%;
@@ -154,34 +56,3 @@ h3 {
 	max-height: 80vh;
 }
 
-#credits > .content {
-	overflow: auto;
-	max-height: inherit;
-}
-
-#sidebar h2,
-#sidebar-content h3 {
-	margin: 0;
-}
-
-#sidebar-content {
-	color: rgba(56, 56, 56, 0.6);
-}
-
-#sidebar-content .selected {
-	color: black;
-}
-
-#sidebar-content {
-	overflow: auto;
-}
-
-#sidebar-content p {
-	margin: 0;
-}
-
-#sidebar-content hr {
-	margin: 0 0 5px 0;
-	border-width:0;
-	border-top: 1px solid black;
-}

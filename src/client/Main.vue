@@ -4,6 +4,7 @@ import './assets/css/index.css'
 import Dividers from './components/Dividers.vue'
 import QuantityInput from './components/QuantityInput.vue'
 import Button from './components/Button.vue'
+import Fullscreen from './components/Fullscreen.vue'
 
 const emit = defineEmits(['setPage'])
 
@@ -19,7 +20,7 @@ const memStep = ref(128)
 const memMax = ref(props.totalmem / (1.049 * Math.pow(10, 6)))
 const invalidateButtonText = ref('Nettoyer l\'installation')
 const invalidateButtonDisabled = ref(false)
-const displayFullscreen = ref('none')
+const displayFullscreen = ref(false)
 const displaySettings = ref('none')
 const displayCredits = ref('none')
 const nick = ref('Chargement')
@@ -30,7 +31,6 @@ const loadingMessageHidden = ref(true)
 const loadingMessageText = ref('Téléchargement de Minecraft en cours...')
 const fullprogressbarHidden = ref(true)
 const progressbarWidth = ref(0)
-const sidebarContent = ref('<hr><p>Chargement en cours</p>')
 const modsInformations = ref([])
 const modsInformationsLoaded = ref(true)
 const selectedChapter = ref(-1)
@@ -45,9 +45,7 @@ function updateModsInformations (content) {
     }
 
 onMounted(() => {
-    setTimeout(() => {
-      window.electronAPI.ipc.send('pageReady')
-    }, 500)
+    window.electronAPI.ipc.send('pageReady')
 })
 
 function isSelected (index) {
@@ -55,6 +53,7 @@ function isSelected (index) {
 }
 
 function reloadChapters () {
+    changeSelectedChapter(-1)
     updateModsInformations(null)
     modsInformationsLoaded.value = true
     window.electronAPI.ipc.send('pageReady')
@@ -62,11 +61,15 @@ function reloadChapters () {
 
 function changeSelectedChapter (index) {
     if(!gameLaunching.value) {
-        selectedChapter.value = parseInt(index)
-        launchBtnText.value = 'JOUER'
-        launchBtnDisable.value = false
+        selectedChapter.value = index
+        if (index !== -1) {
+            launchBtnText.value = 'JOUER'
+            launchBtnDisable.value = false
+        } else {
+            launchBtnText.value = 'Selectionnez un chapitre'
+            launchBtnDisable.value = true
+        }   
     }
-    
 }
 
 function launchBtnClick () {
@@ -91,12 +94,11 @@ function launchBtnClick () {
 function disconnectBtn () {
     emit('setPage', 'login')
     showSuccess('Déconnecté', 'Vous avez été déconnecté de votre compte')
-    // window.electronAPI.ipc.send('disconnect')
 }
 
 function options () {
     if (!gameLaunching.value) {
-        displayFullscreen.value = 'block'
+        displayFullscreen.value = true
         displaySettings.value = 'block'
         displayCredits.value = 'none'
     }
@@ -115,7 +117,7 @@ function sourceCode() {
 }
 
 function closeFullscreen () {
-    displayFullscreen.value = 'none'
+    displayFullscreen.value = false
     displaySettings.value = 'none'
     displayCredits.value = 'none'
 }
@@ -126,7 +128,6 @@ function invalidateData () {
     showInfo('Opération en cours', 'Suppression des données du jeu en cours')
     window.electronAPI.ipc.send('invalidateData')
 }
-
 
 window.electronAPI.ipc.on('nick', (e) => (nick.value = e.name))
 
@@ -170,8 +171,7 @@ window.electronAPI.ipc.on('launchError', (e) => {
 })
 </script>
 <template>
-    <div id="fullscreen" :style="{ display: displayFullscreen }">
-        <div @click="closeFullscreen" id="close"><i class="material-icons">close</i></div>
+    <Fullscreen v-if="displayFullscreen" @close="closeFullscreen">
         <div id="settings" class="py-8" :style="{ display: displaySettings }">
             <h1 class="text-center m-5 text-2xl">Paramètres</h1>
             <Dividers title="Connectivité" />
@@ -195,39 +195,39 @@ window.electronAPI.ipc.on('launchError', (e) => {
             </p>
             
         </div>
-    </div>
+    </Fullscreen>
     <div id="content" class="main">
         <div id="sidebar">
-            <h2>Chapitres <i v-if="modsInformations.length !== 0 || modsInformationsLoaded === false" @click="reloadChapters()" class="reload-chapter material-icons">sync</i></h2>
-            <div id="sidebar-content" @change="modsInformations">
-                <div v-if="modsInformationsLoaded === false">Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet puis cliquez sur réessayez</div>
-                <div v-for="(item, index) in modsInformations" v-else-if="modsInformations.length !== 0" @click="changeSelectedChapter(index)" :class="{ selected: isSelected(index) }">
-                    <h3>{{ item.title }}</h3>
-                    <p>{{ item.description}}</p>
+            <h1 class="text-4xl mb-3 font-black">Chapitres <i v-if="modsInformations.length !== 0 || modsInformationsLoaded === false" @click="reloadChapters()" class="reload-chapter material-icons">sync</i></h1>
+            <div id="sidebar-content" @change="modsInformations" class="overflow-auto">
+                <div v-if="modsInformationsLoaded === false">Une erreur est survenue lors de la récupération des informations, vérifiez votre connexion internet ou réessayez plus tard</div>
+                <div v-for="(item, index) in modsInformations" v-else-if="modsInformations.length !== 0" @click="changeSelectedChapter(index)" :class="[{ 'text-black': isSelected(index) },{'text-neutral-900/60': !isSelected(index)}]">
+                        <h2 class="text-3xl font-semibold">{{ item.title }}</h2>
+                        <div class="text-2xl">{{ item.description}}</div>
                 </div>
                 <div v-else>Chargement en cours</div>
             </div>
         </div>
-        <div id="media">
+        <div id="media" class="absolute bottom-4 left-6 w-xs flex">
             <div @click="options" title="Paramètres">
-                <img src="./assets/images/settings.png">
+                <img src="./assets/images/settings.png" class="w-24 h-23">
             </div>
             <div @click="discord" title="Rejoingnez notre Discord">
-                <img src="./assets/images/discord.png">
+                <img src="./assets/images/discord.png" class="w-24 h-23">
             </div>
-            <div @click="web"title="Visitez notre site web">
-                <img src="./assets/images/web.png">
+            <div @click="web"title="Visitez notre site web" >
+                <img src="./assets/images/web.png" class="w-24 h-23">
             </div>
             
         </div>
-        <div id="main">
-            <div id="account">
-                <div id="nick">{{ nick }}</div><!-- <img src=""> Head du joueur -->
+        <div class="w-full h-full">
+            <div id="account" class="w-xs h-24 bg-[url('../images/nickname_scroll.png')] bg-no-repeat bg-cover absolute right-6 top-12 px-8">
+                <div id="nick" class="relative top-45/100 -translate-y-45/100 text-3xl font-['French-Press',sans-serif]">{{ nick }}</div><!-- <img src=""> Head du joueur -->
             </div>
-            <button @click="launchBtnClick" id="launch-btn" :disabled="launchBtnDisable">
-                <div id="launch-text" :class="[{hidden: launchBtnHidden}]">{{ launchBtnText }}</div>
-                <div id="loading-message" :class="[{hidden: loadingMessageHidden}]">{{ loadingMessageText }}</div>
-                <div id="fullprogressbar" :class="[{hidden: fullprogressbarHidden}]"><div id="progressbar" :style="{ width: progressbarWidth + '%' }"></div></div>
+            <button @click="launchBtnClick" id="launch-btn" :disabled="launchBtnDisable" class="bg-transparent absolute text-center border-0 p-2.5 h-28 w-78 bottom-5 right-6 font-['French-Press',sans-serif]">
+                <div class="font-bold" :class="[{hidden: launchBtnHidden},{'text-2xl': launchBtnDisable},{'text-5xl': !launchBtnDisable}]">{{ launchBtnText }}</div>
+                <div class="w-full h-7 text-white text-2xl relative mx-auto mb-1" :class="[{hidden: loadingMessageHidden}]">{{ loadingMessageText }}</div>
+                <div id="fullprogressbar" class="rounded-sm" :class="[{hidden: fullprogressbarHidden}]"><div class="w-0 h-full bg-green-700 rounded-sm" :style="{ width: progressbarWidth + '%' }"></div></div>
             </button>
         </div>
     </div>
