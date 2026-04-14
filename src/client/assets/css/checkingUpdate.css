@@ -20,15 +20,6 @@
     80%{background-position:0%  50%, 50%  50%,100% 100%}
 }
 
-#fullscreen {
-	position: absolute;
-	top: 28px;
-	width: 100%;
-	height: calc(100% - 28px);
-	background-color: rgba(0, 0, 0, 0.6);
-	z-index: 10;
-}
-
 #fullscreen-content {
     position: relative;
 	top: 50%;
