@@ -47,12 +47,14 @@ function createWindow () {
     // eslint-disable-next-line no-undef
     win.loadFile(join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
-  win.webContents.send('pc-configuration', { totalMem: totalmem() })
-
   win.on('close', () => {
     app.quit()
   })
 }
+
+ipcMain.on('winReady', (event) => {
+  win.webContents.send('pc-configuration', { totalMem: totalmem() })
+})
 
 ipcMain.on('pageReady', (event) => {
   event.sender.send('nick', { name: minecraft.auth.name })
