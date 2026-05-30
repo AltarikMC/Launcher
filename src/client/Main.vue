@@ -181,7 +181,7 @@ window.electronAPI.ipc.on('launchError', (e) => {
                 <label for="minMem">Mémoire minimale : <span>{{ minMemValue }} Mo</span></label>
                 <QuantityInput v-model="minMemValue" id="minMem" min="1024" :max="memMax" :step="memStep" />
                 <label for="maxMem">Mémoire maximale : <span>{{ maxMemValue }} Mo</span></label>
-                <QuantityInput v-model="maxMemValue" id="minMem" min="1024" :max="memMax" :step="memStep" />
+                <QuantityInput v-model="maxMemValue" id="maxMem" min="1024" :max="memMax" :step="memStep" />
             </p>
             <Dividers title="Dépannage" />
             <p class="justify-center flex">
@@ -210,7 +210,7 @@ window.electronAPI.ipc.on('launchError', (e) => {
             <div @click="options" title="Paramètres">
                 <img src="./assets/images/settings.png" class="w-24 h-23">
             </div>
-            <div @click="discord" title="Rejoingnez notre Discord">
+            <div @click="discord" title="Rejoignez notre Discord">
                 <img src="./assets/images/discord.png" class="w-24 h-23">
             </div>
             <div @click="web"title="Visitez notre site web" >

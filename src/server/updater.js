@@ -19,7 +19,7 @@ export default class Updater {
     this.logger.info(`platform: ${process.platform}`)
     this.logger.info(`arch: ${process.arch}`)
     if (isDev) {
-      this.logger.info(`developpement version ${this.app.getVersion()}`)
+      this.logger.info(`development version ${this.app.getVersion()}`)
       return
     }
     this.logger.info(`production version ${this.app.getVersion()}`)
