@@ -99,6 +99,8 @@ function options () {
         displayFullscreen.value = true
         displaySettings.value = 'block'
         displayCredits.value = 'none'
+    } else {
+        showInfo('Jeu en cours ou en chargement', 'Fermez le jeu pour modifier les paramètres')
     }
 }
 
