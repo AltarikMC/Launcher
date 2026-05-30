@@ -12,12 +12,10 @@ const router = useRouter()
 
 const totalMem = inject('totalMem')
 
-console.log(totalMem)
-
 const minMemValue = ref(localStorage.getItem('minMem') != null ? localStorage.getItem('minMem') : 1024)
 const maxMemValue = ref(localStorage.getItem('maxMem') != null ? localStorage.getItem('maxMem') : 2048)
 const memStep = ref(128)
-const memMax = ref(totalMem / (1.049 * Math.pow(10, 6)))
+const memMax = ref(totalMem.value / (1.049 * Math.pow(10, 6)))
 const invalidateButtonText = ref('Nettoyer l\'installation')
 const invalidateButtonDisabled = ref(false)
 const displayFullscreen = ref(false)

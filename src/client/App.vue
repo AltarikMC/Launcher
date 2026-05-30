@@ -9,12 +9,15 @@ import './assets/css/app.css'
 const router = useRouter()
 const route = useRoute()
 
+const totalMem = ref(0)
+
 onMounted(() => {
   window.electronAPI.ipc.on('pc-configuration', (e) => {
-    provide('totalMem', e.totalMem)
+    totalMem.value = e.totalMem
   })
+  window.electronAPI.ipc.send('winReady')
 })
-
+provide('totalMem', totalMem)
 
 
 </script>
