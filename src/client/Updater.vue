@@ -2,10 +2,10 @@
 import './assets/css/checkingUpdate.css'
 import { ref, onMounted, inject } from 'vue'
 import Fullscreen from './components/Fullscreen.vue'
+import { showError } from './utils'
+import { useRouter } from 'vue-router'
 
-const emit = defineEmits(['setPage'])
-
-const showError = inject("showError")
+const router = useRouter()
 
 const displayFullscreen =  ref('block')
 const fullscreenText = ref('Recherche de mise à jour...')
@@ -26,7 +26,7 @@ window.electronAPI.ipc.on('updater', (event) => {
     console.log(event)
     let event_type = event.status
     if(event_type === 'success' || event_type === 'error') {
-        emit('setPage', 'login')
+        router.push('/login')
     }
     if(event_type === 'error') {
         showError(event.message, event.body)
