@@ -55,12 +55,14 @@ export default class Minecraft {
         logger.error('[MS login] ' + err)
       })
     }).catch(err => {
-      event.sender.send('loginError')
       if (err !== 'error.gui.closed') {
         event.sender.send('loginError', { title: 'Une erreur de connexion à Xbox est survenue', body: err })
 
         // this.showNotification('Une erreur de connexion à Xbox est survenue', err, 'error')
         logger.error('[MS login] ' + err)
+      } else {
+        logger.info('Login cancelled')
+        event.sender.send('loginCancel')
       }
     })
   }

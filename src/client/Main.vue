@@ -1,23 +1,21 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue'
+import { useRouter } from 'vue-router'
+import { showSuccess, showError, showInfo } from './utils'
 import './assets/css/index.css'
 import Dividers from './components/Dividers.vue'
 import QuantityInput from './components/QuantityInput.vue'
 import Button from './components/Button.vue'
 import Fullscreen from './components/Fullscreen.vue'
 
-const emit = defineEmits(['setPage'])
+const router = useRouter()
 
-const showSuccess = inject("showSuccess")
-const showInfo = inject("showInfo")
-const showError = inject("showError")
-
-const props = defineProps(['totalmem'])
+const totalMem = inject('totalMem')
 
 const minMemValue = ref(localStorage.getItem('minMem') != null ? localStorage.getItem('minMem') : 1024)
 const maxMemValue = ref(localStorage.getItem('maxMem') != null ? localStorage.getItem('maxMem') : 2048)
 const memStep = ref(128)
-const memMax = ref(props.totalmem / (1.049 * Math.pow(10, 6)))
+const memMax = ref(totalMem.value / (1.049 * Math.pow(10, 6)))
 const invalidateButtonText = ref('Nettoyer l\'installation')
 const invalidateButtonDisabled = ref(false)
 const displayFullscreen = ref(false)
@@ -92,7 +90,7 @@ function launchBtnClick () {
 }
 
 function disconnectBtn () {
-    emit('setPage', 'login')
+    router.push('/login')
     showSuccess('Déconnecté', 'Vous avez été déconnecté de votre compte')
 }
 
