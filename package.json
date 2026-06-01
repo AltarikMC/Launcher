@@ -30,10 +30,10 @@
     "lint": "eslint"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.11.1",
-    "@electron-forge/maker-squirrel": "^7.11.1",
+    "@electron-forge/cli": "^7.11.2",
+    "@electron-forge/maker-squirrel": "^7.11.2",
     "@electron-forge/maker-zip": "^7.11.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.11.2",
     "@electron-forge/plugin-vite": "7.11.1",
     "@electron-forge/publisher-github": "^7.11.1",
     "@vitejs/plugin-vue": "^6.0.5",
@@ -63,5 +63,8 @@
   },
   "config": {
     "forge": "./config.forge.js"
+  },
+  "overrides": {
+    "yauzl": "^3.3.1"
   }
 }
