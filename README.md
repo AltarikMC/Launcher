@@ -14,18 +14,18 @@ If you want to use a version of the launcher how work, please download an alread
 
 ## Installation and usage
 
-If you use the launcher thank to git and not by downloading already compiled assets[^2], use these step:
+Pre-compiled builds for Windows and Linux are available in the [release page](https://github.com/AltarikMC/Launcher/releases/latest)
 
-[^2]: If you using a Mac per example.
+If you use the launcher thank to git and not by downloading already compiled assets, use these step:
 
-First you need to have nodejs installed on your system, if not, install it by following this page: [https://nodejs.org/en/download/
-](https://nodejs.org/en/download/).
+- Install dependency: [nodejs](https://nodejs.org/en/download/)
+- Run the following commands: `corepack enable` to enable yarn, then `yarn` to install project dependencies and `yarn run start` to launch the launcher
 
-Then active yarn if you don't have already did it: `corepack enable`
+### Others installation channel
 
-To install dependencies: `yarn`
+The GitHub release page is the only official distributed channel and provide reproducible binaries through Github Actions. Any other source is not supported and therefore, should not be used.
 
-To start the launcher: `yarn run start`
+Per example, a package is present on AUR but is not maintained by Altarik, we **don't** recommand to install this one, no support will be provided if the program is installed through unofficial sources.
 
 ## Copyright
 
